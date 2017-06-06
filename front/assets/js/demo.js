@@ -43,6 +43,8 @@ $(document).ready(function() {
 	if(mapProjectConfiguration[project] != undefined) {
 		let data = mapProjectConfiguration[project];
 		
+		$("#betweenDate").text("Between " + monday.toString() + " and " + sunday.toString());
+		
 		getCodeReviewInfo(project,fillCodeReview, mondayCodeReview, sundayCodeReview);
 
 		$('#projectParameter').val(project);
