@@ -1,0 +1,152 @@
+@media (min-width: 992px){
+    .typo-line{
+        padding-left: 140px;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .typo-line .category{
+        transform: translateY(-50%);
+        top: 50%;
+        left: 0px;
+        position: absolute;
+    }
+}
+
+.all-icons [class*="pe-"]{
+    font-size: 40px;
+}
+.all-icons input{
+    border: 0;
+}
+.all-icons .font-icon-detail{
+    text-align: center;
+    padding: 45px 0px 30px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    margin: 15px 0;
+}
+.all-icons .font-icon-detail input{
+    margin: 25px auto 0;
+    width: 100%;
+    text-align: center;
+    display: block;
+    color: #aaa;
+    font-size: 13px;
+}
+
+#map{
+    position:relative;
+    width:100%;
+    height: calc(100% - 60px);
+}
+
+.places-buttons .btn{
+    margin-bottom: 30px
+}
+.sidebar .nav > li.active-pro{
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+}
+.sidebar .nav > li.active-pro a{
+    background: rgba(255, 255, 255, 0.14);
+    opacity: 1;
+    color: #FFFFFF;
+}
+
+.table-upgrade td:nth-child(2),
+.table-upgrade td:nth-child(3){
+    text-align: center;
+}
+
+.title-dash {
+	font-size : 20px;
+}
+
+.title-dash .fa {
+	font-size : 35px;
+}
+
+.title-dash span {
+	margin-left: 30px;
+}
+
+.wrapper .ct-series-a,.wrapper .ct-series-a .ct-slice-pie{
+	fill: #7ECFCB;
+}
+
+.wrapper .ct-series-b, .wrapper .ct-series-b .ct-slice-pie{
+	fill: #DAE5E8;
+}
+
+.wrapper .ct-label {
+	fill : #fbfbfb;
+	font-weight:bold;
+}
+
+.title-dash {
+	margin-bottom : 10px;	
+}
+
+.row.title-dash div{
+	height : 36px;
+}
+
+.row.title-dash span {
+	vertical-align: super;
+}
+
+.center {
+	text-align: center;
+}
+
+.detail {
+	font-size: 16px;
+    font-weight: 400;
+}
+.trend {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.nice {
+	color: #58bb5a;
+}
+
+.medium {
+	color: #f29900;
+}
+.bad, .wrapper .card .bad {
+	color: #fa6a67;
+}
+
+.lib-legend {
+	display: inline-block;
+	width :50px;
+}
+
+.text-circle-a {
+	color: #7ECFCB;
+}
+.text-circle-b {
+	color: #DAE5E8;
+}
+.text-circle-c {
+	color: #FFA534;
+}
+.text-circle-d {
+	color: #9368E9;
+}
+.text-circle-e {
+	color: #87CB16;
+}
+.text-circle-f {
+	color: #1F77D0;
+}
+.text-circle-g {
+	color: #5e5e5e;
+}
+/* zpa :     vertical-align: super;*/
+
+

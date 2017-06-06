@@ -1,0 +1,2 @@
+Header set Access-Control-Allow-Origin "*"
+ErrorDocument 404 erreur_404.html
