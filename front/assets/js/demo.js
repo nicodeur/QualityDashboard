@@ -4,6 +4,12 @@ var mondayCodeReview;
 var sundayCodeReview;
 var mapProjectConfiguration = new Array();
 	
+	
+var sonarUrl;
+var jenkinsUrl;
+var cerberusUrl;
+
+	
 // init method
 $(document).ready(function() {
 
@@ -64,6 +70,11 @@ $(document).ready(function() {
 	
 });
 
+function setToolsUrl(data) {
+	sonarUrl=data.sonarUrl;
+	jenkinsUrl=data.jenkinsUrl;
+	cerberusUrl=data.cerberusUrl;
+}
 
 function addDashboard(data) {
 	// 1 - ajouter un nouvel onglet

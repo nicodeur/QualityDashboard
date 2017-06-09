@@ -1,6 +1,13 @@
 // init method
 function initProject() {
 
+	setToolsUrl( {
+		serverUrl : "",
+		sonarUrl : "",
+		jenkinsUrl : "",
+		cerberusUrl : ""
+	});
+
 	addDashboard( {
 		name : "finpmt",
 		codeReviewName : "finpmt",

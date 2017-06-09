@@ -149,4 +149,49 @@
 }
 /* zpa :     vertical-align: super;*/
 
+/* specifique for cerberus resut */													
+.reportCerberus .ct-series-a .ct-slice-pie {
+	fill: #F1C40F; /* NA */
+}
+.reportCerberus .ct-series-b .ct-slice-pie {
+	fill: #F0AD4E; /* CA */
+}
+.reportCerberus .ct-series-c .ct-slice-pie {
+	fill: #D9534F; /* KO */
+}
+.reportCerberus .ct-series-a, .reportCerberus .ct-series-d .ct-slice-pie {
+	fill: #F0AD4E; /* FA */
+}
+.reportCerberus .ct-series-e .ct-slice-pie {
+	fill: #5CB85C; /* OK */
+}
+.reportCerberus .ct-series-f .ct-slice-pie {
+	fill: #3498DB; /* PE */
+}
+.reportCerberus .ct-series-g .ct-slice-pie {
+	fill: #34495E; /* NE */
+}
+
+
+.reportCerberus .text-circle-a {
+	color: #F1C40F;
+}
+.reportCerberus .text-circle-b {
+	color: #F0AD4E;
+}
+.reportCerberus .text-circle-c {
+	color: #D9534F;
+}
+.reportCerberus .text-circle-d {
+	color: #F0AD4E;
+}
+.reportCerberus .text-circle-e {
+	color: #5CB85C;
+}
+.reportCerberus .text-circle-f {
+	color: #3498DB;
+}
+.reportCerberus .text-circle-g {
+	color: #34495E;
+}
 
