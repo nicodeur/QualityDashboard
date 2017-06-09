@@ -6,7 +6,7 @@ if [ -f "stop.sh" ]; then
 else
 
   cmd="node server.js"
-  nohup $cmd &
+  nohup $cmd >> ../logs/server.log &
 
   # Storing the background process' PID.
   bg_pid=$!

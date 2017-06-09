@@ -56,7 +56,50 @@ function initProject() {
 				jenkinsName : "finpmt-propose",				
 			}				
 		]		
-	})
+	});
+
+
+	addDashboard( {
+                name : "productreferences",
+                codeReviewName : "productreference",
+                projects : [
+                        {
+                                name : "productreference-service",
+                                sonarName : "redoute.productreferences:productreferences-service-productreference",
+                                cerberusPrefixTag : null,
+                                jenkinsName : "productreferences-service-productreference-QA",
+                        },
+						{
+                                name : "productreference-core",
+                                sonarName : "redoute.productreferences:productreferences-core-productreference",
+                                cerberusPrefixTag : null,
+                                jenkinsName : "productreferences-core-productreference-QA",
+                        },
+                        {
+                                name : "fileflows-core",
+                                sonarName : "redoute.productreferences:productreferences-core-fileflows",
+                                cerberusPrefixTag : null,
+                                jenkinsName : "productreferences-core-fileflows-QA",
+                        },
+						                        {
+                                name : "warehousecode-core",
+                                sonarName : "redoute.productreferences:productreferences-core-warehousecode",
+                                cerberusPrefixTag : null,
+                                jenkinsName : "productreferences-core-warehousecode-QA",
+                        },
+                        {
+                                name : "commercialscopegeneration-batch",
+                                sonarName : "redoute.productreferences:productreferences-batch-commercialscopegeneration",
+                                cerberusPrefixTag : null,
+                                jenkinsName : "productreferences-batch-commercialscopegeneration-QA",
+                        }						
+                ]
+        });
+
+
+
+
+
 	
 	
 	/*
