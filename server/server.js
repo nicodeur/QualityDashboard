@@ -78,7 +78,7 @@ app.get("/codeReviewStats", function (req, res) {
 		team = "";
 	}
 	
-	exec('sh /apps/qualityReport/reportCordonbleuJson.sh '+beginDate+' '+endDate+' ' + team,function(err,stdout,stderr){
+	exec('sh reportCordonbleuJson.sh '+beginDate+' '+endDate+' ' + team,function(err,stdout,stderr){
 		if(err) {
 			res.end("err : " + err);
 		} else if (stderr) {
