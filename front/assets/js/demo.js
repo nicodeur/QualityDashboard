@@ -8,7 +8,12 @@ var mapProjectConfiguration = new Array();
 var sonarUrl;
 var jenkinsUrl;
 var cerberusUrl;
+var serverUrl;
+var codeReviewUrl;	
+	
+var teamCodeReview;	
 
+var cerberusInfoLst = new Array();
 	
 // init method
 $(document).ready(function() {
@@ -41,19 +46,52 @@ $(document).ready(function() {
 	setInputDate("#endDate", sunday);
 	setInputDate("#beginDateCodeReview", mondayCodeReview);
 	setInputDate("#endDateCodeReview", sundayCodeReview);
-
+	setInputDate("#beginDateCodeReview2", mondayCodeReview);
+	setInputDate("#endDateCodeReview2", sundayCodeReview);
+	
+	$("#reportCerberusGeneral").hide();
+	
 	initProject();
 	
 	let project = findGetParameter("project");
+	$('#projectParameter').val(project);
+	$('#projectParameter2').val(project);
+		
+	// show menu active
+	if(project != null) {
+		$('#menu-' + project).addClass("active");
+	}
+		
+	if(project === "codeReview") {
+		$('#dashboardContainer').append("toto");
+		$('#chooseYourProject').hide();
+		$('#dashboardContainer').hide();
+		$('#codeReview').show();
+				
+		$("#betweenDateCodeReview").text("Between " + mondayCodeReview.toString() + " and " + sundayCodeReview.toString());
+		
+		//$("#codeReviewContent").append($("#templateCodeReview"));
+		
+		teamCodeReview.forEach(function (data) {
+
+			let templateCodeReview = $("#templateCodeReview").clone();	
+			let idCR = "codereview-"+data.name;
+			templateCodeReview.find("div:first").attr("id", idCR);
 	
-	if(mapProjectConfiguration[project] != undefined) {
+			$("#codeReviewContent").append(templateCodeReview.html());
+			$("#"+idCR + " [name='name']").text(data.name);
+			$("#"+idCR + " [name='seemore']").attr("href",codeReviewUrl+"/team/" + data.name);
+
+			
+			getCodeReviewInfo(data.name,fillCodeReview, mondayCodeReview, sundayCodeReview, "#"+idCR + " [name='?']");
+
+		});
+	} else if(mapProjectConfiguration[project] != undefined) {
 		let data = mapProjectConfiguration[project];
 		
 		$("#betweenDate").text("Between " + monday.toString() + " and " + sunday.toString());
 		
-		getCodeReviewInfo(project,fillCodeReview, mondayCodeReview, sundayCodeReview);
-
-		$('#projectParameter').val(project);
+		getCodeReviewInfo(project,fillCodeReview, mondayCodeReview, sundayCodeReview);		
 		
 		data.projects.forEach( function (project) {
 			addProject(project.name, 
@@ -70,16 +108,23 @@ $(document).ready(function() {
 	
 });
 
+
+function setCodeReview(teams) {
+	teamCodeReview = teams.teams;
+}
+
 function setToolsUrl(data) {
 	sonarUrl=data.sonarUrl;
 	jenkinsUrl=data.jenkinsUrl;
 	cerberusUrl=data.cerberusUrl;
+	serverUrl=data.serverUrl;
+	codeReviewUrl=data.codeReviewUrl;
 }
 
 function addDashboard(data) {
 	// 1 - ajouter un nouvel onglet
 	$('#onglets').append(
-			'<li class="active">' +
+			'<li id="menu-' + data.name + '">' +
             '        <a href="?project=' + data.name + '">' +
             '            <i class="pe-7s-graph"></i>' +
             '            <p>' + data.name + '</p>' +
@@ -133,7 +178,7 @@ function addProject(id, projectSonarName, projectJenkinsName, beginDate, endDate
 	//getSonarInfo(projectSelector,projectSonarName, "2017-05-01T00:00:00+0100", "2017-05-19T00:00:00+0100", fillSonar);
 	getSonarInfo(projectSelector,projectSonarName, beginDate.toString()+"T00:00:00+0100", endDate.toString()+"T00:00:00+0100", fillSonar);	
 
-	if(prefixCerberusTag != null) {console.log("go");
+	if(prefixCerberusTag != null) {
 		getCerberusTag(prefixCerberusTag, function(cerberusTags) {
 				getCerberusInfo(projectSelector, cerberusTags.lasttag, fillCerberusInfo);
 			}
@@ -168,18 +213,21 @@ Date.prototype.toString = function() {
   
 }
 
-function fillCodeReview(codeReviewResult) {	
-	result = codeReviewResult.projects[0];
-	
-	modifyChartOneValue("#chartCodeReview", result.ratioCommitReview);		
-	
-	$("#commitNumber").text(result.commitNumber);
-	$("#approveCommitNumber").text(result.approveCommitNumber);
-	$("#commentCommitNumber").text(result.commentCommitNumber);
-	$("#reviewCommitNumber").text(result.commitNumber-result.notReviewCommitNumber);
-	
+function fillCodeReview(codeReviewResult, selecter) {	
+	if(selecter == undefined) {
+		selecter = "#?";
+	}
 
-	$("#smileyCodeReview").addClass(getSmiley(result.ratioCommitReview, 100,50));
+	result = codeReviewResult.projects[0];
+
+	modifyChartOneValue(selecter.replace("?","chartCodeReview"), result.ratioCommitReview);		
+	
+	$(selecter.replace("?","commitNumber")).text(result.commitNumber);
+	$(selecter.replace("?","approveCommitNumber")).text(result.approveCommitNumber);
+	$(selecter.replace("?","commentCommitNumber")).text(result.commentCommitNumber);
+	$(selecter.replace("?","reviewCommitNumber")).text(result.commitNumber-result.notReviewCommitNumber);	
+
+	$(selecter.replace("?","smileyCodeReview")).addClass(getSmiley(result.ratioCommitReview, 100,50));
 	
 }
 
@@ -301,8 +349,11 @@ function displayCerberusStatus(projectSelector,status, title) {
 	$(projectSelector + " [name='"+title+"']").text(status + " " + title);	
 	
 	if(status===0) {
-		$(projectSelector + " [name='"+title+"']").hide();
-		$(projectSelector + " [name='icon"+title+"']").hide();
+		//$(projectSelector + " [name='"+title+"']").hide();
+		$(projectSelector + " [name='elt"+title+"']").hide();
+	} else {
+		//$(projectSelector + " [name='"+title+"']").show();
+		$(projectSelector + " [name='elt"+title+"']").show();
 	}
 	
 	//return (status==null || status==0) ? " " : status + " " + title;
@@ -332,7 +383,7 @@ function modifyChartOneValue(elmt, value) {
 function getSonarInfo(projectSelector, projet, dateDebut, dateFin, callback) {
 	let metrics = "ncloc,branch_coverage,public_documented_api_density,blocker_violations,critical_violations";
 	
-	let url = "http://192.168.135.14:9000/api/timemachine?resource="+projet+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin;
+	let url = sonarUrl + "/api/timemachine?resource="+projet+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin;
 	
 	let sonarResult = new Object();
 	
@@ -420,7 +471,7 @@ function getSonarInfo(projectSelector, projet, dateDebut, dateFin, callback) {
 
 
 function getCerberusTag(prefixTag, callback) {	
-	let url = "http://192.168.134.148:8085/getLastTagCerberus?prefixTag="+prefixTag;
+	let url = serverUrl + "/getLastTagCerberus?prefixTag="+prefixTag;
 		
     $.ajax({
         type: 'GET',
@@ -440,7 +491,7 @@ function getCerberusTag(prefixTag, callback) {
 
 
 function getCerberusInfo(projectSelector,tagCerberus, callback) {	
-	let url = "http://192.168.134.148:8085/cerberusinfo?tag="+ tagCerberus;
+	let url = serverUrl + "/cerberusinfo?tag="+ tagCerberus;
 	
 	let cerberusInfo = new Object();
     $.ajax({
@@ -465,10 +516,45 @@ function getCerberusInfo(projectSelector,tagCerberus, callback) {
 			cerberusInfo.status_CA_nbOfExecution = response.status_CA_nbOfExecution;
 			cerberusInfo.status_KO_nbOfExecution = response.status_KO_nbOfExecution;
 			cerberusInfo.urlReport = "http://cerberus.siege.red/Cerberus/ReportingExecutionByTag.jsp?Tag="+tagCerberus;
+			
+			cerberusInfoLst.push(cerberusInfo);
+						
 			callback(projectSelector,cerberusInfo);
+			
+			majGeneralCerberusInfo();
+
         }
 	});
 	
+}
+
+function majGeneralCerberusInfo() {
+	
+	let cerberusInfo = new Object();
+	cerberusInfo.status_PE_nbOfExecution = 0;
+	cerberusInfo.status_NA_nbOfExecution = 0;
+	cerberusInfo.status_NE_nbOfExecution = 0;
+	cerberusInfo.status_FA_nbOfExecution = 0;
+	cerberusInfo.status_OK_nbOfExecution = 0;
+	cerberusInfo.status_CA_nbOfExecution = 0;
+	cerberusInfo.status_KO_nbOfExecution = 0;
+	cerberusInfo.urlReport = "";
+		
+	cerberusInfoLst.forEach(function(data) {
+		cerberusInfo.executionStart = data.executionStart;
+		cerberusInfo.executionEnd = data.executionEnd;
+		cerberusInfo.status_PE_nbOfExecution += data.status_PE_nbOfExecution;
+		cerberusInfo.status_NA_nbOfExecution += data.status_NA_nbOfExecution;
+		cerberusInfo.status_NE_nbOfExecution += data.status_NE_nbOfExecution;
+		cerberusInfo.status_FA_nbOfExecution += data.status_FA_nbOfExecution;
+		cerberusInfo.status_OK_nbOfExecution += data.status_OK_nbOfExecution;
+		cerberusInfo.status_CA_nbOfExecution += data.status_CA_nbOfExecution;
+		cerberusInfo.status_KO_nbOfExecution += data.status_KO_nbOfExecution;
+	});
+	
+	
+	fillCerberusInfo("#reportCerberusGeneral",cerberusInfo);
+	$("#reportCerberusGeneral").show();
 }
 
 
@@ -477,7 +563,7 @@ function getCerberusInfo(projectSelector,tagCerberus, callback) {
 
 
 function getJenkinsInfo(projectSelector,projectName,callback) {	
-	let url = "http://192.168.134.148:8085/jenkinsinfo?project_name="+ projectName;
+	let url = serverUrl + "/jenkinsinfo?project_name="+ projectName;
 	
 	let jenkinsInfo = new Object();
     $.ajax({
@@ -497,8 +583,8 @@ function getJenkinsInfo(projectSelector,projectName,callback) {
 }
 
 
-function getCodeReviewInfo(teamName,callback, beginDate, endDate) {	
-	let url = "http://192.168.134.148:8085/codeReviewStats?teamName="+ teamName 
+function getCodeReviewInfo(teamName,callback, beginDate, endDate, selecter) {	
+	let url = serverUrl + "/codeReviewStats?teamName="+ teamName 
 		+ "&beginDate=" + beginDate.toString()
 		+ "&endDate=" + endDate.toString();
 	
@@ -515,7 +601,7 @@ function getCodeReviewInfo(teamName,callback, beginDate, endDate) {
         },
         success: function (msg) {	
 			response = msg[0];		
-			callback(response);
+			callback(response, selecter);
         }
 	});	
 }  

@@ -54,18 +54,12 @@
             </div>
 
             <ul class="nav" id="onglets">
-                <!--<li class="active">
-                    <a href="dashboard.html">
+                <li id="menu-codeReview">
+                    <a href="?project=codeReview">
                         <i class="pe-7s-graph"></i>
-                        <p>Finpmt</p>
+                        <p>Code Review</p>
                     </a>
-                </li> 
-                <li class="active">
-                    <a href="mmk.html">
-                        <i class="pe-7s-graph"></i>
-                        <p>MMK</p>
-                    </a>
-                </li> 		-->		
+                </li>       <hr />         
             </ul>
     	</div>
     </div>
@@ -98,6 +92,37 @@
 
         <div class="content">
             <div class="container-fluid">
+				<div class="row" id="codeReview" style="display:none"> 
+				
+					<div class="card">
+						<div class="content">
+							<form><input type="hidden" id="projectParameter2" name="project"/>
+							<div class="input-group col-md-6">									
+								<span class="input-group-addon">Begin date for Code Review</span>
+								<input type="date" class="form-control" id="beginDateCodeReview2" name="beginDateCodeReview"/>
+								
+								<span class="input-group-addon" id="basic-addon3">End date for Code Review</span>
+								<input type="date" class="form-control" id="endDateCodeReview2" name="endDateCodeReview"/>
+								<span class="input-group-btn">
+									<input type="submit" value="Reload" class="form-control btn btn-primary" />
+								</span>
+							</div>
+							</form>
+						</div>
+					</div>				
+									
+					<div class="card">
+						<div class="content">
+							<h4 class="title">Code review</h4>
+							<p class="category" id="betweenDateCodeReview"></p>
+						</div>
+						
+						<div class="row" id="codeReviewContent">
+							
+						</div>
+					</div>
+				</div>
+				
 				<div class="row" id="chooseYourProject"> 
 					<div class="card">
 						<div class="content">
@@ -192,6 +217,34 @@
 									</div>
 							   
 								</div>
+								
+								<div class="row">
+									<div class="col-md-6 reportCerberus" id="reportCerberusGeneral">
+									
+										<div class="col-md-12 title-dash">
+											<i class="fa fa-pie-chart"></i>
+											<span>General Cerberus Result</span>
+										</div>
+										
+										<div class="col-md-12">
+											<div id="chartCerberusLastResult" name="chartCerberusResultLastExecution"  style="witdh:200px;height:200px"></div>
+											
+											<div class="col-lg-8">
+												<div class="footer">
+													<div class="col-md-12"> 
+																<div class="col-md-4" name="eltNA"><i class="fa fa-circle text-circle-a" name="iconNA"></i><span class="lib-legend" name="NA"></span></div>    
+																<div class="col-md-4" name="eltCA"><i class="fa fa-circle text-circle-b" name="iconCA"></i><span class="lib-legend" name="CA"></span></div>
+																<div class="col-md-4" name="eltKO"><i class="fa fa-circle text-circle-c" name="iconKO"></i><span class="lib-legend" name="KO"></span></div>    															
+																<div class="col-md-4" name="eltFA"><i class="fa fa-circle text-circle-d" name="iconFA"></i><span class="lib-legend" name="FA"></span></div>													                                            
+																<div class="col-md-4" name="eltOK"><i class="fa fa-circle text-circle-e" name="iconOK"></i><span class="lib-legend" name="OK"></span></div>
+																<div class="col-md-4" name="eltPE"><i class="fa fa-circle text-circle-f" name="iconPE"></i><span class="lib-legend" name="PE"></span></div>    
+																<div class="col-md-4" name="eltNE"><i class="fa fa-circle text-circle-g" name="iconNE"></i><span class="lib-legend" name="NE"></span></div>  
+													</div>		
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
                             </div>
                         </div>
                     </div>
@@ -207,35 +260,7 @@
 
 
         <footer class="footer">
-            <div class="container-fluid">
-                <nav class="pull-left">
-                    <ul>
-                        <li>
-                            <a href="#">
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Company
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Portfolio
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                               Blog
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <p class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
-                </p>
-            </div>
+           
         </footer>
 
     </div>
@@ -402,27 +427,26 @@
 												<div id="chartCerberusLastResult" name="chartCerberusResultLastExecution"  style="witdh:200px;height:200px"></div>
 											</div>	
 
-											<div class="footer">
-												<div class="legend">
-													<div class="row">
-														<div class="col-md-12">
-															<i class="fa fa-circle text-circle-a" name="iconNA"></i><span class="lib-legend" name="NA"></span>     
-															<i class="fa fa-circle text-circle-b" name="iconCA"></i><span class="lib-legend" name="CA"></span> 
-															<i class="fa fa-circle text-circle-c" name="iconKO"></i><span class="lib-legend" name="KO"></span>     															
-															<i class="fa fa-circle text-circle-d" name="iconFA"></i><span class="lib-legend" name="FA"></span> 
-														</div>	                                            
-														<div class="col-md-12">                             
-															<i class="fa fa-circle text-circle-e" name="iconOK"></i><span class="lib-legend" name="OK"></span>
-															<i class="fa fa-circle text-circle-f" name="iconPE"></i><span class="lib-legend" name="PE"></span>     
-															<i class="fa fa-circle text-circle-g" name="iconNE"></i><span class="lib-legend" name="NE"></span>   
-														</div>
+											<div class="col-xl-8">
+												<div class="footer">
+												<div class="col-md-12"> 
+													<div class="col-md-4" name="eltNA"><i class="fa fa-circle text-circle-a" name="iconNA"></i><span class="lib-legend" name="NA"></span></div>    
+													<div class="col-md-4" name="eltCA"><i class="fa fa-circle text-circle-b" name="iconCA"></i><span class="lib-legend" name="CA"></span></div>
+													<div class="col-md-4" name="eltKO"><i class="fa fa-circle text-circle-c" name="iconKO"></i><span class="lib-legend" name="KO"></span></div>    															
+													<div class="col-md-4" name="eltFA"><i class="fa fa-circle text-circle-d" name="iconFA"></i><span class="lib-legend" name="FA"></span></div>													                                            
+													<div class="col-md-4" name="eltOK"><i class="fa fa-circle text-circle-e" name="iconOK"></i><span class="lib-legend" name="OK"></span></div>
+													<div class="col-md-4" name="eltPE"><i class="fa fa-circle text-circle-f" name="iconPE"></i><span class="lib-legend" name="PE"></span></div>    
+													<div class="col-md-4" name="eltNE"><i class="fa fa-circle text-circle-g" name="iconNE"></i><span class="lib-legend" name="NE"></span></div>  
+												</div>	
+													
+													<hr>
+													<div class="stats">
+														<i class="fa fa-clock-o"></i><span name="campaignExecution"></span><br />
+														<a href="#" name="urlReportCerberus" target="_blank">Consult Cerberus Report</a>
 													</div>
 												</div>
-												<hr>
-												<div class="stats">
-													<i class="fa fa-clock-o"></i><span name="campaignExecution"></span><br />
-													<a href="#" name="urlReportCerberus" target="_blank">Consult Cerberus Report</a>
-												</div>
+											
+												
 											</div>
 										</div>
 									</div>
@@ -431,3 +455,36 @@
                         </div>
                     </div>
 				</div>
+				
+				
+				
+				
+				
+				
+			<div id="templateCodeReview" style="display:none">
+				<div class="col-md-4">
+					<div class="col-md-12 title-dash">
+						<i class="fa fa-eye"></i>
+						<span name="name"></span> -
+						<a name="seemore" style="font-size : 14px;"target="_blank">see more</a>
+					</div>
+					
+					<div class="col-md-12">
+										
+						<div class="col-md-7">
+							<div class="col-sm-4" style="text-align:center"><br />
+								<i class="fa fa-4x" name="smileyCodeReview"></i>
+							</div>
+							<div class="col-sm-8">
+								<div name="chartCodeReview" style="witdh:100px;height:100px"></div>
+							</div>
+						</div>
+						<div class="col-md-3 category">
+							<span name="commitNumber"           class="trend"></span>           <span> commit(s)</span>      <br />             
+							<span name="approveCommitNumber"    class="trend"></span>    <span> approuved</span>      <br />
+							<span name="commentCommitNumber"    class="trend"></span>    <span> commented</span>      <br />
+							<span name="reviewCommitNumber" class="trend"></span> <span> review</span>      <br />
+						</div>
+					</div>
+				</div>
+			</div>

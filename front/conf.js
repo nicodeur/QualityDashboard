@@ -2,12 +2,26 @@
 function initProject() {
 
 	setToolsUrl( {
-		serverUrl : "",
-		sonarUrl : "",
+		serverUrl : "http://192.168.134.148:8085",
+		sonarUrl : "http://192.168.135.14:9000",
 		jenkinsUrl : "",
-		cerberusUrl : ""
+		cerberusUrl : "",
+		codeReviewUrl : "http://192.168.134.148:8080"
 	});
 
+	
+	setCodeReview( {
+			teams : 
+				[
+				{name : "finpmt"},
+				{name : "mmk"}, 
+				{name : "selecteur"}, 
+				{name : "xtpi"}	
+				]
+			
+		
+	});
+	
 	addDashboard( {
 		name : "finpmt",
 		codeReviewName : "finpmt",
