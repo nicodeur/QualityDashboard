@@ -122,3 +122,58 @@ working ...
 end ! 
 filtre ok
 Jenkins-20170606171313947 / jQuery110205595453130494783_1497021004443
+module.js:471
+    throw err;
+    ^
+
+Error: Cannot find module 'express'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (C:\Users\ndeblock\dev\githome\QualityDashboard\server\server.js:2:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+    at tryModuleLoad (module.js:446:12)
+    at Function.Module._load (module.js:438:3)
+module.js:471
+    throw err;
+    ^
+
+Error: Cannot find module 'express'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (C:\Users\ndeblock\dev\githome\QualityDashboard\server\server.js:2:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+    at tryModuleLoad (module.js:446:12)
+    at Function.Module._load (module.js:438:3)
+module.js:471
+    throw err;
+    ^
+
+Error: Cannot find module 'express'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.require (module.js:497:17)
+    at require (internal/module.js:20:19)
+    at Object.<anonymous> (C:\Users\ndeblock\dev\githome\QualityDashboard\server\server.js:2:15)
+    at Module._compile (module.js:570:32)
+    at Object.Module._extensions..js (module.js:579:10)
+    at Module.load (module.js:487:32)
+    at tryModuleLoad (module.js:446:12)
+    at Function.Module._load (module.js:438:3)
+{ address: '::', family: 'IPv6', port: 8085 }
+Example app listening at http://:::8085
+{ address: '::', family: 'IPv6', port: 8085 }
+Example app listening at http://:::8085
+{ address: '::', family: 'IPv6', port: 8085 }
+Example app listening at http://:::8085
+{ address: '::', family: 'IPv6', port: 8085 }
+Example app listening at http://:::8085
+{ address: '::', family: 'IPv6', port: 8085 }
+Example app listening at http://:::8085

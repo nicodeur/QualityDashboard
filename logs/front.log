@@ -126,3 +126,60 @@ Hit CTRL-C to stop the server
 [Fri Jun 09 2017 11:18:56 GMT+0200 (CEST)] "GET /assets/img/sidebar-5.jpg" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
 [Fri Jun 09 2017 11:18:56 GMT+0200 (CEST)] "GET /assets/fonts/Pe-icon-7-stroke.woff?d7yf1v" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
 [Fri Jun 09 2017 11:19:09 GMT+0200 (CEST)] "GET /index.html?project=finpmt&beginDate=2017-05-29&endDate=2017-06-09&beginDateCodeReview=2017-05-22&endDateCodeReview=2017-05-28" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+Starting up http-server, serving .
+Available on:
+  http://169.254.138.226:8086
+  http://192.168.99.1:8086
+  http://192.168.1.38:8086
+  http://127.0.0.1:8086
+Hit CTRL-C to stop the server
+[Tue Jun 13 2017 17:19:13 GMT+0200 (Paris, Madrid (heure d’été))] "GET /" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:13 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/css/demo.css" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:13 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/css/bootstrap.min.css" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:13 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/css/animate.min.css" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:13 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/css/light-bootstrap-dashboard.css" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:13 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/css/pe-icon-7-stroke.css" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:13 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/js/jquery-1.10.2.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:13 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/js/bootstrap.min.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:14 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/js/bootstrap-checkbox-radio-switch.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:14 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/js/chartist.min.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:14 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/js/bootstrap-notify.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:14 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/js/light-bootstrap-dashboard.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:14 GMT+0200 (Paris, Madrid (heure d’été))] "GET /conf.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:14 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/js/demo.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:14 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/img/cerberus_logo.png" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:14 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/fonts/Pe-icon-7-stroke.woff?d7yf1v" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:15 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/img/sidebar-5.jpg" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:18 GMT+0200 (Paris, Madrid (heure d’été))] "GET /?project=codeReview" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:30 GMT+0200 (Paris, Madrid (heure d’été))] "GET /?project=codeReview" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:34 GMT+0200 (Paris, Madrid (heure d’été))] "GET /?project=codeReview" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:19:40 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/img/favicon.ico" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:20:23 GMT+0200 (Paris, Madrid (heure d’été))] "GET /?project=codeReview" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:20:45 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/img/favicon.ico" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+Starting up http-server, serving .
+Available on:
+  http://169.254.138.226:8086
+  http://192.168.99.1:8086
+  http://192.168.1.38:8086
+  http://127.0.0.1:8086
+Hit CTRL-C to stop the server
+[Tue Jun 13 2017 17:21:44 GMT+0200 (Paris, Madrid (heure d’été))] "GET /?project=codeReview" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:21:54 GMT+0200 (Paris, Madrid (heure d’été))] "GET /?project=codeReview" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:21:56 GMT+0200 (Paris, Madrid (heure d’été))] "GET /?project=codeReview" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+[Tue Jun 13 2017 17:22:06 GMT+0200 (Paris, Madrid (heure d’été))] "GET /assets/img/favicon.ico" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
+/c/Program Files/nodejs/http-server: line 14:  5272 Terminated              "$basedir/node" "$basedir/node_modules/http-server/bin/http-server" "$@"
+Starting up http-server, serving .
+Available on:
+  http://169.254.138.226:8086
+  http://192.168.99.1:8086
+  http://192.168.1.38:8086
+  http://127.0.0.1:8086
+Hit CTRL-C to stop the server
+/c/Program Files/nodejs/http-server: line 14:  6456 Terminated              "$basedir/node" "$basedir/node_modules/http-server/bin/http-server" "$@"
+Starting up http-server, serving .
+Available on:
+  http://169.254.138.226:8086
+  http://192.168.99.1:8086
+  http://192.168.1.38:8086
+  http://127.0.0.1:8086
+Hit CTRL-C to stop the server

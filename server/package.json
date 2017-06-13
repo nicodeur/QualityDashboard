@@ -1,0 +1,17 @@
+{
+  "name": "qualityReport-server",
+  "version": "1.0.0",
+  "description": "bbb",
+  "main": "server.js",
+  "dependencies": {
+    "exec": "^0.2.1",
+    "express": "^4.15.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
