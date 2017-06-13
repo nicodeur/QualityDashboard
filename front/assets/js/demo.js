@@ -90,13 +90,16 @@ $(document).ready(function() {
 		let data = mapProjectConfiguration[project];
 		
 		$("#betweenDate").text("Between " + monday.toString() + " and " + sunday.toString());
-		
+	
+		if(data.responsible != undefined) {
+			$("#responsible").text(data.responsible.name);
+			$("#responsible").attr("href", "mailto:"+data.responsible.email);
+		}
+	
 		getCodeReviewInfo(project,fillCodeReview, mondayCodeReview, sundayCodeReview);		
 		
 		data.projects.forEach( function (project) {
-			addProject(project.name, 
-				project.sonarName, 
-				project.jenkinsName,monday,sunday, project.cerberusPrefixTag);						
+			addProject(project,monday,sunday);						
 		});
 		
 		$('#chooseYourProject').hide();
@@ -131,7 +134,7 @@ function addDashboard(data) {
             '        </a>' +
             '    </li> '
 	);
-	
+
 	mapProjectConfiguration[data.name] = data;
 	
 	
@@ -163,23 +166,20 @@ function setInputDate(elmt, date) {
 	$(elmt).val(today);
 }
 
-
-function addProject(id, projectSonarName, projectJenkinsName, beginDate, endDate, prefixCerberusTag) {
+function addProject(project, beginDate, endDate) {
+	let id = project.name;
 	let projectSelector = "#"+id;	
 	let projectDetail1 = $("#projectDetail").clone();	
 	projectDetail1.find("div:first").attr("id",id);
-	$( "#dashboardContainer" ).append( projectDetail1.html() );	
-	
-		
+	$( "#dashboardContainer" ).append( projectDetail1.html() );		
+
 	modifyElmt($(projectSelector), "projectName", id);	
 	modifyElmt($(projectSelector), "infoLabel", "Between "+beginDate.toString()+" and " + endDate.toString());	
 	
-		
-	//getSonarInfo(projectSelector,projectSonarName, "2017-05-01T00:00:00+0100", "2017-05-19T00:00:00+0100", fillSonar);
-	getSonarInfo(projectSelector,projectSonarName, beginDate.toString()+"T00:00:00+0100", endDate.toString()+"T00:00:00+0100", fillSonar);	
+	getSonarInfo(projectSelector,project.sonarName, beginDate.toString()+"T00:00:00+0100", endDate.toString()+"T00:00:00+0100", fillSonar);	
 
-	if(prefixCerberusTag != null) {
-		getCerberusTag(prefixCerberusTag, function(cerberusTags) {
+	if(project.cerberusPrefixTag != null) {
+		getCerberusTag(project.cerberusPrefixTag, function(cerberusTags) {
 				getCerberusInfo(projectSelector, cerberusTags.lasttag, fillCerberusInfo);
 			}
 		);
@@ -187,7 +187,7 @@ function addProject(id, projectSonarName, projectJenkinsName, beginDate, endDate
 		$(projectSelector + " [name='cerberusReport']").hide();
 	}
 	
-	getJenkinsInfo(projectSelector,projectJenkinsName,fillJenkinsInfo);
+	getJenkinsInfo(projectSelector,project.jenkinsName,fillJenkinsInfo);
 	
 }
 

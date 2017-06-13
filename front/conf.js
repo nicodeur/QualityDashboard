@@ -25,6 +25,10 @@ function initProject() {
 	addDashboard( {
 		name : "finpmt",
 		codeReviewName : "finpmt",
+		responsible : {
+			name : "DUPIRE Veronique",
+			email : "vdupire@redoute.fr"
+		},
 		projects : [
 			{
 				name : "finpmt-propose",
