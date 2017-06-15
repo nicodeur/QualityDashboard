@@ -1,23 +1,15 @@
-## install
-
-```
-npm install express
-npm install http-server -g
-```
-
 ## launch
-### launsh server
+Modify the conf.js
+
+TODO conf.js documentation
+
+to start :
 ```
-.\run.sh
+.\start.sh
 ```
 
-to stop : 
+to stop :
 
 ```
 .\stop.sh
-```
-
-### launch http server
-```
-http-server . -p 8086
 ```

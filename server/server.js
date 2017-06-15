@@ -4,7 +4,15 @@ var app = express();
 var fs = require("fs");
 var exec = require('exec');
 
+// main.js
+const conf = require('./conf');
+var applicationConf;
+
+//import {hello} from 'conf'; // or './module'
+
 var server = app.listen(8085, function () {
+	applicationConf = conf.initProject().toolsUrlSettings;
+
 	console.log(server.address());
   var host = server.address().address
   var port = server.address().port
@@ -15,10 +23,10 @@ var server = app.listen(8085, function () {
 app.get("/jenkinsinfo", function (req, res) {
 	let projectName = req.param('project_name');
 	let callback = req.param('callback');
-	
+
 	let options = {
-		host: "192.168.134.55",
-		port: 8210,
+		host: applicationConf.jenkins.host,
+		port: applicationConf.jenkins.port,
 		path: '/job/' + projectName +'/api/json?tree=healthReport[description,score],lastBuild[number,url],lastFailedBuild[number,url]',
 		method: 'GET'
 	};
@@ -26,28 +34,28 @@ app.get("/jenkinsinfo", function (req, res) {
 	http.request(options, function(resRequest) {
 		resRequest.setEncoding('utf8');
 		resRequest.on('data', function (data) {
-			//data = JSON.parse( chunk );              
-			
+			//data = JSON.parse( chunk );
+
 			let result = data;
 			if(callback != null) {
 				result = callback + "([" + data + "])";
 			}
-			
+
 			res.end(result);
 		});
-	}).end();	
+	}).end();
 })
 
 app.get("/cerberusinfo", function (req, res) {
 	let projectName = req.param('project_name');
 	let tag = req.param('tag');
 	let callback = req.param('callback');
-	
+
 	console.log(tag  + " / " + callback);
-	
+
 	let options = {
-		host: "cerberus.siege.red",
-		port: 80,
+		host: applicationConf.cerberus.host,
+		port: applicationConf.cerberus.port,
 		path: '/Cerberus/ResultCIV002?tag='+tag,
 		method: 'GET'
 	};
@@ -55,29 +63,29 @@ app.get("/cerberusinfo", function (req, res) {
 	http.request(options, function(resRequest) {
 		resRequest.setEncoding('utf8');
 		resRequest.on('data', function (data) {
-			//data = JSON.parse( data );              
-			
+			//data = JSON.parse( data );
+
 			let result = data;
 			if(callback != null) {
 				result = callback + "([" + data + "])";
 			}
-			
+
 			res.end(result);
 		});
-	}).end();	
+	}).end();
 })
 
 
 app.get("/codeReviewStats", function (req, res) {
-	let team = req.param('teamName');	
-	let beginDate = req.param('beginDate');	
-	let endDate = req.param('endDate');	
+	let team = req.param('teamName');
+	let beginDate = req.param('beginDate');
+	let endDate = req.param('endDate');
 	let callback = req.param('callback');
 
 	if(team == undefined) {
 		team = "";
 	}
-	
+
 	exec('sh reportCordonbleuJson.sh '+beginDate+' '+endDate+' ' + team,function(err,stdout,stderr){
 		if(err) {
 			res.end("err : " + err);
@@ -97,22 +105,22 @@ app.get("/codeReviewStats", function (req, res) {
 app.get("/getLastTagCerberus", function (req, res) {
 	let prefixTag = req.param('prefixTag');
 	let callback = req.param('callback');
-	
+
 	let options = {
-		host: "cerberus.siege.red",
-		port: 80,
+		host: applicationConf.cerberus.host,
+		port: applicationConf.cerberus.port,
 		path: '/Cerberus/GetTagExecutions',
-		method: 'GET'	
+		method: 'GET'
 	};
 	console.log("call GetTagExecutions");
-	
+
 	http.request(options, function(resRequest) {
 		console.log("working ...");
-		
+
 		resRequest.setEncoding('utf8');
-		
+
 		var data = '';
-		
+
 		resRequest.on('data', function (chunk){
 			data += chunk;
 		});
@@ -120,21 +128,20 @@ app.get("/getLastTagCerberus", function (req, res) {
 		resRequest.on('end',function(){
 						console.log('end ! ');
 
-			tags = JSON.parse( data ).tags; 
-						
+			tags = JSON.parse( data ).tags;
+
 			tags = tags.filter(function (item) {
 				return item.indexOf(prefixTag) >= 0;
 			});
-			console.log("filtre ok");						
-			//console.log(tags);						
+			console.log("filtre ok");
+			//console.log(tags);
 
 			let result = '{"lasttag" : "'+ tags[tags.length-1] + '","tags" : ' + JSON.stringify(tags) + '}';
-			
+
 			if(callback != null) {
 				result = callback + "([" + result + "])";
 			}
 			res.end(result);
 		});
-	}).end();	
+	}).end();
 })
-

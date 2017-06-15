@@ -3,12 +3,12 @@ var jenkinsUrl;
 var cerberusUrl;
 var serverUrl;
 var codeReviewUrl;
-
+var exports= new Object();
 
 // init method
 $(document).ready(function() {
 
-		let conf = initProject();
+		let conf = exports.initProject();
 
 		let report = new Report(conf.toolsUrlSettings, conf.dashboardSettings, conf.codeReviewSettings);
 
@@ -23,11 +23,11 @@ class Report {
 			this.dashboardData=dashboardData;
 			this.codeReviewData=codeReviewData;
 
-			sonarUrl=settings.sonarUrl;
-			jenkinsUrl=settings.jenkinsUrl;
-			cerberusUrl=settings.cerberusUrl;
-			serverUrl=settings.serverUrl;
-			codeReviewUrl=settings.codeReviewUrl;
+			sonarUrl			="http://" + settings.sonar.host + ":" + settings.sonar.port;
+			jenkinsUrl		="http://" + settings.jenkins.host + ":" + settings.jenkins.port;
+			cerberusUrl		="http://" + settings.cerberus.host + ":" + settings.cerberus.port;
+			serverUrl			="http://" + settings.server.host + ":" +  settings.server.port;
+			codeReviewUrl	="http://" + settings.cordonBleu.host + ":" + settings.cordonBleu.port;
 
 			// add dashboardData
 			let thisObject = this;

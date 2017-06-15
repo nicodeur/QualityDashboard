@@ -30,7 +30,7 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
-	   
+
 
 	<!-- script importing -->
 	<script src="assets/js/core/Utils.class.js" type="text/javascript"></script>
@@ -40,7 +40,7 @@
 	<script src="assets/js/core/plugin/CerberusInfo.class.js" type="text/javascript"></script>
 	<script src="assets/js/core/plugin/CordonBleuInfo.class.js" type="text/javascript"></script>
 	<script src="assets/js/core/plugin/CerberusTagInfo.class.js" type="text/javascript"></script>
-	
+
     <!--   Core JS Files   -->
     <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script>
 	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
@@ -61,9 +61,9 @@
 	<script src="assets/js/light-bootstrap-dashboard.js"></script>
 
 	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-	<script src="conf.js"></script>
 	<script src="assets/js/core/entryPoint.js"></script>
-	
+	<script src="conf.js"></script>
+
 </head>
 <body>
 
@@ -90,11 +90,11 @@
                         <i class="pe-7s-graph"></i>
                         <p>Code Review</p>
                     </a>
-                </li>       <hr />         
+                </li>       <hr />
             </ul>
     	</div>
     </div>
-	
+
     <div class="main-panel">
         <nav class="navbar navbar-default navbar-fixed">
             <div class="container-fluid">
@@ -114,24 +114,24 @@
                                 <i class="fa fa-dashboard"></i>
 								<p class="hidden-lg hidden-md">Dashboard</p>
                             </a>
-                        </li>                       
+                        </li>
                     </ul>
-				</div>		
+				</div>
             </div>
         </nav>
 
 
         <div class="content">
             <div class="container-fluid">
-				<div class="row" id="codeReview" style="display:none"> 
-				
+				<div class="row" id="codeReview" style="display:none">
+
 					<div class="card">
 						<div class="content">
 							<form><input type="hidden" id="projectParameter2" name="project"/>
-							<div class="input-group col-md-6">									
+							<div class="input-group col-md-6">
 								<span class="input-group-addon">Begin date for Code Review</span>
 								<input type="date" class="form-control" id="beginDateCodeReview2" name="beginDateCodeReview"/>
-								
+
 								<span class="input-group-addon" id="basic-addon3">End date for Code Review</span>
 								<input type="date" class="form-control" id="endDateCodeReview2" name="endDateCodeReview"/>
 								<span class="input-group-btn">
@@ -140,50 +140,50 @@
 							</div>
 							</form>
 						</div>
-					</div>				
-									
+					</div>
+
 					<div class="card">
 						<div class="content">
 							<h4 class="title">Code review</h4>
 							<p class="category" id="betweenDateCodeReview"></p>
 						</div>
-						
+
 						<div class="row" id="codeReviewContent">
-							
+
 						</div>
 					</div>
 				</div>
-				
-				<div class="row" id="chooseYourProject"> 
+
+				<div class="row" id="chooseYourProject">
 					<div class="card">
 						<div class="content">
 							<h3>Choose your project on sidebar.</h3>
 						</div>
 					</div>
 				</div>
-                <div class="row" id="dashboardContainer"> 
-				
+                <div class="row" id="dashboardContainer">
+
 					<div class="col-md-12">
 						<div class="card">
-         
+
 							<div class="content">
 								<form method="GET">
 									<input type="hidden" id="projectParameter" name="project"/>
 									<div class="input-group col-md-6">
-									
+
 										<span class="input-group-addon">Begin date</span>
 										<input type="date" class="form-control" id="beginDate" name="beginDate"/>
-										
+
 										<span class="input-group-addon" id="basic-addon3">End date</span>
 										<input type="date" class="form-control" id="endDate" name="endDate"/>
 										<span class="input-group-btn">
 											<input type="submit" value="Reload" class="form-control btn btn-primary" />
 										</span>
 									</div>
-									<div class="input-group col-md-6">									
+									<div class="input-group col-md-6">
 										<span class="input-group-addon">Begin date for Code Review</span>
 										<input type="date" class="form-control" id="beginDateCodeReview" name="beginDateCodeReview"/>
-										
+
 										<span class="input-group-addon" id="basic-addon3">End date for Code Review</span>
 										<input type="date" class="form-control" id="endDateCodeReview" name="endDateCodeReview"/>
 										<span class="input-group-btn">
@@ -195,7 +195,7 @@
 							</div>
 						</div>
 					</div>
-				
+
 					<div class="col-md-12">
                         <div class="card">
                             <div class="header">
@@ -210,23 +210,23 @@
 										<i class="fa fa-cloud-upload"></i>
 										<span>Continuous deploiement</span>
 									</div>
-									
+
 									<div class="col-md-4">
 										0 Deploiement on UAT
 									</div>
-									
+
 									<div class="col-md-4">
 										0 Deploiement on Production
 									</div>
-							   
+
 								</div>
-								
+
 								<div class="row">
 									<div class="col-md-4 title-dash">
 										<i class="fa fa-eye"></i>
 										<span>Code review</span>
 									</div>
-									
+
 									<div class="col-md-4">
 
 
@@ -242,37 +242,37 @@
 											</div>
 										</div>
 										<div class="col-md-3 category"><br />
-											<span id="commitNumber"           class="trend"></span>           <span> commit(s)</span>      <br />             
+											<span id="commitNumber"           class="trend"></span>           <span> commit(s)</span>      <br />
 											<span id="approveCommitNumber"    class="trend"></span>    <span> approuved</span>      <br />
 											<span id="commentCommitNumber"    class="trend"></span>    <span> commented</span>      <br />
 											<span id="reviewCommitNumber" class="trend"></span> <span> review</span>      <br />
 										</div>
 									</div>
-							   
+
 								</div>
-								
+
 								<div class="row">
 									<div class="col-md-6 reportCerberus" id="reportCerberusGeneral">
-									
+
 										<div class="col-md-12 title-dash">
 											<i class="fa fa-pie-chart"></i>
 											<span>General Cerberus Result</span>
 										</div>
-										
+
 										<div class="col-md-12">
 											<div id="chartCerberusLastResult" name="chartCerberusResultLastExecution"  style="witdh:200px;height:200px"></div>
-											
+
 											<div class="col-lg-8">
 												<div class="footer">
-													<div class="col-md-12"> 
-																<div class="col-md-4" name="eltNA"><i class="fa fa-circle text-circle-a" name="iconNA"></i><span class="lib-legend" name="NA"></span></div>    
+													<div class="col-md-12">
+																<div class="col-md-4" name="eltNA"><i class="fa fa-circle text-circle-a" name="iconNA"></i><span class="lib-legend" name="NA"></span></div>
 																<div class="col-md-4" name="eltCA"><i class="fa fa-circle text-circle-b" name="iconCA"></i><span class="lib-legend" name="CA"></span></div>
-																<div class="col-md-4" name="eltKO"><i class="fa fa-circle text-circle-c" name="iconKO"></i><span class="lib-legend" name="KO"></span></div>    															
-																<div class="col-md-4" name="eltFA"><i class="fa fa-circle text-circle-d" name="iconFA"></i><span class="lib-legend" name="FA"></span></div>													                                            
+																<div class="col-md-4" name="eltKO"><i class="fa fa-circle text-circle-c" name="iconKO"></i><span class="lib-legend" name="KO"></span></div>
+																<div class="col-md-4" name="eltFA"><i class="fa fa-circle text-circle-d" name="iconFA"></i><span class="lib-legend" name="FA"></span></div>
 																<div class="col-md-4" name="eltOK"><i class="fa fa-circle text-circle-e" name="iconOK"></i><span class="lib-legend" name="OK"></span></div>
-																<div class="col-md-4" name="eltPE"><i class="fa fa-circle text-circle-f" name="iconPE"></i><span class="lib-legend" name="PE"></span></div>    
-																<div class="col-md-4" name="eltNE"><i class="fa fa-circle text-circle-g" name="iconNE"></i><span class="lib-legend" name="NE"></span></div>  
-													</div>		
+																<div class="col-md-4" name="eltPE"><i class="fa fa-circle text-circle-f" name="iconPE"></i><span class="lib-legend" name="PE"></span></div>
+																<div class="col-md-4" name="eltNE"><i class="fa fa-circle text-circle-g" name="iconNE"></i><span class="lib-legend" name="NE"></span></div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -281,9 +281,9 @@
                             </div>
                         </div>
                     </div>
-				
-				
-                    
+
+
+
 
 
 
@@ -293,7 +293,7 @@
 
 
         <footer class="footer">
-           
+
         </footer>
 
     </div>
@@ -335,28 +335,28 @@
 										<i class="fa fa-code"></i>
 										<span>Number of code lines</span>
 									</div>
-									
+
 									<div class="col-md-6">
 										<span name="numberOfCodeLines"></span><span class="detail"><span class="trend" name="numberOfCodeLinesTrend"></span><span style= "margin-left: 5px;font-size:14px">this week</span></span>
-									</div>																								  
+									</div>
 								</div>
-								
+
 								<div class="row title-dash">
 									<div class="col-md-6">
 										<i class="fa fa-times-circle-o"></i>
 										<span>Blocker / critical issue</span>
 									</div>
-									
+
 									<div class="col-md-6" name="blockerCriticalIssue">
 										<span name="blockerIssue">0</span> <span>/</span> <span name="criticalIssue">0</span>
-									</div>	
-								</div>												
+									</div>
+								</div>
 								<div class="row title-dash">
 									<div class="col-md-6">
 										<i class="fa fa-cogs"></i>
 										<span>Build quality</span>
 									</div>
-									
+
 									<div class="col-md-6 " style="height: inherit;">
 										<div class="row">
 											<div class="col-md-12"><span name="buildQuality"></span></div>
@@ -364,9 +364,9 @@
 											<div class="col-md-12 category" style="height:20px"><span name="testQuality"></span></div>
 											<div class="col-md-12 category" style="height:20px"><span><a href="#" name="linkLastBuild" target="_blank">Go to last build</a></span></div>
 										</div>
-									</div>		
-								</div>	
-								
+									</div>
+								</div>
+
 								<div class="row">
 									<div class="col-md-12"><hr /></div>
 									<div class="col-md-6">
@@ -376,7 +376,7 @@
 												<span>Test code coverage</span>
 												<p class="detail center" name="trendTestCoverageColor"><span name="trendTestCoverage" class="trend"></span> this week</p>
 											</div>
-											
+
 											<div class="col-md-12">
 												<div class="col-md-2" style="text-align:center">
 													<i class="fa fa-4x" name="smileyTestCoverage"></i>
@@ -384,10 +384,10 @@
 												<div class="col-md-10">
 													<div id="chartCodeReview2" name="chartTestCoverage" style="witdh:100px;height:100px"></div>
 												</div>
-											</div>			
-										</div>										
+											</div>
+										</div>
 									</div>
-									
+
 									<div class="col-md-6">
 										<div class="row">
 											<div class="col-md-12 title-dash">
@@ -395,7 +395,7 @@
 												<span>Documentation API</span>
 												<p class="detail center" name="trendDocumentationApiColor"><span name="trendDocumentationApi" class="trend"></span> this week</p>
 											</div>
-											
+
 											<div class="col-md-12">
 												<div class="col-md-2" style="text-align:center">
 													<i class="fa fa-4x" name="smileyDocumentationApi"></i>
@@ -403,61 +403,61 @@
 												<div class="col-md-10">
 													<div id="chartCodeReview3" name="chartDocumentationApi" style="witdh:100px;height:100px"></div>
 												</div>
-											</div>	
+											</div>
 										</div>
 									</div>
 								</div>
-	
+
 								<div class="row" name="cerberusReport">
 									<div class="col-md-12 title-dash" style ="text-align: center;margin-bottom: 20px;">
 										<hr />
 										<img src="assets/img/cerberus_logo.png" /> Cerberus Report
 									</div>
-								
+
 									<div class="col-md-6">
 										<div class="row">
 											<div class="col-md-12 title-dash">
 												<i class="fa fa-cog"></i>
 												<span>Implemented Test</span>
 											</div>
-											
+
 											<div class="col-md-12">TODO
 												<div id="chartCerberusTestImplemented" name="chartCerberusImplementedTest" style="witdh:200px;height:200px"></div>
-											</div>			
-										</div>										
+											</div>
+										</div>
 									</div>
-									
+
 									<div class="col-md-6 reportCerberus">
 										<div class="row">
 											<div class="col-md-12 title-dash">
 												<i class="fa fa-pie-chart"></i>
 												<span>Result of last execution</span>
 											</div>
-											
+
 											<div class="col-md-12">
 												<div id="chartCerberusLastResult" name="chartCerberusResultLastExecution"  style="witdh:200px;height:200px"></div>
-											</div>	
+											</div>
 
 											<div class="col-xl-8">
 												<div class="footer">
-												<div class="col-md-12"> 
-													<div class="col-md-4" name="eltNA"><i class="fa fa-circle text-circle-a" name="iconNA"></i><span class="lib-legend" name="NA"></span></div>    
+												<div class="col-md-12">
+													<div class="col-md-4" name="eltNA"><i class="fa fa-circle text-circle-a" name="iconNA"></i><span class="lib-legend" name="NA"></span></div>
 													<div class="col-md-4" name="eltCA"><i class="fa fa-circle text-circle-b" name="iconCA"></i><span class="lib-legend" name="CA"></span></div>
-													<div class="col-md-4" name="eltKO"><i class="fa fa-circle text-circle-c" name="iconKO"></i><span class="lib-legend" name="KO"></span></div>    															
-													<div class="col-md-4" name="eltFA"><i class="fa fa-circle text-circle-d" name="iconFA"></i><span class="lib-legend" name="FA"></span></div>													                                            
+													<div class="col-md-4" name="eltKO"><i class="fa fa-circle text-circle-c" name="iconKO"></i><span class="lib-legend" name="KO"></span></div>
+													<div class="col-md-4" name="eltFA"><i class="fa fa-circle text-circle-d" name="iconFA"></i><span class="lib-legend" name="FA"></span></div>
 													<div class="col-md-4" name="eltOK"><i class="fa fa-circle text-circle-e" name="iconOK"></i><span class="lib-legend" name="OK"></span></div>
-													<div class="col-md-4" name="eltPE"><i class="fa fa-circle text-circle-f" name="iconPE"></i><span class="lib-legend" name="PE"></span></div>    
-													<div class="col-md-4" name="eltNE"><i class="fa fa-circle text-circle-g" name="iconNE"></i><span class="lib-legend" name="NE"></span></div>  
-												</div>	
-													
+													<div class="col-md-4" name="eltPE"><i class="fa fa-circle text-circle-f" name="iconPE"></i><span class="lib-legend" name="PE"></span></div>
+													<div class="col-md-4" name="eltNE"><i class="fa fa-circle text-circle-g" name="iconNE"></i><span class="lib-legend" name="NE"></span></div>
+												</div>
+
 													<hr>
 													<div class="stats">
 														<i class="fa fa-clock-o"></i><span name="campaignExecution"></span><br />
 														<a href="#" name="urlReportCerberus" target="_blank">Consult Cerberus Report</a>
 													</div>
 												</div>
-											
-												
+
+
 											</div>
 										</div>
 									</div>
@@ -466,12 +466,12 @@
                         </div>
                     </div>
 				</div>
-				
-				
-				
-				
-				
-				
+
+
+
+
+
+
 			<div id="templateCodeReview" style="display:none">
 				<div class="col-md-4">
 					<div class="col-md-12 title-dash">
@@ -479,9 +479,9 @@
 						<span name="name"></span> -
 						<a name="seemore" style="font-size : 14px;"target="_blank">see more</a>
 					</div>
-					
+
 					<div class="col-md-12">
-										
+
 						<div class="col-md-7">
 							<div class="col-sm-4" style="text-align:center"><br />
 								<i class="fa fa-4x" name="smileyCodeReview"></i>
@@ -491,7 +491,7 @@
 							</div>
 						</div>
 						<div class="col-md-3 category">
-							<span name="commitNumber"           class="trend"></span>           <span> commit(s)</span>      <br />             
+							<span name="commitNumber"           class="trend"></span>           <span> commit(s)</span>      <br />
 							<span name="approveCommitNumber"    class="trend"></span>    <span> approuved</span>      <br />
 							<span name="commentCommitNumber"    class="trend"></span>    <span> commented</span>      <br />
 							<span name="reviewCommitNumber" class="trend"></span> <span> review</span>      <br />
