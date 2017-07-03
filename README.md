@@ -1,5 +1,6 @@
 ## Quality Dashboard
 
+### What is it ?
 ![What's ?](docs/quality_dashboard_whats.png)
 
 This application allows to aggregate data from qualities tools on only 1 dashboard.
@@ -14,6 +15,12 @@ Connectors available :
 * [CordonBleu](https://github.com/BenRomberg/cordonbleu/) (Code review tools)
 * [Cerberus](https://www.cerberus-testing.org/) (Automation Test tools)
 * Make your own connector using `Add new connector` section. Don't hesitate to propose pull request with your own connectors.
+
+**You can see here a print screen of this dashboard :**
+
+<a href="docs/print_screen.png" target="_blank"><img src="docs/print_screen.png" alt="Print screen" style="width: 500px;"/></a>
+
+
 
 ### Run application
 
@@ -83,8 +90,8 @@ To personalize settings, you have to use `conf.js`
 			name : "project_name", // project/service name 
 			codeReviewName : "project_name_on_cordon_bleu",
 			responsible : { // responsible of this application
-				name : "DUPIRE Veronique",
-				email : "vdupire@redoute.fr"
+				name : "***************",
+				email : "****************"
 			},
 			projects : [ // describe each module
 				{
