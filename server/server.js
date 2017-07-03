@@ -3,6 +3,8 @@ var express = require('express');
 var app = express();
 var fs = require("fs");
 var exec = require('exec');
+var async = require('async');
+var MongoClient = require("mongodb").MongoClient;
 
 // main.js
 const conf = require('./conf');
@@ -81,24 +83,11 @@ app.get("/codeReviewStats", function (req, res) {
 	let beginDate = req.param('beginDate');
 	let endDate = req.param('endDate');
 	let callback = req.param('callback');
+		
+	getInfoCordonBleu(function (infoCordonBleu) {
+		res.end(JSON.stringify(infoCordonBleu));
+	},team,beginDate,endDate);
 
-	if(team == undefined) {
-		team = "";
-	}
-
-	exec('sh reportCordonbleuJson.sh '+beginDate+' '+endDate+' ' + team,function(err,stdout,stderr){
-		if(err) {
-			res.end("err : " + err);
-		} else if (stderr) {
-			res.end("stderr : " + stderr);
-		} else {
-			let result = stdout.substr(stdout.indexOf("{"), stdout.length - stdout.indexOf("{"));
-			if(callback != null) {
-				result = callback + "([" + result + "])";
-			}
-			res.end(result);
-		}
-	});
 })
 
 
@@ -112,8 +101,8 @@ app.get("/getLastTagCerberus", function (req, res) {
 		path: '/Cerberus/GetTagExecutions',
 		method: 'GET'
 	};
-	console.log("call GetTagExecutions");
 
+	
 	http.request(options, function(resRequest) {
 		console.log("working ...");
 
@@ -145,3 +134,87 @@ app.get("/getLastTagCerberus", function (req, res) {
 		});
 	}).end();
 })
+
+var semaphore=0;
+function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
+	// TODO varaiblisiser la chaine de connexion
+	MongoClient.connect("mongodb://192.168.134.148/cordonbleu", function(error, db) {
+		if (error)  {
+				console.log(error);
+		}
+		
+		let dateDebut=new Date(dateDebutStr);
+		let dateFin=new Date(dateFinStr);
+		console.log(dateDebut  + " | " + dateFin);
+		let teams;
+				
+		if(team == null || team == undefined || team == "") {
+			teams = db.collection("team").find({},{_id:1, name:1});
+		} else {
+			teams = db.collection("team").find({"name.unique" : team.toLowerCase()},{_id:1, name:1});
+		}
+		
+		let cpt = 0;
+		let cordonBleuInfos = new Array();
+		
+		semaphore++;
+
+		teams.count(function (errorTeaemsCount, teamsSize) {
+			teams.forEach(function (team) {
+				let cordonBleuInfo = new Object();
+				cordonBleuInfo.team=team.name.value;
+				cordonBleuInfos.push(cordonBleuInfo);
+				
+				var re = "/^/i";
+				
+				semaphore++;
+				db.collection("commit").find({ "_id.team" : team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, "author.name" : {$regex :eval(re)}  }).count(function (e, count) {
+					cordonBleuInfo.nbCommitThisWeek=count;
+					//return count;
+					semaphore--;
+				});
+
+				semaphore++;
+				var nbCommitApprove = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut, $lt : dateFin}, approval : {$ne: null}, "author.name" : 
+				{$regex :eval(re)}}).count(function (e, count) {
+					cordonBleuInfo.nbCommitApprove=count;
+					//return count;
+					semaphore--;
+				});
+
+				semaphore++;
+				var nbCommitComment = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, comments : {$gt: []}, "author.name" : {$regex :eval(re)} }).count(function (e, count) {
+					cordonBleuInfo.nbCommitComment=count;
+					//return count;
+					semaphore--;
+				});
+
+				semaphore++;
+				var nbCommitWithoutReview = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, approval : null, comments : [],  "author.name" : {$regex :eval(re)}}).count(function (e, count) {
+					cordonBleuInfo.nbCommitWithoutReview=count;
+					//return count;
+					semaphore--;
+				});
+		
+				// final condition
+				if(cpt === teamsSize-1) {									
+					semaphore--;
+					wait_until_semaphore( function(){
+						callback(cordonBleuInfos);
+					});		
+				}
+				
+				cpt=cpt+1;
+			});			
+		});
+	});
+}
+
+
+function wait_until_semaphore(callback) {
+    if (semaphore==0) {
+        callback();
+    } else {
+        setTimeout(function(){wait_until_semaphore(callback)},100);
+    }
+}

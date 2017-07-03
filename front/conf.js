@@ -50,7 +50,7 @@ exports.initProject = function()  {
 				{
 					name : "finpmt-propose",
 					sonarName : "redoute.finpmt:finpmt-proposal-parent",
-					cerberusPrefixTag : "Jenkins-20",
+					cerberusPrefixTag : "finpmt-propose_20",
 					jenkinsName : "finpmt-propose",
 				},
 				{
