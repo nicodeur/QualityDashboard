@@ -49,7 +49,7 @@ docker run -v <pathToLog>:/opt/qualityReport/logs -t myQualityDashboard -p 8085:
 ```
 
 TODO : add -v to share your `conf.js`
-TODO : create a offical docker image
+TODO : create an offical docker image
 
 
 
@@ -134,3 +134,5 @@ To personalize settings, you have to use `conf.js`
 ![Technical Design ?](docs/qualtity_dashboard_tech_arch.png)
 
 #### Add new connector
+
+TODO

@@ -53,8 +53,6 @@ app.get("/cerberusinfo", function (req, res) {
 	let tag = req.param('tag');
 	let callback = req.param('callback');
 
-	console.log(tag  + " / " + callback);
-
 	let options = {
 		host: applicationConf.cerberus.host,
 		port: applicationConf.cerberus.port,
@@ -83,9 +81,14 @@ app.get("/codeReviewStats", function (req, res) {
 	let beginDate = req.param('beginDate');
 	let endDate = req.param('endDate');
 	let callback = req.param('callback');
-		
+
 	getInfoCordonBleu(function (infoCordonBleu) {
-		res.end(JSON.stringify(infoCordonBleu));
+
+        let result = infoCordonBleu;
+        if(callback != null) {
+            result = callback + "([" + JSON.stringify(infoCordonBleu) + "])";
+        }
+        res.end(result);
 	},team,beginDate,endDate);
 
 })
@@ -104,7 +107,6 @@ app.get("/getLastTagCerberus", function (req, res) {
 
 	
 	http.request(options, function(resRequest) {
-		console.log("working ...");
 
 		resRequest.setEncoding('utf8');
 
@@ -115,14 +117,11 @@ app.get("/getLastTagCerberus", function (req, res) {
 		});
 
 		resRequest.on('end',function(){
-						console.log('end ! ');
-
 			tags = JSON.parse( data ).tags;
 
 			tags = tags.filter(function (item) {
 				return item.indexOf(prefixTag) >= 0;
 			});
-			console.log("filtre ok");
 			//console.log(tags);
 
 			let result = '{"lasttag" : "'+ tags[tags.length-1] + '","tags" : ' + JSON.stringify(tags) + '}';
@@ -145,7 +144,7 @@ function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
 		
 		let dateDebut=new Date(dateDebutStr);
 		let dateFin=new Date(dateFinStr);
-		console.log(dateDebut  + " | " + dateFin);
+
 		let teams;
 				
 		if(team == null || team == undefined || team == "") {
@@ -200,6 +199,12 @@ function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
 				if(cpt === teamsSize-1) {									
 					semaphore--;
 					wait_until_semaphore( function(){
+
+                        cordonBleuInfos.forEach(function(cbi) {
+                        	if(cbi.nbCommitThisWeek==0) cbi.ratioCommitReview=100;
+                            else cbi.ratioCommitReview = Math.round((((cbi.nbCommitThisWeek - cbi.nbCommitWithoutReview) / cbi.nbCommitThisWeek)*1000))/10.0;
+						});
+
 						callback(cordonBleuInfos);
 					});		
 				}

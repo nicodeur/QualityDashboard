@@ -1,5 +1,5 @@
 {
-  "name": "qualityReport-server",
+  "name": "server",
   "version": "1.0.0",
   "description": "bbb",
   "main": "server.js",

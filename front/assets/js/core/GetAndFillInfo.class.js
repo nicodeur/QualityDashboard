@@ -15,7 +15,8 @@ class GetAndFillInfo {
 			data: {},
 			url: url+"&callback=?",
 			error: function (jqXHR, textStatus, errorThrown) {
-				console.log(jqXHR)
+                console.log(textStatus + " : " + errorThrown);
+				console.log(jqXHR);
 			},
 			success: function (msg) {
 				let result = thisObject.getResult(msg);

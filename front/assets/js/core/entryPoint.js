@@ -72,6 +72,7 @@ class Report {
 				$('#menu-' + project).addClass("active");
 			}
 
+			// specifique code review link
 			if(project === "codeReview") {
 				$('#dashboardContainer').append("toto");
 				$('#chooseYourProject').hide();
@@ -84,19 +85,12 @@ class Report {
 
 				this.codeReviewData.teams.forEach(function (data) {
 
-					let templateCodeReview = $("#templateCodeReview").clone();
-					let idCR = "codereview-"+data.name;
-					templateCodeReview.find("div:first").attr("id", idCR);
-
-					$("#codeReviewContent").append(templateCodeReview.html());
-					$("#"+idCR + " [name='name']").text(data.name);
-					$("#"+idCR + " [name='seemore']").attr("href",codeReviewUrl+"/team/" + data.name);
-
-					let cordonBleuInfo = new CordonBleuInfo(data.name, mondayAndSunday.mondayCodeReview, mondayAndSunday.sundayCodeReview, "#"+idCR + " [name='?']");
+					let cordonBleuInfo = new CordonBleuInfo(data.name, mondayAndSunday.mondayCodeReview, mondayAndSunday.sundayCodeReview, "#codereview-"  + data.name + " [name='?']");
 					cordonBleuInfo.getInfo();
 
 				});
 			} else if(mapProjectConfiguration[project] != undefined) {
+				// general part
 				let data = mapProjectConfiguration[project];
 
 				$("#betweenDate").text("Between " + mondayAndSunday.monday.toString() + " and " + mondayAndSunday.sunday.toString());
@@ -108,6 +102,8 @@ class Report {
 
 				let cordonBleuInfo = new CordonBleuInfo(project, mondayAndSunday.mondayCodeReview, mondayAndSunday.sundayCodeReview,null);
 				cordonBleuInfo.getInfo();
+
+				// module part
 				let thisObject = this;
 				data.projects.forEach( function (project) {
 					thisObject.addProject(project,mondayAndSunday.monday,mondayAndSunday.sunday);

@@ -17,29 +17,33 @@ class CordonBleuInfo extends GetAndFillInfo {
 
 
 	getResult(msg) {
-	
 		return msg[0];
 	}
 	
 		
 	fillInfo(info) {
-		if(this.selecter == undefined) {
+        let result = info[0];
+
+        let templateCodeReview = $("#templateCodeReview").clone();
+        templateCodeReview.find("div:first").attr("id", "codereview-" + result.team.toLowerCase());
+
+        $("#codeReviewContent").append(templateCodeReview.html());
+
+        if(this.selecter == undefined) {
 			this.selecter = "#?";
 		}
-		
+		console.log(this.selecter.replace("?","commitNumber"));
 		$("#dateLegendCodeReview").text("Between " + this.beginDate.toString() + " and " + this.endDate.toString());
 
+		$(this.selecter.replace("?","commitNumber")).text(result.nbCommitThisWeek);
+		$(this.selecter.replace("?","approveCommitNumber")).text(result.nbCommitApprove);
+		$(this.selecter.replace("?","commentCommitNumber")).text(result.nbCommitComment);
+		$(this.selecter.replace("?","reviewCommitNumber")).text(result.nbCommitThisWeek-result.nbCommitWithoutReview);
 
-		let result = info.projects[0];
-
-		Utils.modifyChartOneValue(this.selecter.replace("?","chartCodeReview"), result.ratioCommitReview);		
-		
-		$(this.selecter.replace("?","commitNumber")).text(result.commitNumber);
-		$(this.selecter.replace("?","approveCommitNumber")).text(result.approveCommitNumber);
-		$(this.selecter.replace("?","commentCommitNumber")).text(result.commentCommitNumber);
-		$(this.selecter.replace("?","reviewCommitNumber")).text(result.commitNumber-result.notReviewCommitNumber);	
-
+        Utils.modifyChartOneValue(this.selecter.replace("?","chartCodeReview"), result.ratioCommitReview);
 		$(this.selecter.replace("?","smileyCodeReview")).addClass(Utils.getSmiley(result.ratioCommitReview, 100,50));
+        $(this.selecter.replace("?","seemore")).attr("href",codeReviewUrl+"/team/" + result.team);
+        $(this.selecter.replace("?","name")).text(result.team);
 	}
 
 }
