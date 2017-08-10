@@ -1,16 +1,16 @@
 class SonarInfo extends GetAndFillInfo {
 
-	constructor(projectSelector, projet, dateDebut, dateFin) {
+	constructor(globalSettings, contextData, contextModuleData) {
 		super();
-		this.projectSelector=projectSelector;
-		this.projet=projet;
-		this.dateDebut=dateDebut;
-		this.dateFin=dateFin;
+		this.projectSelector=contextModuleData.selector;
+		this.sonarName=contextModuleData.module.sonarName;
+		this.dateDebut=contextData.mondayAndSunday.monday;
+		this.dateFin=contextData.mondayAndSunday.sunday;;
 	}
 
 	getUrl() {
 		this.metrics = "ncloc,branch_coverage,public_documented_api_density,blocker_violations,critical_violations";
-		let url = sonarUrl + "/api/timemachine?resource="+this.projet+"&metrics="+this.metrics+"&format=json&fromDateTime="+this.dateDebut+"&toDateTime=" + this.dateFin;
+		let url = sonarUrl + "/api/timemachine?resource="+this.sonarName+"&metrics="+this.metrics+"&format=json&fromDateTime="+this.dateDebut+"&toDateTime=" + this.dateFin;
 		return url;
 	}
 
@@ -28,7 +28,7 @@ class SonarInfo extends GetAndFillInfo {
 			sonarResult.criticalViolation = "No Data";
 			let this_=this;
 			// call last figures
-			let url = "http://192.168.135.14:9000/api/resources?resource="+this.projet+"&metrics="+this.metrics+"&format=json&fromDateTime="+this.dateDebut+"&toDateTime=" + this.dateFin;
+			let url = "http://192.168.135.14:9000/api/resources?resource="+this.sonarName+"&metrics="+this.metrics+"&format=json&fromDateTime="+this.dateDebut+"&toDateTime=" + this.dateFin;
 			 $.ajax({
 				type: 'GET',
 				dataType: 'jsonp',
@@ -71,9 +71,10 @@ class SonarInfo extends GetAndFillInfo {
 			sonarResult.numberLinesTrend = lastValue.v[0] - firstValue.v[0];
 			sonarResult.coverage = lastValue.v[1];
 			sonarResult.coverageTrend = lastValue.v[1] - firstValue.v[1];
-			sonarResult.documentedApi = lastValue.v[2];
+            sonarResult.documentedApi = lastValue.v[2];
 			sonarResult.documentedApiTrend = lastValue.v[2] - firstValue.v[2];
-			sonarResult.blockerViolation = lastValue.v[3];
+
+            sonarResult.blockerViolation = lastValue.v[3];
 			sonarResult.criticalViolation = lastValue.v[4];
 		}
 		return sonarResult;
@@ -111,8 +112,6 @@ class SonarInfo extends GetAndFillInfo {
 		if(!isNaN(info.coverage)) {
 			$(this.projectSelector + " [name='smileyDocumentationApi']").addClass(Utils.getSmiley(info.documentedApi,30,10));
 		}
-
-
 
 		Utils.modifyChartOneValue(this.projectSelector + " [name='chartTestCoverage']", info.coverage);
 		Utils.modifyChartOneValue(this.projectSelector + " [name='chartDocumentationApi']", info.documentedApi);

@@ -4,7 +4,7 @@ class CerberusInfo extends GetAndFillInfo {
 		super();
 		this.projectSelector=projectSelector;
 		this.cerberusTag=cerberusTag;
-		this.cerberusInfoLst = new Array();
+        CerberusInfo.cerberusInfoLst = new Array();
 	}
 
 	getUrl() {
@@ -28,7 +28,7 @@ class CerberusInfo extends GetAndFillInfo {
 		cerberusInfo.status_KO_nbOfExecution = response.status_KO_nbOfExecution;
 		cerberusInfo.urlReport = "http://cerberus.siege.red/Cerberus/ReportingExecutionByTag.jsp?Tag="+this.cerberusTag;
 
-		this.cerberusInfoLst.push(cerberusInfo);
+        CerberusInfo.cerberusInfoLst.push(cerberusInfo);
 
 		return cerberusInfo;
 	}
@@ -78,8 +78,8 @@ class CerberusInfo extends GetAndFillInfo {
 		cerberusInfo.status_CA_nbOfExecution = 0;
 		cerberusInfo.status_KO_nbOfExecution = 0;
 		cerberusInfo.urlReport = "";
-		
-		this.cerberusInfoLst.forEach(function(data) {
+
+        CerberusInfo.cerberusInfoLst.forEach(function(data) {
 			cerberusInfo.executionStart = data.executionStart;
 			cerberusInfo.executionEnd = data.executionEnd;
 			cerberusInfo.status_PE_nbOfExecution += data.status_PE_nbOfExecution;
@@ -91,7 +91,7 @@ class CerberusInfo extends GetAndFillInfo {
 			cerberusInfo.status_KO_nbOfExecution += data.status_KO_nbOfExecution;
 		});
 
-
+// TODO bug, ne fait pas vraiment la somme !!
 		this.fillInfoWithSelector("#reportCerberusGeneral",cerberusInfo);
 		$("#reportCerberusGeneral").show();
 	}

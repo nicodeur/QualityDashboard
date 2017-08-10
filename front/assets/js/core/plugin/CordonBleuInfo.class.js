@@ -1,12 +1,18 @@
 class CordonBleuInfo extends GetAndFillInfo {
 
-	constructor(teamName, beginDate, endDate, selecter) {
+	constructor(globalSettings, contextData, selector, teamName) {
 		super();
-		this.teamName=teamName;
-		this.beginDate=beginDate;
-		this.endDate=endDate;
-		this.selecter=selecter;
-	}
+        this.selecter=selector;//contextModuleData.selector;
+        this.beginDate=contextData.mondayAndSunday.monday;
+        this.endDate=contextData.mondayAndSunday.sunday;
+        if(contextData.teamDashboardSettings != null) {
+            this.teamName = contextData.teamDashboardSettings.codeReviewName;
+        }
+        else {
+            this.teamName = teamName.toLowerCase();
+		}
+
+    }
 
 	getUrl() {
 		return serverUrl + "/codeReviewStats?teamName="+ this.teamName 
@@ -16,12 +22,12 @@ class CordonBleuInfo extends GetAndFillInfo {
 	}
 
 
-	getResult(msg) {
+	getResult(msg) {console.log("result");console.log(msg);
 		return msg[0];
 	}
-	
+
 		
-	fillInfo(info) {
+	fillInfo(info) {console.log("cordonbleu");console.log(info);
         let result = info[0];
 
         let templateCodeReview = $("#templateCodeReview").clone();

@@ -122,10 +122,17 @@ class Utils {
 	}
 
 	static modifyChartOneValue(elmt, value) {
-		Chartist.Pie(elmt, {
-			labels: [value + '%',' '],
-			series: [value, 100-value]
-		});
+        if(isNaN(value) || value == null) {
+            Chartist.Pie(elmt, {
+                labels: ['No Data',' '],
+                series: [0,100]
+            });
+        } else {
+            Chartist.Pie(elmt, {
+                labels: [value + '%', ' '],
+                series: [value, 100 - value]
+            });
+        }
 	}
 
 }

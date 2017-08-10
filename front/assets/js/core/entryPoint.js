@@ -10,7 +10,7 @@ $(document).ready(function() {
 
 		let conf = exports.initProject();
 
-		let report = new Report(conf.toolsUrlSettings, conf.dashboardSettings, conf.codeReviewSettings);
+		let report = new Report(conf);
 
 		report.init ();
 });
@@ -18,16 +18,17 @@ $(document).ready(function() {
 
 class Report {
 
-	constructor(settings, dashboardData, codeReviewData) {
-			this.settings=settings;
-			this.dashboardData=dashboardData;
-			this.codeReviewData=codeReviewData;
+	constructor(conf) {
+			this.conf=conf;
+			this.settings=conf.toolsUrlSettings;
+			this.dashboardData=conf.dashboardSettings;
+			this.codeReviewData=conf.codeReviewSettings;
 
-			sonarUrl			="http://" + settings.sonar.host + ":" + settings.sonar.port;
-			jenkinsUrl		="http://" + settings.jenkins.host + ":" + settings.jenkins.port;
-			cerberusUrl		="http://" + settings.cerberus.host + ":" + settings.cerberus.port;
-			serverUrl			="http://" + settings.server.host + ":" +  settings.server.port;
-			codeReviewUrl	="http://" + settings.cordonBleu.host + ":" + settings.cordonBleu.port;
+			sonarUrl		="http://" + this.settings.sonar.host + ":" + this.settings.sonar.port;
+			jenkinsUrl		="http://" + this.settings.jenkins.host + ":" + this.settings.jenkins.port;
+			cerberusUrl		="http://" + this.settings.cerberus.host + ":" + this.settings.cerberus.port;
+			serverUrl		="http://" + this.settings.server.host + ":" +  this.settings.server.port;
+			codeReviewUrl	="http://" + this.settings.cordonBleu.host + ":" + this.settings.cordonBleu.port;
 
 			// add dashboardData
 			let thisObject = this;
@@ -52,98 +53,89 @@ class Report {
 
 	init () {
 
-			mondayAndSunday = Utils.getLastMondayAndSunday();
+        mondayAndSunday = Utils.getLastMondayAndSunday();
+        let thisObject = this;
 
-			Utils.setInputDate("#beginDate", mondayAndSunday.monday);
-			Utils.setInputDate("#endDate", mondayAndSunday.sunday);
-			Utils.setInputDate("#beginDateCodeReview", mondayAndSunday.mondayCodeReview);
-			Utils.setInputDate("#endDateCodeReview", mondayAndSunday.sundayCodeReview);
-			Utils.setInputDate("#beginDateCodeReview2", mondayAndSunday.mondayCodeReview);
-			Utils.setInputDate("#endDateCodeReview2", mondayAndSunday.sundayCodeReview);
+        this.contextData = Object();
+        this.contextData.mondayAndSunday = mondayAndSunday;
 
-			$("#reportCerberusGeneral").hide();
+		Utils.setInputDate("#beginDate", mondayAndSunday.monday);
+		Utils.setInputDate("#endDate", mondayAndSunday.sunday);
+		Utils.setInputDate("#beginDateCodeReview", mondayAndSunday.mondayCodeReview);
+		Utils.setInputDate("#endDateCodeReview", mondayAndSunday.sundayCodeReview);
+		Utils.setInputDate("#beginDateCodeReview2", mondayAndSunday.mondayCodeReview);
+		Utils.setInputDate("#endDateCodeReview2", mondayAndSunday.sundayCodeReview);
 
-			let project = Utils.findGetParameter("project");
-			$('#projectParameter').val(project);
-			$('#projectParameter2').val(project);
 
-			// show menu active
-			if(project != null) {
-				$('#menu-' + project).addClass("active");
-			}
-
-			// specifique code review link
-			if(project === "codeReview") {
-				$('#dashboardContainer').append("toto");
-				$('#chooseYourProject').hide();
-				$('#dashboardContainer').hide();
-				$('#codeReview').show();
-
-				$("#betweenDateCodeReview").text("Between " + mondayAndSunday.mondayCodeReview.toString() + " and " + mondayAndSunday.sundayCodeReview.toString());
-
-				//$("#codeReviewContent").append($("#templateCodeReview"));
-
-				this.codeReviewData.teams.forEach(function (data) {
-
-					let cordonBleuInfo = new CordonBleuInfo(data.name, mondayAndSunday.mondayCodeReview, mondayAndSunday.sundayCodeReview, "#codereview-"  + data.name + " [name='?']");
-					cordonBleuInfo.getInfo();
-
-				});
-			} else if(mapProjectConfiguration[project] != undefined) {
-				// general part
-				let data = mapProjectConfiguration[project];
-
-				$("#betweenDate").text("Between " + mondayAndSunday.monday.toString() + " and " + mondayAndSunday.sunday.toString());
-
-				if(data.responsible != undefined) {
-					$("#responsible").text(data.responsible.name);
-					$("#responsible").attr("href", "mailto:"+data.responsible.email);
-				}
-
-				let cordonBleuInfo = new CordonBleuInfo(project, mondayAndSunday.mondayCodeReview, mondayAndSunday.sundayCodeReview,null);
+		$("#reportCerberusGeneral").hide();
+		let project = Utils.findGetParameter("project");
+		$('#projectParameter').val(project);
+		$('#projectParameter2').val(project);
+		// show menu active
+		if(project != null) {
+			$('#menu-' + project).addClass("active");
+		}
+		// specifique code review link
+		if(project === "codeReview") {
+			$('#dashboardContainer').append("toto");
+			$('#chooseYourProject').hide();
+			$('#dashboardContainer').hide();
+			$('#codeReview').show();
+			$("#betweenDateCodeReview").text("Between " + mondayAndSunday.mondayCodeReview.toString() + " and " + mondayAndSunday.sundayCodeReview.toString());
+			//$("#codeReviewContent").append($("#templateCodeReview"));
+			this.codeReviewData.teams.forEach(function (data) {
+				let cordonBleuInfo = new CordonBleuInfo(thisObject.conf, thisObject.contextData, "#codereview-"  + data.name + " [name='?']", data.name);
 				cordonBleuInfo.getInfo();
+			});
+		} else if(mapProjectConfiguration[project] != undefined) {
+			// general part
+			let data = mapProjectConfiguration[project];
+            this.contextData.teamDashboardSettings = data; // TODO
 
-				// module part
-				let thisObject = this;
-				data.projects.forEach( function (project) {
-					thisObject.addProject(project,mondayAndSunday.monday,mondayAndSunday.sunday);
-				});
-
-				$('#chooseYourProject').hide();
-				$('#dashboardContainer').show();
-			} else {
-				$('#chooseYourProject').show();
-				$('#dashboardContainer').hide();
+            $("#betweenDate").text("Between " + mondayAndSunday.monday.toString() + " and " + mondayAndSunday.sunday.toString());
+			if(data.responsible != undefined) {
+				$("#responsible").text(data.responsible.name);
+				$("#responsible").attr("href", "mailto:"+data.responsible.email);
 			}
+
+            this.conf.generalPluginToUse.forEach(function(pluginName) {
+                let plugin = new pluginName(thisObject.conf, thisObject.contextData);
+                plugin.getInfo();
+            });
+
+			// module part
+			data.projects.forEach( function (project) {
+				thisObject.addModule(project,mondayAndSunday.monday,mondayAndSunday.sunday);
+			});
+			$('#chooseYourProject').hide();
+			$('#dashboardContainer').show();
+		} else {
+			$('#chooseYourProject').show();
+			$('#dashboardContainer').hide();
+		}
 	}
 
-	addProject(project, beginDate, endDate) {
+	addModule(project, beginDate, endDate) {
 		let id = project.name;
 		let projectSelector = "#"+id;
 		let projectDetail1 = $("#projectDetail").clone();
 		projectDetail1.find("div:first").attr("id",id);
 		$( "#dashboardContainer" ).append( projectDetail1.html() );
 
+
+        let contextModuleData = Object();
+        contextModuleData.module = project;
+        contextModuleData.selector = projectSelector;
+
+
 		Utils.modifyElmt($(projectSelector), "projectName", id);
 		Utils.modifyElmt($(projectSelector), "infoLabel", "Between "+beginDate.toString()+" and " + endDate.toString());
 
-		let sonarInfo = new SonarInfo(projectSelector,project.sonarName, beginDate.toString()+"T00:00:00+0100", endDate.toString()+"T00:00:00+0100");
-		sonarInfo.getInfo();
-
-		if(project.cerberusPrefixTag != null) {
-			let cerberusTagInfo = new CerberusTagInfo(project.cerberusPrefixTag, function(cerberusTags) {
-					let cerberusInfo = new CerberusInfo(projectSelector, cerberusTags.lasttag);
-					cerberusInfo.getInfo();
-				}
-			);
-			cerberusTagInfo.getInfo();
-		} else {
-			$(projectSelector + " [name='cerberusReport']").hide();
-		}
-
-		let jenkinsInfo = new JenkinsInfo(projectSelector, project.jenkinsName);
-		jenkinsInfo.getInfo();
-
+		let thisObject = this;
+        this.conf.modulePluginToUse.forEach(function(pluginName) {
+            let plugin = new pluginName(thisObject.conf, thisObject.contextData, contextModuleData);
+            plugin.getInfo();
+        });
 	}
 }
 

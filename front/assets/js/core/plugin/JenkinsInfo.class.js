@@ -1,9 +1,9 @@
 class JenkinsInfo extends GetAndFillInfo {
 
-	constructor(projectSelector, jenkinsName) {
+	constructor(globalSettings, contextData, contextModuleData) {
 		super();
-		this.projectSelector=projectSelector;
-		this.jenkinsName=jenkinsName;
+		this.projectSelector=contextModuleData.selector;
+		this.jenkinsName=contextModuleData.module.jenkinsName;
 	}
 
 	getUrl() {
