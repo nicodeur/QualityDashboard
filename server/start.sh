@@ -11,7 +11,7 @@ else
   echo "-------------------------------------------------"
   echo "";
   
-  #npm install
+  npm install
   
     
   echo "";

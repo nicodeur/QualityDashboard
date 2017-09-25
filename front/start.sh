@@ -13,7 +13,7 @@ else
   echo "-------------------------------------------------"
   echo "";
 
-#npm install http-server -g
+  npm install http-server -g
 
   echo "";
   echo "-------------------------------------------------";
