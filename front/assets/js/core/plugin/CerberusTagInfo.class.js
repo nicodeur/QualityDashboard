@@ -19,3 +19,4 @@ class CerberusTagInfo extends GetAndFillInfo {
 	}
 
 }
+global["CerberusTagInfo"]=CerberusTagInfo;

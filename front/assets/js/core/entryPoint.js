@@ -105,7 +105,7 @@ class Report {
 			}
 
             this.conf.generalPluginToUse.forEach(function(pluginName) {
-                let plugin = new pluginName(thisObject.conf, thisObject.contextData);
+                let plugin = new global[pluginName](thisObject.conf, thisObject.contextData);
                 plugin.getInfo();
             });
 
@@ -139,7 +139,7 @@ class Report {
 
 		let thisObject = this;
         this.conf.modulePluginToUse.forEach(function(pluginName) {
-            let plugin = new pluginName(thisObject.conf, thisObject.contextData, contextModuleData);
+            let plugin = new global[pluginName](thisObject.conf, thisObject.contextData, contextModuleData);
             plugin.getInfo();
         });
 	}

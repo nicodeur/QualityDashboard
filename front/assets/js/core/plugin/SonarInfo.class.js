@@ -126,3 +126,4 @@ class SonarInfo extends GetAndFillInfo {
 	}
 
 }
+global["SonarInfo"]=SonarInfo;

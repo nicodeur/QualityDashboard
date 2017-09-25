@@ -1,12 +1,9 @@
 FROM alpine:latest
-MAINTAINER nicodeur FERLET <nico.deblock@gmail.com>
+MAINTAINER nicodeur <nico.deblock@gmail.com>
 
 RUN apk update && apk add --update git nodejs nodejs-npm && npm install npm@latest -g
 
-RUN  git clone https://github.com/nicodeur/QualityDashboard.git /opt/qualityReport
-
-
-
+RUN git clone https://github.com/nicodeur/QualityDashboard.git /opt/qualityReport
 
 WORKDIR /opt/qualityReport
 

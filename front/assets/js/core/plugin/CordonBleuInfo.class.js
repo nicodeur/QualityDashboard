@@ -53,3 +53,4 @@ class CordonBleuInfo extends GetAndFillInfo {
 	}
 
 }
+global["CordonBleuInfo"]=CordonBleuInfo;

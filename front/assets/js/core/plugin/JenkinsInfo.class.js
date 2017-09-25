@@ -35,3 +35,4 @@ class JenkinsInfo extends GetAndFillInfo {
 	}
 
 }
+global["JenkinsInfo"]=JenkinsInfo;

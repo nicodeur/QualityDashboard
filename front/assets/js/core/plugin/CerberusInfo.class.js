@@ -117,3 +117,4 @@ class CerberusInfo extends GetAndFillInfo {
 		return " ";
 	}
 }
+global["CerberusInfo"]=CerberusInfo;

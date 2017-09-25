@@ -35,3 +35,5 @@ class CerberusGetLastInfo extends GetAndFillInfo {
 		// do nothing
     }
 }
+
+global["CerberusGetLastInfo"]=CerberusGetLastInfo;

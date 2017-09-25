@@ -49,3 +49,4 @@ class DeploiementFiguresInfo extends GetAndFillInfo {
     }
 
 }
+global["DeploiementFiguresInfo"]=DeploiementFiguresInfo;
