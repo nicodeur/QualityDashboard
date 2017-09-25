@@ -13,5 +13,3 @@ CMD chmod 755 start.sh && chmod 755 front/start.sh  && chmod 755 server/start.sh
   ./start.sh && tail -f logs/server.log
 
 EXPOSE 8085 8086
-
-VOLUME /opt/qualityReport/

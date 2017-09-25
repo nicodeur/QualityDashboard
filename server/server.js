@@ -5,6 +5,8 @@ var fs = require("fs");
 var exec = require('exec');
 var async = require('async');
 var MongoClient = require("mongodb").MongoClient;
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
 
 // main.js
 const conf = require('./conf');
@@ -16,11 +18,20 @@ var server = app.listen(8085, function () {
 	applicationConf = conf.initProject().toolsUrlSettings;
 
 	console.log(server.address());
-  var host = server.address().address
-  var port = server.address().port
-  console.log("Example app listening at http://%s:%s", host, port)
+    var host = server.address().address
+    var port = server.address().port
+    console.log("App listening at http://%s:%s", host, port)
 
 })
+
+
+
+//error handling to prevent server is kill by an error
+process.on('uncaughtException', function(err) {
+    // handle the error safely
+    console.log(err);
+})
+
 
 app.get("/jenkinsinfo", function (req, res) {
 	let projectName = req.param('project_name');
@@ -46,7 +57,86 @@ app.get("/jenkinsinfo", function (req, res) {
 			res.end(result);
 		});
 	}).end();
+});
+
+app.get("/jenkinsDeployInfo", function (req, res) {
+    let endDate = new Date(req.param('endDate'));
+    let jobName = req.param('jobName');
+    let callback = req.param('callback');
+
+	let path = '/job/' + jobName;
+
+    let optionsLastBuild = {
+        host: applicationConf.jenkins.host,
+        port: applicationConf.jenkins.port,
+        path: path + "/api/json?tree=lastBuild[number]",
+        method: 'GET'
+    };
+	console.log("http://"+optionsLastBuild.host+":"+optionsLastBuild.port+"/"+optionsLastBuild.path);
+    http.request(optionsLastBuild, function(resRequest) {
+        resRequest.setEncoding('utf8');
+        resRequest.on('data',function(data){
+            let numberLastBuild = JSON.parse( data ).lastBuild.number;
+            countNumberBuildBetween(endDate, path, numberLastBuild,0);
+
+            eventEmitter.addListener('countNumberBuildEnd', function (countNumberBuildEnd) {
+            	var result = new Object();
+            	result.numberOfDeploy=countNumberBuildEnd;
+            	result=JSON.stringify(result);
+                if(callback != null) {
+                    result = callback + "([" + result + "])";
+                }
+                res.end(result);
+            });
+        });
+    }).end();
 })
+
+/**
+ * Count recurcively the number of build by call JOB/$buildNumber/api? for each build.
+ * Stop where build is older than endDate or if api return a 404 error
+ *
+ * Emmit an countNumberBuildEnd Event with number of build to cathc the result.
+ * Use that to recover data
+ * 		eventEmitter.addListener('countNumberBuildEnd', function (countNumberBuildEnd) {
+ *               res.end("number : " + countNumberBuildEnd);
+ *      });
+ * @param endDate
+ * @param path
+ * @param nextBuild
+ * @param countNumberBuild
+ */
+function countNumberBuildBetween(endDate, path, nextBuild, countNumberBuild) {
+
+    let options = {
+        host: applicationConf.jenkins.host,
+        port: applicationConf.jenkins.port,
+        path: path + "/" + nextBuild + "/api/json?tree=timestamp",
+        method: 'GET'
+    };
+
+    console.log("launch count : " + "http://"+options.host+":"+options.port+"/"+options.path);
+    http.request(options, function(resRequest) {
+        let statusCode = resRequest.statusCode;
+        resRequest.setEncoding('utf8');
+        if (statusCode!=200) {
+        	console.log("c'est fini : " + countNumberBuild)
+            eventEmitter.emit('countNumberBuildEnd',countNumberBuild);
+        } else {
+            resRequest.on('data', function (data) {
+                data = JSON.parse(data);
+				console.log(data.timestamp + "/" + endDate.timestamp);
+                if (data.timestamp < endDate.getTime()) {
+                    console.log("c'est fini : " + countNumberBuild)
+                    eventEmitter.emit('countNumberBuildEnd',countNumberBuild);
+                } else {
+                    countNumberBuildBetween(endDate, path, nextBuild - 1, countNumberBuild+1);
+                }
+            });
+        }
+    }).end();
+
+}
 
 app.get("/cerberusinfo", function (req, res) {
 	let projectName = req.param('project_name');
@@ -122,7 +212,7 @@ app.get("/getLastTagCerberus", function (req, res) {
 			tags = tags.filter(function (item) {
 				return item.indexOf(prefixTag) >= 0;
 			});
-			//console.log(tags);
+            tags = tags.sort(SortByName);
 
 			let result = '{"lasttag" : "'+ tags[tags.length-1] + '","tags" : ' + JSON.stringify(tags) + '}';
 
@@ -133,6 +223,14 @@ app.get("/getLastTagCerberus", function (req, res) {
 		});
 	}).end();
 })
+
+function SortByName(a, b){
+    var aName = a.toLowerCase();
+    var bName = b.toLowerCase();
+    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+}
+
+
 
 var semaphore=0;
 function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {

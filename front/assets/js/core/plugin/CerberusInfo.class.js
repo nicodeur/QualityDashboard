@@ -26,6 +26,7 @@ class CerberusInfo extends GetAndFillInfo {
 		cerberusInfo.status_OK_nbOfExecution = response.status_OK_nbOfExecution;
 		cerberusInfo.status_CA_nbOfExecution = response.status_CA_nbOfExecution;
 		cerberusInfo.status_KO_nbOfExecution = response.status_KO_nbOfExecution;
+        cerberusInfo.status_QU_nbOfExecution = response.status_QU_nbOfExecution;
 		cerberusInfo.urlReport = "http://cerberus.siege.red/Cerberus/ReportingExecutionByTag.jsp?Tag="+this.cerberusTag;
 
         CerberusInfo.cerberusInfoLst.push(cerberusInfo);
@@ -47,14 +48,16 @@ class CerberusInfo extends GetAndFillInfo {
 				this.displayCerberusStatus(projectSelector, cerberusInfo.status_FA_nbOfExecution, "FA"),
 				this.displayCerberusStatus(projectSelector, cerberusInfo.status_OK_nbOfExecution, "OK"),
 				this.displayCerberusStatus(projectSelector, cerberusInfo.status_PE_nbOfExecution, "PE"),
-				this.displayCerberusStatus(projectSelector, cerberusInfo.status_NE_nbOfExecution, "NE")],
+				this.displayCerberusStatus(projectSelector, cerberusInfo.status_NE_nbOfExecution, "NE"),
+            	this.displayCerberusStatus(projectSelector, cerberusInfo.status_QU_nbOfExecution, "QU")],
 			series: [cerberusInfo.status_NA_nbOfExecution,
 				cerberusInfo.status_CA_nbOfExecution,
 				cerberusInfo.status_KO_nbOfExecution,
 				cerberusInfo.status_FA_nbOfExecution,
 				cerberusInfo.status_OK_nbOfExecution,
 				cerberusInfo.status_PE_nbOfExecution,
-				cerberusInfo.status_NE_nbOfExecution]
+				cerberusInfo.status_NE_nbOfExecution,
+                cerberusInfo.status_QU_nbOfExecution]
 			}
 		);
 		let startDate = new Date(cerberusInfo.executionStart);
@@ -77,7 +80,10 @@ class CerberusInfo extends GetAndFillInfo {
 		cerberusInfo.status_OK_nbOfExecution = 0;
 		cerberusInfo.status_CA_nbOfExecution = 0;
 		cerberusInfo.status_KO_nbOfExecution = 0;
+        cerberusInfo.status_QU_nbOfExecution = 0;
 		cerberusInfo.urlReport = "";
+
+		console.log(CerberusInfo.cerberusInfoLst.length);
 
         CerberusInfo.cerberusInfoLst.forEach(function(data) {
 			cerberusInfo.executionStart = data.executionStart;
@@ -89,9 +95,9 @@ class CerberusInfo extends GetAndFillInfo {
 			cerberusInfo.status_OK_nbOfExecution += data.status_OK_nbOfExecution;
 			cerberusInfo.status_CA_nbOfExecution += data.status_CA_nbOfExecution;
 			cerberusInfo.status_KO_nbOfExecution += data.status_KO_nbOfExecution;
+            cerberusInfo.status_QU_nbOfExecution += data.status_QU_nbOfExecution;
 		});
 
-// TODO bug, ne fait pas vraiment la somme !!
 		this.fillInfoWithSelector("#reportCerberusGeneral",cerberusInfo);
 		$("#reportCerberusGeneral").show();
 	}

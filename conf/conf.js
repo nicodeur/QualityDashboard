@@ -4,6 +4,9 @@ exports.initProject = function()  {
 	let conf = new Object();
 	conf.dashboardSettings=new Array();
 
+    conf.generalPluginToUse = ["CordonBleuInfo"];
+    conf.modulePluginToUse = ["SonarInfo", "JenkinsInfo", "CerberusGetLastInfo", "DeploiementFiguresInfo"];
+
 	conf.toolsUrlSettings = {
 		server : { // server url of QualityReport
 			 host : "localhost",
@@ -50,8 +53,10 @@ exports.initProject = function()  {
 				{
 					name : "finpmt-propose",
 					sonarName : "redoute.finpmt:finpmt-proposal-parent",
-					cerberusPrefixTag : "Jenkins-20",
+					cerberusPrefixTag : "finpmt-propose_20",
 					jenkinsName : "finpmt-propose",
+                    jenkinsDeploiementPPRODName : "finpmt-propose-DEPLOY-UAT",
+                    jenkinsDeploiementPRODName : "finpmt-propose-DEPLOY-PROD",
 				},
 				{
 					name : "finpmt-core",
@@ -62,8 +67,10 @@ exports.initProject = function()  {
 				{
 					name : "finpmt-settlement",
 					sonarName : "redoute.finpmt:finpmt-settlement-parent",
-					cerberusPrefixTag : null,
+					cerberusPrefixTag : "finpmt-settlement_20",
 					jenkinsName : "finpmt-settlement",
+                    jenkinsDeploiementPPRODName : "finpmt-settlement-DEPLOY-UAT",
+                    jenkinsDeploiementPRODName : "finpmt-settlement-DEPLOY-PROD",
 				},
 				{
 					name : "finpmt-parameter",

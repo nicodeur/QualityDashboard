@@ -8,11 +8,17 @@ var exports= new Object();
 // init method
 $(document).ready(function() {
 
+		$(document).ready(function(){ // init help tooltip
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+
 		let conf = exports.initProject();
 
 		let report = new Report(conf);
 
 		report.init ();
+
+
 });
 
 

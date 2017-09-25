@@ -1,0 +1,10 @@
+version: '2.1'
+services:
+  quality-report:
+    build: .
+    ports:
+      - "8085:8085"
+      - "8086:8086"
+    volumes:
+      - ./localdata/log:/opt/qualityReport/log
+      - ./localdata/conf:/opt/qualityReport/conf

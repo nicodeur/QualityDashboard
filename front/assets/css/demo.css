@@ -142,6 +142,9 @@
 .text-circle-g {
 	color: #5e5e5e;
 }
+.text-circle-h {
+	color: #bf00bf;
+}
 /* zpa :     vertical-align: super;*/
 
 /* specifique for cerberus resut */													
@@ -166,7 +169,9 @@
 .reportCerberus .ct-series-g .ct-slice-pie {
 	fill: #34495E; /* NE */
 }
-
+.reportCerberus .ct-series-h .ct-slice-pie {
+	fill: #bf00bf; /* QU */
+}
 
 .reportCerberus .text-circle-a {
 	color: #F1C40F;
@@ -190,3 +195,7 @@
 	color: #34495E;
 }
 
+#PPRODDeploy, #PRODDeploy {
+	font-weight: bold;
+	font-size: 20px;
+}
