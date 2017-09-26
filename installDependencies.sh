@@ -6,7 +6,7 @@ if [ ! -d "logs" ]; then
 	mkdir logs
 fi
 
-cd server
+cd front
 
 echo "";
 echo "-------------------------------------------------";
@@ -17,8 +17,8 @@ echo "";
 npm install http-server -g
   
   
-cd ../front
 
+cd ../server
 
 echo "";
 echo "-------------------------------------------------";
