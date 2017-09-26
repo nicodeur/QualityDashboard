@@ -83,7 +83,7 @@ class CerberusInfo extends GetAndFillInfo {
         cerberusInfo.status_QU_nbOfExecution = 0;
 		cerberusInfo.urlReport = "";
 
-		console.log(CerberusInfo.cerberusInfoLst.length);
+
 
         CerberusInfo.cerberusInfoLst.forEach(function(data) {
 			cerberusInfo.executionStart = data.executionStart;

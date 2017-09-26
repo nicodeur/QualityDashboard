@@ -19,7 +19,6 @@ class CerberusGetLastInfo extends GetAndFillInfo {
         let thisObject = this;
         if (this.contextModuleData.module.cerberusPrefixTag != null) {
             let cerberusTagInfo = new CerberusTagInfo(this.contextModuleData.module.cerberusPrefixTag, function (cerberusTags) {
-                    console.log(cerberusTags);
                     let cerberusInfo = new CerberusInfo(thisObject.contextModuleData.selector, cerberusTags.lasttag);
                     cerberusInfo.getInfo();
                 }

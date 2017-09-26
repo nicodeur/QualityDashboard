@@ -72,7 +72,7 @@ app.get("/jenkinsDeployInfo", function (req, res) {
         path: path + "/api/json?tree=lastBuild[number]",
         method: 'GET'
     };
-	console.log("http://"+optionsLastBuild.host+":"+optionsLastBuild.port+"/"+optionsLastBuild.path);
+
     http.request(optionsLastBuild, function(resRequest) {
         resRequest.setEncoding('utf8');
         resRequest.on('data',function(data){
@@ -115,19 +115,17 @@ function countNumberBuildBetween(endDate, path, nextBuild, countNumberBuild) {
         method: 'GET'
     };
 
-    console.log("launch count : " + "http://"+options.host+":"+options.port+"/"+options.path);
+
     http.request(options, function(resRequest) {
         let statusCode = resRequest.statusCode;
         resRequest.setEncoding('utf8');
         if (statusCode!=200) {
-        	console.log("c'est fini : " + countNumberBuild)
             eventEmitter.emit('countNumberBuildEnd',countNumberBuild);
         } else {
             resRequest.on('data', function (data) {
                 data = JSON.parse(data);
-				console.log(data.timestamp + "/" + endDate.timestamp);
+
                 if (data.timestamp < endDate.getTime()) {
-                    console.log("c'est fini : " + countNumberBuild)
                     eventEmitter.emit('countNumberBuildEnd',countNumberBuild);
                 } else {
                     countNumberBuildBetween(endDate, path, nextBuild - 1, countNumberBuild+1);

@@ -22,12 +22,12 @@ class CordonBleuInfo extends GetAndFillInfo {
 	}
 
 
-	getResult(msg) {console.log("result");console.log(msg);
+	getResult(msg) {
 		return msg[0];
 	}
 
 		
-	fillInfo(info) {console.log("cordonbleu");console.log(info);
+	fillInfo(info) {
         let result = info[0];
 
         let templateCodeReview = $("#templateCodeReview").clone();
@@ -38,7 +38,7 @@ class CordonBleuInfo extends GetAndFillInfo {
         if(this.selecter == undefined) {
 			this.selecter = "#?";
 		}
-		console.log(this.selecter.replace("?","commitNumber"));
+
 		$("#dateLegendCodeReview").text("Between " + this.beginDate.toString() + " and " + this.endDate.toString());
 
 		$(this.selecter.replace("?","commitNumber")).text(result.nbCommitThisWeek);
