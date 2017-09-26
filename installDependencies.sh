@@ -14,7 +14,7 @@ echo "-- Install front server dependancies                   ";
 echo "-------------------------------------------------"
 echo "";
 
-#npm install http-server -g
+npm install http-server -g
   
   
 
@@ -26,7 +26,7 @@ echo "-- Install back server dependancies                   ";
 echo "-------------------------------------------------"
 echo "";
   
-#npm install
+npm install
 
 
 echo "";
