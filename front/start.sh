@@ -9,14 +9,6 @@ else
 
   echo "";
   echo "-------------------------------------------------";
-  echo "-- Install front server dependancies                   "; 
-  echo "-------------------------------------------------"
-  echo "";
-
-  npm install http-server -g
-
-  echo "";
-  echo "-------------------------------------------------";
   echo "-- Launch front server  ... "; 
   echo "-------------------------------------------------"
   echo "";

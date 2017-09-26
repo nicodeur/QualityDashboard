@@ -4,15 +4,6 @@
 if [ -f "stop.sh" ]; then
   echo "server already run. stop it with stop.sh"
 else
-
-  echo "";
-  echo "-------------------------------------------------";
-  echo "-- Install back server dependancies                   "; 
-  echo "-------------------------------------------------"
-  echo "";
-  
-  npm install
-  
     
   echo "";
   echo "-------------------------------------------------";
