@@ -10,7 +10,17 @@ class DeploiementFiguresInfo extends GetAndFillInfo {
 
     }
 
+    checkPluginAvailable() {
+        if(this.contextModuleData.module.jenkinsDeploiementPPRODName == undefined &&
+            this.contextModuleData.module.jenkinsDeploiementPRODName == undefined) return false;
+
+        $('#deploiementFiguresPanel').show(); // show build panel
+        return true;
+    }
+
     getInfo() {
+        if(!this.checkPluginAvailable()) return;
+
         if(this.contextModuleData.module.jenkinsDeploiementPPRODName != undefined) {
             this.updateNumberOfDeploy(this.contextModuleData.module.jenkinsDeploiementPPRODName, "#PPRODDeploy");
         }

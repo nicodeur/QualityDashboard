@@ -10,6 +10,13 @@ class JenkinsInfo extends GetAndFillInfo {
 		return serverUrl + "/jenkinsinfo?project_name="+ this.jenkinsName;
 	}
 
+	checkPluginAvailable() {
+        if(this.jenkinsName == undefined) return false;
+
+        $(this.projectSelector + " [name='buildPanel']").show(); // show build panel
+        return true;
+    }
+
 	getResult(msg) {
 		return msg[0];
 	}
@@ -33,6 +40,5 @@ class JenkinsInfo extends GetAndFillInfo {
         $(this.projectSelector + " [name='testQuality']").text(info.healthReport[0].description);
         $(this.projectSelector + " [name='linkLastBuild']").attr("href", info.lastBuild.url);				
 	}
-
 }
 global["JenkinsInfo"]=JenkinsInfo;

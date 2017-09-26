@@ -42,14 +42,7 @@ Application logs are available on logs folder.
 
 #### Run with docker
 
-A docker folder with Dockerfile exist. Just run cmd : 
-```
-docker build -t qualityDashboard:1.0 .
-docker run -v <pathToLog>:/opt/qualityReport/logs -t myQualityDashboard -p 8085:8085 -p 8086:8086 qualityDashboard 
-```
-
-TODO : add -v to share your `conf.js`
-TODO : create an offical docker image
+see [docker](docker)  folder
 
 
 
@@ -58,74 +51,103 @@ TODO : create an offical docker image
 ### Settings 
 
 To personalize settings, you have to use `conf.js`
+Find here a "skeleton" of the file you have to write 
 ```
-	conf.toolsUrlSettings = {
-		server : { // server url of QualityReport
-			host : "localhost",
-			port : "8085"
-		 },
-		sonar : { // sonar is tools who generate many quality kpi
-			host :"192.168.135.14",
-			port :"9000",
-		},
-		jenkins : { // jenkins is the CI tools
-			host : "192.168.134.55",
-			port : "8210"
-		},
-		cerberus : { // cerberus is a testing tools
-			host : "cerberus.siege.red",
-			port : "80"
-		},
-		cordonBleu : { // cordon bleu is a code review tools
-			host : "192.168.134.148",
-		 	port : "8080",
-			database : "blabla"
-		}
-	};
-```
+// init method with
+// minimal settings
+exports.initProject = function() {
 
-```
-	conf.dashboardSettings.push(
-		{
-			name : "project_name", // project/service name 
-			codeReviewName : "project_name_on_cordon_bleu",
-			responsible : { // responsible of this application
-				name : "***************",
-				email : "****************"
-			},
-			projects : [ // describe each module
-				{
-					name : "finpmt-propose",
-					sonarName : "redoute.finpmt:finpmt-proposal-parent",
-					cerberusPrefixTag : "Jenkins-20",
-					jenkinsName : "finpmt-propose",
-				},
-				{
-					name : "finpmt-core",
-					sonarName : "redoute.finpmt:finpmt-core-parent",
-					cerberusPrefixTag : null,
-					jenkinsName : "finpmt-core",
-				},
-				{
-					name : "finpmt-settlement",
-					sonarName : "redoute.finpmt:finpmt-settlement-parent",
-					cerberusPrefixTag : null,
-					jenkinsName : "finpmt-settlement",
-				},
-				{
-					name : "finpmt-parameter",
-					sonarName : "redoute.finpmt:finpmt-parameter-parent",
-					cerberusPrefixTag : null,
-					jenkinsName : "finpmt-parameter",
-				},
-				{
-					name : "ruleengine",
-					sonarName : "redoute.common.core:ruleengine",
-					cerberusPrefixTag : null,
-					jenkinsName : "redoute-common-core-ruleengine",
-				}
-			]
-		});
+    let conf = new Object();
+    conf.dashboardSettings = new Array();
+
+
+    // ***************************  Plugin settings ******************************/
+    conf.generalPluginToUse = ["CordonBleuInfo"];
+    conf.modulePluginToUse = ["SonarInfo", "JenkinsInfo", "CerberusGetLastInfo", "DeploiementFiguresInfo"]; // TODO describe Plugin
+
+    // *************************** General url settings **************************/
+    conf.toolsUrlSettings = {
+        server: { // server url of QualityReport (mandatory)
+            host: "localhost",
+            port: "8085"
+        },
+        // from here, each tools is optionnal. Open an issue if you find a tools non optionnal
+		/*    sonar : { // sonar is tools who generate many quality kpi
+		 *       host :"sonar_host",
+		 *       port :"9000",
+		 *   },
+		 *   jenkins : { // jenkins is the CI tools
+		 *       host : "jenkins_host",
+		 *       port : "8210"
+		 *   },
+		 *   cerberus : { // cerberus is a testing tools
+		 *       host : "cerberus_host",
+		 *       port : "80"
+		 *   },
+		 *   cordonBleu : { // cordon bleu is a code review tools
+		 *       host : "cordon_bleu_host",
+		 *       port : "8080",
+		 *       database_host : "****",
+		 *       database_user : "****",
+		 *       database_password : "****"
+		 *   }
+		 */
+    };
+
+    // ****************************** Code review entry settings *********************/
+    // if you don't want use code review entry, don't write this lines
+	/*
+	 * conf.codeReviewSettings = {
+	 *
+	 *   teams :
+	 *       [
+	 *           {name : "finpmt"}, // team name into cordon bleu tools
+	 *           {name : "mmk"},
+	 *           {name : "selecteur"},
+	 *           {name : "xtpi"} //
+	 *       ]
+	 * };
+	 */
+
+    // ****************************** Project dashboard settings *********************/
+    conf.dashboardSettings.push(
+        {
+            name: "team name", // team name display on dashboard : mandatory
+			/*    codeReviewName : "finpmt", // team name into cordon bleu tools
+			 *   responsible : { // responsible of the team
+			 *       name : "TATA Toto",
+			 *       email : "toto@gmail.com"
+			 *   },
+			 */
+            projects: [
+                {
+                    name: "project_1_name", // name display on dashboard : mandatory
+					/*
+					 *    sonarName : "org.toto:project_1", // sonar identifier
+					 *    cerberusPrefixTag : "project_1_20", // prefix use by cerberus to generate execution tag
+					 *    jenkinsName : "finpmt-propose", // name of build job on jenkins
+					 *    jenkinsDeploiementPPRODName : "project_1-DEPLOY-PPROD", // name of delivery job on PPROD on jenkins
+					 *    jenkinsDeploiementPRODName : "project_1-DEPLOY-PROD", // name of delivery job on PROD on jenkins
+					 */
+                },
+                {
+                    name: "project_2_name",
+					/*
+					 *    sonarName : "org.nicodeur:project_1",
+					 *    cerberusPrefixTag : "Project_1_name-20",
+					 *    jenkinsName : "project_1",
+					 */
+                }/*, { .....}*/
+            ]
+        }
+    );
+
+    /********************************* Don't touch ! *****************************/
+
+    return conf;
+
+}
+
 ```
 
 ### Technical 

@@ -5,6 +5,8 @@
 class GetAndFillInfo {
 	getInfo() {
 
+		if(!this.checkPluginAvailable()) return; // if plugin is not available, do nothing!
+
 		let url = this.getUrl();
 
 		let thisObject = this;
@@ -35,6 +37,14 @@ class GetAndFillInfo {
 
 	getResult(msg) {
 		throw new TypeError("fillInfo must be override by child class");
+	}
+
+    /**
+	 * Allow to know if plugin mut be display or nots
+     * @returns {boolean}
+     */
+    checkPluginAvailable() {
+		return true;
 	}
 
 	hidePanel(msg) {

@@ -14,6 +14,13 @@ class CordonBleuInfo extends GetAndFillInfo {
 
     }
 
+    checkPluginAvailable() {
+        if(this.teamName == undefined) return false;
+
+        $('#codeReviewPanel').show(); // show build panel
+        return true;
+    }
+
 	getUrl() {
 		return serverUrl + "/codeReviewStats?teamName="+ this.teamName 
 		+ "&beginDate=" + this.beginDate.toString()

@@ -208,7 +208,7 @@
 
                             </div>
                             <div class="content">
-								<div class="row">
+								<div class="row" id="deploiementFiguresPanel" style="display:none">
 									<div class="col-md-5 title-dash">
 										<i class="fa fa-cloud-upload"></i>
 										<span data-toggle="tooltip" title="Number of delivery on UAT and Production" >Continuous delivery</span>
@@ -225,7 +225,7 @@
 
 								</div>
 
-								<div class="row">
+								<div class="row" id="codeReviewPanel" style="display:none">
 									<div class="col-md-4 title-dash">
 										<i class="fa fa-eye"></i>
 										<span data-toggle="tooltip"  title="Number of commits who is reviewed by other developer" >Code review</span>
@@ -337,7 +337,7 @@
                             </div>
                             <div class="content">
 								<hr />
-                                <div class="row title-dash">
+                                <div class="row title-dash" name="sonarPanel" style="display:none">
 									<div class="col-md-6">
 										<i class="fa fa-code"></i>
 										<span data-toggle="tooltip"  title="Number of code lines">Number of code lines</span>
@@ -348,7 +348,7 @@
 									</div>
 								</div>
 
-								<div class="row title-dash">
+								<div class="row title-dash" style="display:none">
 									<div class="col-md-6">
 										<i class="fa fa-times-circle-o"></i>
 										<span data-toggle="tooltip" title="Blocker issue block release. It must be corrected immediately. Critical issue is an issue who must be corrected during the week. Critical issue should not existed more than 1 week.">Blocker / critical issue</span>
@@ -358,7 +358,7 @@
 										<span name="blockerIssue" >0</span> <span>/</span> <span name="criticalIssue">0</span>
 									</div>
 								</div>
-								<div class="row title-dash">
+								<div class="row title-dash" name="buildPanel" style="display:none">
 									<div class="col-md-6">
 										<i class="fa fa-cogs"></i>
 										<span data-toggle="tooltip" title="Build quality measure quality of your continuous integration tools. If it's KO, project can't build" >Build quality</span>
@@ -374,7 +374,7 @@
 									</div>
 								</div>
 
-								<div class="row">
+								<div class="row" name="sonarPanel" style="display:none">
 									<div class="col-md-12"><hr /></div>
 									<div class="col-md-6">
 										<div class="row">

@@ -14,6 +14,12 @@ class SonarInfo extends GetAndFillInfo {
 		return url;
 	}
 
+    checkPluginAvailable() {
+        if(this.projectSelector == undefined || this.sonarName == undefined) return false;
+
+        $(this.projectSelector + " [name='sonarPanel']").show(); // show build panel
+        return true;
+    }
 
 	getResult(msg) {
 		let sonarResult = new Object();
@@ -82,7 +88,12 @@ class SonarInfo extends GetAndFillInfo {
 
 
 	fillInfo(info) {
-		var projectElmt = $(this.projectSelector);
+		if(info == null) return;
+
+        $(this.projectSelector + " [name='sonarPanel']").show(); // show sonar panel
+
+
+        var projectElmt = $(this.projectSelector);
 
 		Utils.modifyElmt(projectElmt, "numberOfCodeLines", info.numberLines);
 		Utils.modifyTrend(projectElmt, "numberOfCodeLinesTrend",info.numberLinesTrend);

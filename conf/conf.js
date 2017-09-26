@@ -1,144 +1,94 @@
 // init method
-exports.initProject = function()  {
+// minimal settings
+exports.initProject = function() {
 
-	let conf = new Object();
-	conf.dashboardSettings=new Array();
+    let conf = new Object();
+    conf.dashboardSettings = new Array();
 
+
+    // ***************************  Plugin settings ******************************/
     conf.generalPluginToUse = ["CordonBleuInfo"];
-    conf.modulePluginToUse = ["SonarInfo", "JenkinsInfo", "CerberusGetLastInfo", "DeploiementFiguresInfo"];
+    conf.modulePluginToUse = ["SonarInfo", "JenkinsInfo", "CerberusGetLastInfo", "DeploiementFiguresInfo"]; // TODO describe Plugin
 
-	conf.toolsUrlSettings = {
-		server : { // server url of QualityReport
-			 host : "localhost",
-			 port : "8085"
-		 },
-		sonar : { // sonar is tools who generate many quality kpi
-				host :"192.168.135.14",
-				port :"9000",
-		},
-		jenkins : { // jenkins is the CI tools
-			host : "192.168.134.55",
-			port : "8210"
-		},
-		cerberus : { // cerberus is a testing tools
-			host : "cerberus.siege.red",
-			port : "80"
-		},
-		cordonBleu : { // cordon bleu is a code review tools
-			host : "192.168.134.148",
-		 	port : "8080"
-		}
-	};
+    // *************************** General url settings **************************/
+    conf.toolsUrlSettings = {
+        server: { // server url of QualityReport (mandatory)
+            host: "localhost",
+            port: "8085"
+        },
+        // from here, each tools is optionnal. Open an issue if you find a tools non optionnal
+		/*    sonar : { // sonar is tools who generate many quality kpi
+		 *       host :"sonar_host",
+		 *       port :"9000",
+		 *   },
+		 *   jenkins : { // jenkins is the CI tools
+		 *       host : "jenkins_host",
+		 *       port : "8210"
+		 *   },
+		 *   cerberus : { // cerberus is a testing tools
+		 *       host : "cerberus_host",
+		 *       port : "80"
+		 *   },
+		 *   cordonBleu : { // cordon bleu is a code review tools
+		 *       host : "cordon_bleu_host",
+		 *       port : "8080",
+		 *       database_host : "****",
+		 *       database_user : "****",
+		 *       database_password : "****"
+		 *   }
+		 */
+    };
 
-	conf.codeReviewSettings = {
-			teams :
-				[
-					{name : "finpmt"},
-					{name : "mmk"},
-					{name : "selecteur"},
-					{name : "xtpi"}
-				]
-	};
+    // ****************************** Code review entry settings *********************/
+    // if you don't want use code review entry, don't write this lines
+	/*
+	 * conf.codeReviewSettings = {
+	 *
+	 *   teams :
+	 *       [
+	 *           {name : "finpmt"}, // team name into cordon bleu tools
+	 *           {name : "mmk"},
+	 *           {name : "selecteur"},
+	 *           {name : "xtpi"} //
+	 *       ]
+	 * };
+	 */
 
+    // ****************************** Project dashboard settings *********************/
+    conf.dashboardSettings.push(
+        {
+            name: "team name", // team name display on dashboard : mandatory
+			/*    codeReviewName : "finpmt", // team name into cordon bleu tools
+			 *   responsible : { // responsible of the team
+			 *       name : "TATA Toto",
+			 *       email : "toto@gmail.com"
+			 *   },
+			 */
+            projects: [
+                {
+                    name: "project_1_name", // name display on dashboard : mandatory
+					/*
+					 *    sonarName : "org.toto:project_1", // sonar identifier
+					 *    cerberusPrefixTag : "project_1_20", // prefix use by cerberus to generate execution tag
+					 *    jenkinsName : "finpmt-propose", // name of build job on jenkins
+					 *    jenkinsDeploiementPPRODName : "project_1-DEPLOY-PPROD", // name of delivery job on PPROD on jenkins
+					 *    jenkinsDeploiementPRODName : "project_1-DEPLOY-PROD", // name of delivery job on PROD on jenkins
+					 */
+                },
+                {
+                    name: "project_2_name",
+					/*
+					 *    sonarName : "org.nicodeur:project_1",
+					 *    cerberusPrefixTag : "Project_1_name-20",
+					 *    jenkinsName : "project_1",
+					 */
+                }/*, { .....}*/
+            ]
+        }
+    );
 
-	conf.dashboardSettings.push(
-		{
-			name : "finpmt",
-			codeReviewName : "finpmt",
-			responsible : {
-				name : "DUPIRE Veronique",
-				email : "vdupire@redoute.fr"
-			},
-			projects : [
-				{
-					name : "finpmt-propose",
-					sonarName : "redoute.finpmt:finpmt-proposal-parent",
-					cerberusPrefixTag : "finpmt-propose_20",
-					jenkinsName : "finpmt-propose",
-                    jenkinsDeploiementPPRODName : "finpmt-propose-DEPLOY-UAT",
-                    jenkinsDeploiementPRODName : "finpmt-propose-DEPLOY-PROD",
-				},
-				{
-					name : "finpmt-core",
-					sonarName : "redoute.finpmt:finpmt-core-parent",
-					cerberusPrefixTag : null,
-					jenkinsName : "finpmt-core",
-				},
-				{
-					name : "finpmt-settlement",
-					sonarName : "redoute.finpmt:finpmt-settlement-parent",
-					cerberusPrefixTag : "finpmt-settlement_20",
-					jenkinsName : "finpmt-settlement",
-                    jenkinsDeploiementPPRODName : "finpmt-settlement-DEPLOY-UAT",
-                    jenkinsDeploiementPRODName : "finpmt-settlement-DEPLOY-PROD",
-				},
-				{
-					name : "finpmt-parameter",
-					sonarName : "redoute.finpmt:finpmt-parameter-parent",
-					cerberusPrefixTag : null,
-					jenkinsName : "finpmt-parameter",
-				},
-				{
-					name : "ruleengine",
-					sonarName : "redoute.common.core:ruleengine",
-					cerberusPrefixTag : null,
-					jenkinsName : "redoute-common-core-ruleengine",
-				}
-			]
-		});
+    /********************************* Don't touch ! *****************************/
 
-	conf.dashboardSettings.push(
-		{
-			name : "mmk",
-			codeReviewName : "mmk",
-			projects : [
-				{
-					name : "delivery-api",
-					sonarName : "com.redoute.mmk:delivery-api-parent",
-					cerberusPrefixTag : "delivery-mmk-api_CI",
-					jenkinsName : "finpmt-propose",
-				}
-			]
-		});
-
-	conf.dashboardSettings.push(
-		{
-            name : "productreferences",
-            codeReviewName : "productreference",
-            projects : [
-                    {
-                            name : "productreference-service",
-                            sonarName : "redoute.productreferences:productreferences-service-productreference",
-                            cerberusPrefixTag : null,
-                            jenkinsName : "productreferences-service-productreference-QA",
-                    },
-					{
-                            name : "productreference-core",
-                            sonarName : "redoute.productreferences:productreferences-core-productreference",
-                            cerberusPrefixTag : null,
-                            jenkinsName : "productreferences-core-productreference-QA",
-                    },
-                    {
-                            name : "fileflows-core",
-                            sonarName : "redoute.productreferences:productreferences-core-fileflows",
-                            cerberusPrefixTag : null,
-                            jenkinsName : "productreferences-core-fileflows-QA",
-                    },
-			                       {
-                            name : "warehousecode-core",
-                            sonarName : "redoute.productreferences:productreferences-core-warehousecode",
-                            cerberusPrefixTag : null,
-                            jenkinsName : "productreferences-core-warehousecode-QA",
-                    },
-                    {
-                            name : "commercialscopegeneration-batch",
-                            sonarName : "redoute.productreferences:productreferences-batch-commercialscopegeneration",
-                            cerberusPrefixTag : null,
-                            jenkinsName : "productreferences-batch-commercialscopegeneration-QA",
-                       }
-                ]
-        });
-
-			return conf;
+    return conf;
 
 }

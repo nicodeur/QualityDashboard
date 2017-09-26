@@ -30,11 +30,11 @@ class Report {
 			this.dashboardData=conf.dashboardSettings;
 			this.codeReviewData=conf.codeReviewSettings;
 
-			sonarUrl		="http://" + this.settings.sonar.host + ":" + this.settings.sonar.port;
-			jenkinsUrl		="http://" + this.settings.jenkins.host + ":" + this.settings.jenkins.port;
-			cerberusUrl		="http://" + this.settings.cerberus.host + ":" + this.settings.cerberus.port;
-			serverUrl		="http://" + this.settings.server.host + ":" +  this.settings.server.port;
-			codeReviewUrl	="http://" + this.settings.cordonBleu.host + ":" + this.settings.cordonBleu.port;
+			sonarUrl		= (this.settings.sonar != undefined) ? "http://" + this.settings.sonar.host + ":" + this.settings.sonar.port : null;
+			jenkinsUrl		= (this.settings.jenkins != undefined) ? "http://" + this.settings.jenkins.host + ":" + this.settings.jenkins.port : null;
+			cerberusUrl		= (this.settings.cerberus != undefined) ? "http://" + this.settings.cerberus.host + ":" + this.settings.cerberus.port : null;
+			serverUrl		= (this.settings.server != undefined) ? "http://" + this.settings.server.host + ":" +  this.settings.server.port : null;
+			codeReviewUrl	= (this.settings.cordonBleu != undefined) ? "http://" + this.settings.cordonBleu.host + ":" + this.settings.cordonBleu.port : null;
 
 			// add dashboardData
 			let thisObject = this;

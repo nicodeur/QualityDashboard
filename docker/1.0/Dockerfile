@@ -1,9 +1,9 @@
 FROM alpine:latest
 MAINTAINER nicodeur <nico.deblock@gmail.com>
 
-RUN apk update && apk add --update git nodejs nodejs-npm && npm install npm@latest -g
+RUN apk update && apk add --update git nodejs nodejs-npm && npm install npm@latest -g && rm -rf /var/cache/apk/*
 
-RUN git clone https://github.com/nicodeur/QualityDashboard.git /opt/qualityReport && echo "4"
+RUN git clone https://github.com/nicodeur/QualityDashboard.git /opt/qualityReport && echo "7"
 
 
 RUN  cd /opt/qualityReport && chmod 755 installDependencies.sh && ./installDependencies.sh
