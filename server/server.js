@@ -230,10 +230,9 @@ function SortByName(a, b){
 
 
 
-var semaphore=0;
 function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
 	// TODO varaiblisiser la chaine de connexion
-	MongoClient.connect("mongodb://192.168.134.148/cordonbleu", function(error, db) {
+	MongoClient.connect("mongodb://192.168.134.148/cordonbleu", {poolSize: 10}, function(error, db) {
 		if (error)  {
 				console.log(error);
 		}
@@ -252,7 +251,7 @@ function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
 		let cpt = 0;
 		let cordonBleuInfos = new Array();
 		
-		semaphore++;
+		let semaphore=1;
 
 		teams.count(function (errorTeaemsCount, teamsSize) {
 			teams.forEach(function (team) {
@@ -302,7 +301,7 @@ function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
 						});
 
 						callback(cordonBleuInfos);
-					});		
+					}, semaphore);
 				}
 				
 				cpt=cpt+1;
@@ -312,10 +311,10 @@ function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
 }
 
 
-function wait_until_semaphore(callback) {
+function wait_until_semaphore(callback, semaphore) {
     if (semaphore==0) {
         callback();
     } else {
-        setTimeout(function(){wait_until_semaphore(callback)},100);
+        setTimeout(function(){wait_until_semaphore(callback, semaphore)},100);
     }
 }
