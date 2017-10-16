@@ -177,7 +177,7 @@ app.get("/codeReviewStats", function (req, res) {
             result = callback + "([" + JSON.stringify(infoCordonBleu) + "])";
         }
         res.end(result);
-	},team,beginDate,endDate);
+	},team,beginDate,endDate, callback);
 
 })
 
@@ -228,11 +228,13 @@ function SortByName(a, b){
     return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
 }
 
-
-
-function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
-	// TODO varaiblisiser la chaine de connexion
-	MongoClient.connect("mongodb://192.168.134.148/cordonbleu", {poolSize: 10}, function(error, db) {
+// le semaphore permet de savoir quand les toutes les requêtes mongo attendu sont terminées
+// 1 semaphore par callback, donc un tableau du genre semaphore[callback] = <int>
+var semaphore = [];
+function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr, callbackName) {
+	let databaseConnectStr = "mongodb://" + applicationConf.cordonBleu.database_host + "/" + applicationConf.cordonBleu.database_name;
+	console.log(databaseConnectStr);
+	MongoClient.connect(databaseConnectStr, {poolSize: 10}, function(error, db) {
 		if (error)  {
 				console.log(error);
 		}
@@ -251,7 +253,7 @@ function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
 		let cpt = 0;
 		let cordonBleuInfos = new Array();
 		
-		let semaphore=1;
+		semaphore[callbackName]=1;
 
 		teams.count(function (errorTeaemsCount, teamsSize) {
 			teams.forEach(function (team) {
@@ -260,48 +262,49 @@ function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
 				cordonBleuInfos.push(cordonBleuInfo);
 				
 				var re = "/^/i";
-				
-				semaphore++;
+
+                semaphore[callbackName]++;
 				db.collection("commit").find({ "_id.team" : team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, "author.name" : {$regex :eval(re)}  }).count(function (e, count) {
 					cordonBleuInfo.nbCommitThisWeek=count;
 					//return count;
-					semaphore--;
+                    semaphore[callbackName]--;
 				});
 
-				semaphore++;
+                semaphore[callbackName]++;
 				var nbCommitApprove = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut, $lt : dateFin}, approval : {$ne: null}, "author.name" : 
 				{$regex :eval(re)}}).count(function (e, count) {
 					cordonBleuInfo.nbCommitApprove=count;
 					//return count;
-					semaphore--;
+                    semaphore[callbackName]--;
 				});
 
-				semaphore++;
+                semaphore[callbackName]++;
 				var nbCommitComment = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, comments : {$gt: []}, "author.name" : {$regex :eval(re)} }).count(function (e, count) {
 					cordonBleuInfo.nbCommitComment=count;
 					//return count;
-					semaphore--;
+                    semaphore[callbackName]--;
 				});
 
-				semaphore++;
+                semaphore[callbackName]++;
 				var nbCommitWithoutReview = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, approval : null, comments : [],  "author.name" : {$regex :eval(re)}}).count(function (e, count) {
 					cordonBleuInfo.nbCommitWithoutReview=count;
 					//return count;
-					semaphore--;
+                    semaphore[callbackName]--;
 				});
-		
+
 				// final condition
-				if(cpt === teamsSize-1) {									
-					semaphore--;
+				if(cpt === teamsSize-1) {
+                    semaphore[callbackName]--;
+
 					wait_until_semaphore( function(){
 
                         cordonBleuInfos.forEach(function(cbi) {
                         	if(cbi.nbCommitThisWeek==0) cbi.ratioCommitReview=100;
                             else cbi.ratioCommitReview = Math.round((((cbi.nbCommitThisWeek - cbi.nbCommitWithoutReview) / cbi.nbCommitThisWeek)*1000))/10.0;
-						});
+						}, callback);
 
 						callback(cordonBleuInfos);
-					}, semaphore);
+					}, callbackName);
 				}
 				
 				cpt=cpt+1;
@@ -311,10 +314,11 @@ function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr) {
 }
 
 
-function wait_until_semaphore(callback, semaphore) {
-    if (semaphore==0) {
+function wait_until_semaphore(callback, callbackName) {
+    console.log("wait semaphore : " + semaphore[callbackName]);
+    if (semaphore[callbackName]==0) {
         callback();
     } else {
-        setTimeout(function(){wait_until_semaphore(callback, semaphore)},100);
+        setTimeout(function(){wait_until_semaphore(callback, callbackName)},1000);
     }
 }
