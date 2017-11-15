@@ -13,7 +13,6 @@ echo "";
 npm install http-server -g
   
   
-
 cd ../server
 
 echo "";
@@ -23,7 +22,7 @@ echo "-------------------------------------------------"
 echo "";
   
 npm install
-
+npm install nodemon -g
 
 echo "";
 echo "-------------------------------------------------";
