@@ -14,8 +14,7 @@ else
   echo "";
   
   nohup http-server . -p $port >> ../logs/front.log &
-
-
+  
   # Storing the background process' PID.
   bg_pid=$!
 

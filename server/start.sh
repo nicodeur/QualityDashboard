@@ -12,7 +12,7 @@ else
   echo "";
   
   
-  cmd="node server.js"
+  cmd="nodemon server.js"
   nohup $cmd >> ../logs/server.log &
 
   # Storing the background process' PID.

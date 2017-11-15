@@ -9,22 +9,18 @@ var events = require('events');
 var eventEmitter = new events.EventEmitter();
 
 // main.js
-const conf = require('./conf');
-var applicationConf;
+const conf = require('../front/conf/conf');
+var applicationConf= conf.initProject().toolsUrlSettings;
 
 //import {hello} from 'conf'; // or './module'
-
 var server = app.listen(8085, function () {
 	applicationConf = conf.initProject().toolsUrlSettings;
 
-	console.log(server.address());
     var host = server.address().address
     var port = server.address().port
     console.log("App listening at http://%s:%s", host, port)
 
 })
-
-
 
 //error handling to prevent server is kill by an error
 process.on('uncaughtException', function(err) {
@@ -36,7 +32,7 @@ process.on('uncaughtException', function(err) {
 app.get("/jenkinsinfo", function (req, res) {
 	let projectName = req.param('project_name');
 	let callback = req.param('callback');
-
+	
 	let options = {
 		host: applicationConf.jenkins.host,
 		port: applicationConf.jenkins.port,
