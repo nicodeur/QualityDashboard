@@ -3,8 +3,8 @@ class CordonBleuInfo extends GetAndFillInfo {
 	constructor(globalSettings, contextData, selector, teamName) {
 		super();
         this.selecter=selector;//contextModuleData.selector;
-        this.beginDate=contextData.mondayAndSunday.monday;
-        this.endDate=contextData.mondayAndSunday.sunday;
+        this.beginDate=contextData.mondayAndSunday.mondayCodeReview;
+        this.endDate=contextData.mondayAndSunday.sundayCodeReview;
         if(contextData.teamDashboardSettings != null) {
             this.teamName = contextData.teamDashboardSettings.codeReviewName;
         }
