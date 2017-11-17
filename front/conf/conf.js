@@ -37,7 +37,8 @@ exports.initProject = function()  {
 	conf.codeReviewSettings = {
 			teams :
 				[
-					{name : "finpmt"}
+					{name : "finpmt"},
+					{name : "mmk"}
 				]
 	}
 	
@@ -88,7 +89,11 @@ exports.initProject = function()  {
 
 	conf.dashboardSettings.push({
 		name : "mmk",
-		codeReviewName : null,
+		codeReviewName : "mmk",
+		responsible : {
+			name : "DUPIRE Veronique",
+			email : "vdupire@redoute.fr"
+		},
 		projects : [
 			{
 				name : "delivery-api",

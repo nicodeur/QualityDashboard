@@ -5,10 +5,6 @@ var fs = require("fs");
 var exec = require('exec');
 var async = require('async');
 var MongoClient = require("mongodb").MongoClient;
-var events = require('events');
-var eventEmitter = new events.EventEmitter();
-var sleep = require('system-sleep');
-
 
 // main.js
 const conf = require('../front/conf/conf');
@@ -208,6 +204,8 @@ function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr, callbackNam
 		
 		let dateDebut=new Date(dateDebutStr);
 		let dateFin=new Date(dateFinStr);
+		// include current date, set to last second of the day
+		dateFin = new Date(dateFin.getFullYear(), dateFin.getMonth(), dateFin.getDate(), 23, 59, 59);
 
 		let teams;
 				
@@ -231,31 +229,28 @@ function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr, callbackNam
 				var re = "/^/i";
 
                 semaphore[callbackName]++;
-				db.collection("commit").find({ "_id.team" : team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, "author.name" : {$regex :eval(re)}  }).count(function (e, count) {
+
+                
+				db.collection("commit").find({ "_id.team" : team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }}).count(function (e, count) {
 					cordonBleuInfo.nbCommitThisWeek=count;
-					//return count;
                     semaphore[callbackName]--;
 				});
 
                 semaphore[callbackName]++;
-				var nbCommitApprove = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut, $lt : dateFin}, approval : {$ne: null}, "author.name" : 
-				{$regex :eval(re)}}).count(function (e, count) {
+				var nbCommitApprove = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut, $lt : dateFin}, approval : {$ne: null}}).count(function (e, count) {
 					cordonBleuInfo.nbCommitApprove=count;
-					//return count;
                     semaphore[callbackName]--;
 				});
 
                 semaphore[callbackName]++;
-				var nbCommitComment = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, comments : {$gt: []}, "author.name" : {$regex :eval(re)} }).count(function (e, count) {
+				var nbCommitComment = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, comments : {$gt: []}}).count(function (e, count) {
 					cordonBleuInfo.nbCommitComment=count;
-					//return count;
                     semaphore[callbackName]--;
 				});
 
                 semaphore[callbackName]++;
-				var nbCommitWithoutReview = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, approval : null, comments : [],  "author.name" : {$regex :eval(re)}}).count(function (e, count) {
+				var nbCommitWithoutReview = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, approval : null, comments : []}).count(function (e, count) {
 					cordonBleuInfo.nbCommitWithoutReview=count;
-					//return count;
                     semaphore[callbackName]--;
 				});
 

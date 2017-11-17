@@ -72,7 +72,7 @@ class Report {
 		Utils.setInputDate("#beginDateCodeReview2", mondayAndSunday.mondayCodeReview);
 		Utils.setInputDate("#endDateCodeReview2", mondayAndSunday.sundayCodeReview);
 
-
+		
 		$("#reportCerberusGeneral").hide();
 		let project = Utils.findGetParameter("project");
 		$('#projectParameter').val(project);
@@ -83,11 +83,10 @@ class Report {
 		}
 		// specifique code review link
 		if(project === "codeReview") {
-			$('#dashboardContainer').append("toto");
 			$('#chooseYourProject').hide();
 			$('#dashboardContainer').hide();
 			$('#codeReview').show();
-			$("#betweenDateCodeReview").text("Between " + mondayAndSunday.mondayCodeReview.toString() + " and " + mondayAndSunday.sundayCodeReview.toString());
+			$("#betweenDateCodeReview").text("Between " + Utils.formatDate(mondayAndSunday.mondayCodeReview) + " and " + Utils.formatDate(mondayAndSunday.sundayCodeReview));
 			//$("#codeReviewContent").append($("#templateCodeReview"));
 			this.codeReviewData.teams.forEach(function (data) {
 				let cordonBleuInfo = new CordonBleuInfo(thisObject.conf, thisObject.contextData, "#codereview-"  + data.name + " [name='?']", data.name);
@@ -98,7 +97,7 @@ class Report {
 			let data = mapProjectConfiguration[project];
             this.contextData.teamDashboardSettings = data; // TODO
 
-            $("#betweenDate").text("Between " + mondayAndSunday.monday.toString() + " and " + mondayAndSunday.sunday.toString());
+            $("#betweenDate").text("Between " + Utils.formatDate(mondayAndSunday.monday) + " and " + Utils.formatDate(mondayAndSunday.sunday));
 			if(data.responsible != undefined) {
 				$("#responsible").text(data.responsible.name);
 				$("#responsible").attr("href", "mailto:"+data.responsible.email);
@@ -135,7 +134,7 @@ class Report {
 
 
 		Utils.modifyElmt($(projectSelector), "projectName", id);
-		Utils.modifyElmt($(projectSelector), "infoLabel", "Between "+beginDate.toString()+" and " + endDate.toString());
+		Utils.modifyElmt($(projectSelector), "infoLabel", "Between "+ Utils.formatDate(beginDate) +" and " + Utils.formatDate(endDate));
 
 		let thisObject = this;
         this.conf.modulePluginToUse.forEach(function(pluginName) {
