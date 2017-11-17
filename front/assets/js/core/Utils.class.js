@@ -12,6 +12,18 @@ class Utils {
 		$(elmt).val(today);
 	}
 
+	static formatDate(date) {
+		let now = date;
+
+		let day = ("0" + now.getDate()).slice(-2);
+
+		let monthNumber = now.getMonth() + 1;
+		let month = (monthNumber<10 ? "0":"") + monthNumber;
+
+		let today = (day) + "/" + (month) + "/" + now.getFullYear();
+
+		return today;
+	}
 
 	static findGetParameter(parameterName) {
 		var result = null,
@@ -134,5 +146,5 @@ class Utils {
             });
         }
 	}
-
+	
 }

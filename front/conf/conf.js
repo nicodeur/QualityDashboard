@@ -45,7 +45,7 @@ exports.initProject = function()  {
 		name : "finpmt",
 		codeReviewName : "finpmt",
 		responsible : {
-			name : "DUPIRE Veroniquea",
+			name : "DUPIRE Veronique",
 			email : "vdupire@redoute.fr"
 		},
 		projects : [

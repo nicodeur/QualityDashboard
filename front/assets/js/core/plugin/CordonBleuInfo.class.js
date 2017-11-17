@@ -33,7 +33,17 @@ class CordonBleuInfo extends GetAndFillInfo {
 		return msg[0];
 	}
 
-		
+	formatDate(myDate) {
+		var unformattedDate = new Date(myDate);
+		var d = unformattedDate.getDate();
+		var m =  unformattedDate.getMonth();
+		var y = unformattedDate.getFullYear();
+
+		var formattedDate = d + "/" + m + "/" + y;
+
+		return formattedDate;
+	}
+	
 	fillInfo(info) {
         let result = info[0];
 
@@ -45,8 +55,8 @@ class CordonBleuInfo extends GetAndFillInfo {
         if(this.selecter == undefined) {
 			this.selecter = "#?";
 		}
-
-		$("#dateLegendCodeReview").text("Between " + this.beginDate.toString() + " and " + this.endDate.toString());
+		
+		$("#dateLegendCodeReview").text("Between " + Utils.formatDate(this.beginDate) + " and " + Utils.formatDate(this.endDate));
 
 		$(this.selecter.replace("?","commitNumber")).text(result.nbCommitThisWeek);
 		$(this.selecter.replace("?","approveCommitNumber")).text(result.nbCommitApprove);

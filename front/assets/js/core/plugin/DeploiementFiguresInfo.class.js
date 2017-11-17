@@ -35,7 +35,7 @@ class DeploiementFiguresInfo extends GetAndFillInfo {
 
         let thisObject = this;
 
-        $("#dateDeploiement").text("since " + this.contextData.mondayAndSunday.monday + " to " + " today");
+        $("#dateDeploiement").text("Since " + Utils.formatDate(this.contextData.mondayAndSunday.monday) + " to " + " Today");
 
         $.ajax({
             type: 'GET',

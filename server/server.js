@@ -7,6 +7,8 @@ var async = require('async');
 var MongoClient = require("mongodb").MongoClient;
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
+var sleep = require('system-sleep');
+
 
 // main.js
 const conf = require('../front/conf/conf');
@@ -49,7 +51,6 @@ app.get("/jenkinsinfo", function (req, res) {
 			if(callback != null) {
 				result = callback + "([" + data + "])";
 			}
-
 			res.end(result);
 		});
 	}).end();
@@ -59,78 +60,48 @@ app.get("/jenkinsDeployInfo", function (req, res) {
     let endDate = new Date(req.param('endDate'));
     let jobName = req.param('jobName');
     let callback = req.param('callback');
-
+   
 	let path = '/job/' + jobName;
-
-    let optionsLastBuild = {
-        host: applicationConf.jenkins.host,
-        port: applicationConf.jenkins.port,
-        path: path + "/api/json?tree=lastBuild[number]",
-        method: 'GET'
-    };
-
-    http.request(optionsLastBuild, function(resRequest) {
-        resRequest.setEncoding('utf8');
-        resRequest.on('data',function(data){
-            let numberLastBuild = JSON.parse( data ).lastBuild.number;
-            countNumberBuildBetween(endDate, path, numberLastBuild,0);
-
-            eventEmitter.addListener('countNumberBuildEnd', function (countNumberBuildEnd) {
-            	var result = new Object();
-            	result.numberOfDeploy=countNumberBuildEnd;
-            	result=JSON.stringify(result);
-                if(callback != null) {
-                    result = callback + "([" + result + "])";
-                }
-                res.end(result);
-            });
-        });
-    }).end();
-})
-
-/**
- * Count recurcively the number of build by call JOB/$buildNumber/api? for each build.
- * Stop where build is older than endDate or if api return a 404 error
- *
- * Emmit an countNumberBuildEnd Event with number of build to cathc the result.
- * Use that to recover data
- * 		eventEmitter.addListener('countNumberBuildEnd', function (countNumberBuildEnd) {
- *               res.end("number : " + countNumberBuildEnd);
- *      });
- * @param endDate
- * @param path
- * @param nextBuild
- * @param countNumberBuild
- */
-function countNumberBuildBetween(endDate, path, nextBuild, countNumberBuild) {
 
     let options = {
         host: applicationConf.jenkins.host,
         port: applicationConf.jenkins.port,
-        path: path + "/" + nextBuild + "/api/json?tree=timestamp",
+        path: path + "/api/json?tree=builds[number,status,timestamp,id,result]",
         method: 'GET'
     };
 
-
     http.request(options, function(resRequest) {
-        let statusCode = resRequest.statusCode;
+    	var content = "";
         resRequest.setEncoding('utf8');
-        if (statusCode!=200) {
-            eventEmitter.emit('countNumberBuildEnd',countNumberBuild);
-        } else {
-            resRequest.on('data', function (data) {
-                data = JSON.parse(data);
+        resRequest.on('data',function(data) {
+        	content += data;
+        });
+        
+        resRequest.on('end', function() {
+         	var jsonData = JSON.parse(content);
+        	var jenkinsBuilds = jsonData.builds;
+        	var cpt = 0;
+        	
+        	for (var i = 0, len = jenkinsBuilds.length; i < len; ++i) {
+        		var jenkinsBuild = jenkinsBuilds[i];
 
-                if (data.timestamp < endDate.getTime()) {
-                    eventEmitter.emit('countNumberBuildEnd',countNumberBuild);
-                } else {
-                    countNumberBuildBetween(endDate, path, nextBuild - 1, countNumberBuild+1);
-                }
-            });
-        }
+        		if (jenkinsBuild.timestamp > endDate.getTime()
+        				&& jenkinsBuild.result == "SUCCESS") {
+        			cpt++;
+        		}
+        	}
+        	
+        	var result = new Object();
+        	result.numberOfDeploy=cpt;
+        	result=JSON.stringify(result);
+        	
+        	if(callback != null) {
+        		result = callback + "([" + result + "])";
+        	}
+        	res.send(result);
+        });
     }).end();
-
-}
+})
 
 app.get("/cerberusinfo", function (req, res) {
 	let projectName = req.param('project_name');
