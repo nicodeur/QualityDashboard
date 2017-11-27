@@ -12,14 +12,29 @@ $(document).ready(function() {
 			$('[data-toggle="tooltip"]').tooltip();
 		});
 
+		
 		let conf = exports.initProject();
 
 		let report = new Report(conf);
 
-		report.init ();
-
-
+		report.init();
+		
+		getAppVersion();
 });
+
+function getAppVersion() {
+	let url = serverUrl + "/version";
+
+	$.ajax({
+		type: 'GET',
+		dataType: 'text',
+		data: {},
+		url: url,
+		success: function (msg) {
+			$("#versionApplicative").html("Application version : " + msg);
+		}
+	});
+}
 
 
 class Report {

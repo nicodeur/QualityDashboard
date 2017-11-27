@@ -25,9 +25,6 @@ var navbar_initialized = false;
 $(document).ready(function(){
     window_width = $(window).width();
 
-    // check if there is an image set for the sidebar's background
-    lbd.checkSidebarImage();
-
     // Init navigation toggle for small screens
     if(window_width <= 991){
         lbd.initRightMenu();
@@ -67,15 +64,6 @@ lbd = {
         navbar_menu_visible: 0
     },
 
-    checkSidebarImage: function(){
-        $sidebar = $('.sidebar');
-        image_src = $sidebar.data('image');
-
-        if(image_src !== undefined){
-            sidebar_container = '<div class="sidebar-background" style="background-image: url(' + image_src + ') "/>'
-            $sidebar.append(sidebar_container);
-        }
-    },
     initRightMenu: function(){
          if(!navbar_initialized){
             $navbar = $('nav').find('.navbar-collapse').first().clone(true);

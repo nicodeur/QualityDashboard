@@ -34,7 +34,7 @@ class SonarInfo extends GetAndFillInfo {
 			sonarResult.criticalViolation = "No Data";
 			let this_=this;
 			// call last figures
-			let url = "http://192.168.135.14:9000/api/resources?resource="+this.sonarName+"&metrics="+this.metrics+"&format=json&fromDateTime="+this.dateDebut+"&toDateTime=" + this.dateFin;
+			let url = sonarUrl + "/api/resources?resource="+this.sonarName+"&metrics="+this.metrics+"&format=json&fromDateTime="+this.dateDebut+"&toDateTime=" + this.dateFin;
 			 $.ajax({
 				type: 'GET',
 				dataType: 'jsonp',

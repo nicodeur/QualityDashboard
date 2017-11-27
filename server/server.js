@@ -6,6 +6,10 @@ var exec = require('exec');
 var async = require('async');
 var MongoClient = require("mongodb").MongoClient;
 
+// get verion
+var pjson = require('./package.json');
+console.log("Application QualityDashboard is in %s version", pjson.version);
+
 // main.js
 const conf = require('../front/conf/conf');
 var applicationConf= conf.initProject().toolsUrlSettings;
@@ -26,6 +30,20 @@ process.on('uncaughtException', function(err) {
     console.log(err);
 })
 
+//app.use(function(req, res, next) {
+//    res.header("Access-Control-Allow-Origin", "*");
+//    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//    next();
+//});
+
+app.get("/version", function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET'); 
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,contenttype'); 
+    res.setHeader('Access-Control-Allow-Credentials', true);
+	let result = pjson.version;
+	res.send(result);
+});
 
 app.get("/jenkinsinfo", function (req, res) {
 	let projectName = req.param('project_name');
@@ -184,6 +202,8 @@ app.get("/getLastTagCerberus", function (req, res) {
 		});
 	}).end();
 })
+
+
 
 function SortByName(a, b){
     var aName = a.toLowerCase();

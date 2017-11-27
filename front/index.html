@@ -71,7 +71,7 @@
 <body>
 
 <div class="wrapper">
-    <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+    <div class="sidebar" data-color="black">
 
     <!--
 
@@ -82,7 +82,7 @@
 
     	<div class="sidebar-wrapper">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
+                <a href="#" class="simple-text">
                     Quality Dashboard
                 </a>
             </div>
@@ -93,7 +93,8 @@
                         <i class="pe-7s-graph"></i>
                         <p>Code Review</p>
                     </a>
-                </li>       <hr />
+                </li>       
+                <hr />
             </ul>
     	</div>
     </div>
@@ -298,7 +299,7 @@
 
 
         <footer class="footer">
-
+			<div style="float:right;margin-right:30px" id="versionApplicative"></div>
         </footer>
 
     </div>
@@ -344,15 +345,13 @@
 									<div class="col-md-6">
 										<span name="numberOfCodeLines" ></span><span class="detail"><span class="trend" name="numberOfCodeLinesTrend"></span><span style= "margin-left: 5px;font-size:14px">this week</span></span>
 									</div>
-								</div>
 
-								<div class="row title-dash" style="display:none">
-									<div class="col-md-6">
-										<i class="fa fa-times-circle-o"></i>
+									<div class="col-md-6" style="margin-top:10px;">
+										<i class="fa fa-times-circle-o" style="padding-left:5px"></i>
 										<span data-toggle="tooltip" title="Blocker issue block release. It must be corrected immediately. Critical issue is an issue who must be corrected during the week. Critical issue should not existed more than 1 week.">Blocker / critical issue</span>
 									</div>
 
-									<div class="col-md-6" name="blockerCriticalIssue">
+									<div class="col-md-6" name="blockerCriticalIssue" style="margin-top:10px;">
 										<span name="blockerIssue" >0</span> <span>/</span> <span name="criticalIssue">0</span>
 									</div>
 								</div>
