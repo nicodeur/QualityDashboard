@@ -1,10 +1,14 @@
 var http = require('http');
+var request = require('request');
 var express = require('express');
 var app = express();
 var fs = require("fs");
 var exec = require('exec');
 var async = require('async');
 var MongoClient = require("mongodb").MongoClient;
+var jenkinsapi = require('jenkins-api');
+
+
 
 // get verion
 var pjson = require('./package.json');
@@ -15,7 +19,7 @@ const conf = require('../front/conf/conf');
 var applicationConf= conf.initProject().toolsUrlSettings;
 
 //import {hello} from 'conf'; // or './module'
-var server = app.listen(8085, function () {
+var server = app.listen(8089, function () {
 	applicationConf = conf.initProject().toolsUrlSettings;
 
     var host = server.address().address
@@ -48,27 +52,68 @@ app.get("/version", function (req, res) {
 app.get("/jenkinsinfo", function (req, res) {
 	let projectName = req.param('project_name');
 	let callback = req.param('callback');
-	
-	let options = {
-		host: applicationConf.jenkins.host,
-		port: applicationConf.jenkins.port,
-		path: '/job/' + projectName +'/api/json?tree=healthReport[description,score],lastBuild[number,url],lastFailedBuild[number,url]',
-		method: 'GET'
-	};
 
-	http.request(options, function(resRequest) {
-		resRequest.setEncoding('utf8');
-		resRequest.on('data', function (data) {
-			//data = JSON.parse( chunk );
+	let credential = '';
+	if(applicationConf.jenkins.user !== undefined) {
+        credential = applicationConf.jenkins.user + ':' + applicationConf.jenkins.userToken + '@';
+    }
 
-			let result = data;
-			if(callback != null) {
-				result = callback + "([" + data + "])";
-			}
-			res.end(result);
-		});
-	}).end();
+    var jenkins = jenkinsapi.init('http://' + credential + applicationConf.jenkins.host+':'+applicationConf.jenkins.port+'');
+
+    jenkins.job_info(projectName, {token: 'jenkins-token'}, function(err, data) {
+        let result =  JSON.stringify(data);
+
+        if(callback != null) {
+            result = callback + "([" + result.toString() + "])";
+        }
+
+        res.end(result.toString());
+    });
+
 });
+
+
+app.get("/sonarTimeMachine", function (req, res) {
+    let sonarName = req.param('resource');
+    let metrics = req.param('metrics');
+    let dateDebut = req.param('fromDateTime');
+    let dateFin = req.param('toDateTime');
+    let callback = req.param('callback');
+    let options = {
+        host: applicationConf.sonar.host,
+        port: applicationConf.sonar.port,
+        path: "/api/timemachine?resource="+sonarName+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin + '&callback='+callback,
+        method: 'GET'
+    };
+
+	let url = "http://"+ options.host + ":" + options.port + "/" + options.path;
+
+    request(url, function(error, response, body) {
+            res.end(body);
+    });
+});
+
+app.get("/sonarResources", function (req, res) {
+    let sonarName = req.param('resource');
+    let metrics = req.param('metrics');
+    let dateDebut = req.param('fromDateTime');
+    let dateFin = req.param('toDateTime');
+    let callback = req.param('callback');
+    let options = {
+        host: applicationConf.sonar.host,
+        port: applicationConf.sonar.port,
+        path: "/api/resources?resource="+sonarName+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin + '&callback='+callback,
+        method: 'GET'
+    };
+
+    let url = "http://"+ options.host + ":" + options.port + "/" + options.path;
+
+    request(url, function(error, response, body) {
+        res.end(body);
+    });
+});
+
+
 
 app.get("/jenkinsDeployInfo", function (req, res) {
     let endDate = new Date(req.param('endDate'));
@@ -84,37 +129,33 @@ app.get("/jenkinsDeployInfo", function (req, res) {
         method: 'GET'
     };
 
-    http.request(options, function(resRequest) {
-    	var content = "";
-        resRequest.setEncoding('utf8');
-        resRequest.on('data',function(data) {
-        	content += data;
-        });
-        
-        resRequest.on('end', function() {
-         	var jsonData = JSON.parse(content);
-        	var jenkinsBuilds = jsonData.builds;
-        	var cpt = 0;
-        	
-        	for (var i = 0, len = jenkinsBuilds.length; i < len; ++i) {
-        		var jenkinsBuild = jenkinsBuilds[i];
 
-        		if (jenkinsBuild.timestamp > endDate.getTime()
-        				&& jenkinsBuild.result == "SUCCESS") {
-        			cpt++;
-        		}
-        	}
-        	
-        	var result = new Object();
-        	result.numberOfDeploy=cpt;
-        	result=JSON.stringify(result);
-        	
-        	if(callback != null) {
-        		result = callback + "([" + result + "])";
-        	}
-        	res.send(result);
-        });
-    }).end();
+    let url = "http://"+ options.host + ":" + options.port + "/" + options.path;
+
+    request(url, function(error, response, body) {
+        var jsonData = JSON.parse(body);
+        var jenkinsBuilds = jsonData.builds;
+        var cpt = 0;
+
+        for (var i = 0, len = jenkinsBuilds.length; i < len; ++i) {
+            var jenkinsBuild = jenkinsBuilds[i];
+
+            if (jenkinsBuild.timestamp > endDate.getTime()
+                && jenkinsBuild.result == "SUCCESS") {
+                cpt++;
+            }
+        }
+
+        var result = new Object();
+        result.numberOfDeploy=cpt;
+        result=JSON.stringify(result);
+
+        if(callback != null) {
+            result = callback + "([" + result + "])";
+        }
+        res.send(result);
+    });
+
 })
 
 app.get("/cerberusinfo", function (req, res) {

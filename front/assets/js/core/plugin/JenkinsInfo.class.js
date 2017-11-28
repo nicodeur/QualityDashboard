@@ -36,8 +36,11 @@ class JenkinsInfo extends GetAndFillInfo {
                 $(this.projectSelector + " [name='buildQuality']").addClass(info.lastBuild.number===info.lastFailedBuild.number ? "bad" : "nice");
         }
 
-        $(this.projectSelector + " [name='detailBuild']").text(info.healthReport[1].description);
-        $(this.projectSelector + " [name='testQuality']").text(info.healthReport[0].description);
+        if(info.healthReport.length >= 2)
+            $(this.projectSelector + " [name='detailBuild']").text(info.healthReport[1].description);
+        if(info.healthReport.length >= 1)
+            $(this.projectSelector + " [name='testQuality']").text(info.healthReport[0].description);
+
         $(this.projectSelector + " [name='linkLastBuild']").attr("href", info.lastBuild.url);				
 	}
 }

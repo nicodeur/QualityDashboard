@@ -14,6 +14,7 @@ class GetAndFillInfo {
 		$.ajax({
 			type: 'GET',
 			dataType: 'jsonp',
+            contentType: "text/plain",
 			data: {},
 			url: url+"&callback=?",
 			error: function (jqXHR, textStatus, errorThrown) {

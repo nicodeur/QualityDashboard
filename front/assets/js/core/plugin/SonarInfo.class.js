@@ -10,7 +10,7 @@ class SonarInfo extends GetAndFillInfo {
 
 	getUrl() {
 		this.metrics = "ncloc,branch_coverage,public_documented_api_density,blocker_violations,critical_violations";
-		let url = sonarUrl + "/api/timemachine?resource="+this.sonarName+"&metrics="+this.metrics+"&format=json&fromDateTime="+this.dateDebut+"&toDateTime=" + this.dateFin;
+		let url = serverUrl + "/sonarTimeMachine?resource="+this.sonarName+"&metrics="+this.metrics+"&format=json&fromDateTime="+this.dateDebut+"&toDateTime=" + this.dateFin;
 		return url;
 	}
 
@@ -92,6 +92,7 @@ class SonarInfo extends GetAndFillInfo {
 
         $(this.projectSelector + " [name='sonarPanel']").show(); // show sonar panel
 
+		$(this.projectSelector + " [name='infoLabel'").append("<br /><a target=\"_blank\" href='"+sonarUrl+"/dashboard?id="+ this.sonarName + "&did=1'>Go to sonar</a>")
 
         var projectElmt = $(this.projectSelector);
 
@@ -99,6 +100,8 @@ class SonarInfo extends GetAndFillInfo {
 		Utils.modifyTrend(projectElmt, "numberOfCodeLinesTrend",info.numberLinesTrend);
 		Utils.modifyElmt(projectElmt, "blockerIssue", info.blockerViolation);
 		Utils.modifyElmt(projectElmt, "criticalIssue", info.criticalViolation);
+
+
 
 		if(info.blockerViolation>0)
 			$(this.projectSelector + " [name='blockerIssue']").addClass("bad");

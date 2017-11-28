@@ -24,6 +24,8 @@ exports.initProject = function() {
 		 *   jenkins : { // jenkins is the CI tools
 		 *       host : "jenkins_host",
 		 *       port : "8210"
+		 *       user : "user jenkins",
+         *       userToken : "token generate by jenkins" // you can generate this token directly on jenkins, on your profile page
 		 *   },
 		 *   cerberus : { // cerberus is a testing tools
 		 *       host : "cerberus_host",
