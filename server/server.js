@@ -19,7 +19,7 @@ const conf = require('../front/conf/conf');
 var applicationConf= conf.initProject().toolsUrlSettings;
 
 //import {hello} from 'conf'; // or './module'
-var server = app.listen(8089, function () {
+var server = app.listen(8085, function () {
 	applicationConf = conf.initProject().toolsUrlSettings;
 
     var host = server.address().address
@@ -82,7 +82,7 @@ app.get("/sonarTimeMachine", function (req, res) {
     let options = {
         host: applicationConf.sonar.host,
         port: applicationConf.sonar.port,
-        path: "/api/timemachine?resource="+sonarName+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin + '&callback='+callback,
+        path: "api/timemachine?resource="+sonarName+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin + '&callback='+callback,
         method: 'GET'
     };
 

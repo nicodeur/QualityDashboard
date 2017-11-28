@@ -13,7 +13,8 @@ exports.initProject = function()  {
 			 port : "8085"
 		 },
 		sonar : { // sonar is tools who generate many quality kpi
-				host :"192.168.135.14",
+				host :"sonar02vpl.siege.red",
+				//host :"192.168.135.14",
 				port :"9000",
 		},
 		jenkins : { // jenkins is the CI tools
@@ -37,8 +38,7 @@ exports.initProject = function()  {
 	conf.codeReviewSettings = {
 			teams :
 				[
-					{name : "finpmt"},
-					{name : "mmk"}
+					{name : "finpmt"}
 				]
 	}
 	
@@ -77,12 +77,25 @@ exports.initProject = function()  {
 				sonarName : "redoute.finpmt:finpmt-parameter-parent",
 				cerberusPrefixTag : null,
 				jenkinsName : "finpmt-parameter",
-			},
+			}
+		]
+	});
+ 
+  conf.dashboardSettings.push({
+		name : "Invoice",
+		codeReviewName : null,
+		responsible : {
+			name : "DUTHOIT Arnaud",
+			email : "aduthoit-prest@redoute.fr"
+		},
+		projects : [
 			{
-				name : "ruleengine",
-				sonarName : "redoute.common.core:ruleengine",
-				cerberusPrefixTag : null,
-				jenkinsName : "redoute-common-core-ruleengine",
+				name : "invoice-document",
+				sonarName : "com.redoute.invoice.service.document:invoice-document",
+				cerberusPrefixTag : "RED_Product_Customer-Invoice",
+				jenkinsName : "invoice-document",
+				jenkinsDeploiementPPRODName : "",
+				jenkinsDeploiementPRODName : "",
 			}
 		]
 	});
