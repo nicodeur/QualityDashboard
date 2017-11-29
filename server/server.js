@@ -165,7 +165,7 @@ app.get("/cerberusinfo", function (req, res) {
 	let options = {
 		host: applicationConf.cerberus.host,
 		port: applicationConf.cerberus.port,
-		path: '/Cerberus/ResultCIV002?tag='+tag,
+		path: "/" + applicationConf.cerberus.path + '/ResultCIV002?tag=' + tag,
 		method: 'GET'
 	};
 
@@ -210,7 +210,7 @@ app.get("/getLastTagCerberus", function (req, res) {
 	let options = {
 		host: applicationConf.cerberus.host,
 		port: applicationConf.cerberus.port,
-		path: '/Cerberus/GetTagExecutions',
+		path: "/" + applicationConf.cerberus.path + '/GetTagExecutions',
 		method: 'GET'
 	};
 

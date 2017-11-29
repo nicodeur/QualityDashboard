@@ -31,7 +31,7 @@ class CerberusInfo extends GetAndFillInfo {
 		cerberusInfo.status_CA_nbOfExecution = response.status_CA_nbOfExecution;
 		cerberusInfo.status_KO_nbOfExecution = response.status_KO_nbOfExecution;
         cerberusInfo.status_QU_nbOfExecution = response.status_QU_nbOfExecution;
-		cerberusInfo.urlReport = "http://cerberus.siege.red/Cerberus/ReportingExecutionByTag.jsp?Tag="+this.cerberusTag;
+		cerberusInfo.urlReport = cerberusUrl + "/ReportingExecutionByTag.jsp?Tag="+this.cerberusTag;
 
         CerberusInfo.cerberusInfoLst.push(cerberusInfo);
 

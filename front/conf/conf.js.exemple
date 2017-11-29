@@ -29,7 +29,8 @@ exports.initProject = function() {
 		 *   },
 		 *   cerberus : { // cerberus is a testing tools
 		 *       host : "cerberus_host",
-		 *       port : "80"
+		 *       port : "80",
+		 *       path : "Cerberus" // path to cerberus ( http://<host>:<port>/<path> )
 		 *   },
 		 *   cordonBleu : { // cordon bleu is a code review tools
 		 *       host : "cordon_bleu_host",
