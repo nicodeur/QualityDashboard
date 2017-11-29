@@ -76,15 +76,19 @@ app.get("/sonarTimeMachine", function (req, res) {
     let options = {
         host: applicationConf.sonar.host,
         port: applicationConf.sonar.port,
-        path: "api/timemachine?resource="+sonarName+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin + '&callback='+callback,
+        path: "/api/timemachine?resource="+sonarName+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin + '&callback='+callback,
         method: 'GET'
     };
 
-	let url = "http://"+ options.host + ":" + options.port + "/" + options.path;
+	let url = "http://"+ options.host + ":" + options.port + options.path;
 
-    request(url, function(error, response, body) {
+
+    http.request(options, function(resRequest) {
+        resRequest.setEncoding('utf8');
+        resRequest.on('data', function (body) {
             res.end(body);
-    });
+        });
+    }).end();
 });
 
 app.get("/sonarResources", function (req, res) {
@@ -96,15 +100,18 @@ app.get("/sonarResources", function (req, res) {
     let options = {
         host: applicationConf.sonar.host,
         port: applicationConf.sonar.port,
-        path: "api/resources?resource="+sonarName+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin + '&callback='+callback,
+        path: "/api/resources?resource="+sonarName+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin + '&callback='+callback,
         method: 'GET'
     };
 
-    let url = "http://"+ options.host + ":" + options.port + "/" + options.path;
+    let url = "http://"+ options.host + ":" + options.port + options.path;
 
-    request(url, function(error, response, body) {
-        res.end(body);
-    });
+    http.request(options, function(resRequest) {
+        resRequest.setEncoding('utf8');
+        resRequest.on('data', function (body) {
+            res.end(body);
+        });
+    }).end();
 });
 
 
@@ -126,29 +133,33 @@ app.get("/jenkinsDeployInfo", function (req, res) {
 
     let url = "http://"+ options.host + ":" + options.port + "/" + options.path;
 
-    request(url, function(error, response, body) {
-        var jsonData = JSON.parse(body);
-        var jenkinsBuilds = jsonData.builds;
-        var cpt = 0;
+    http.request(options, function(resRequest) {
+        resRequest.setEncoding('utf8');
+        resRequest.on('data', function (body) {
+            var jsonData = JSON.parse(body);
 
-        for (var i = 0, len = jenkinsBuilds.length; i < len; ++i) {
-            var jenkinsBuild = jenkinsBuilds[i];
+            var jenkinsBuilds = jsonData.builds;
+            var cpt = 0;
 
-            if (jenkinsBuild.timestamp > endDate.getTime()
-                && jenkinsBuild.result == "SUCCESS") {
-                cpt++;
+            for (var i = 0, len = jenkinsBuilds.length; i < len; ++i) {
+                var jenkinsBuild = jenkinsBuilds[i];
+
+                if (jenkinsBuild.timestamp > endDate.getTime()
+                    && jenkinsBuild.result == "SUCCESS") {
+                    cpt++;
+                }
             }
-        }
 
-        var result = new Object();
-        result.numberOfDeploy=cpt;
-        result=JSON.stringify(result);
+            var result = new Object();
+            result.numberOfDeploy = cpt;
+            result = JSON.stringify(result);
 
-        if(callback != null) {
-            result = callback + "([" + result + "])";
-        }
-        res.send(result);
-    });
+            if (callback != null) {
+                result = callback + "([" + result + "])";
+            }
+            res.send(result);
+        });
+    }).end();
 
 })
 
