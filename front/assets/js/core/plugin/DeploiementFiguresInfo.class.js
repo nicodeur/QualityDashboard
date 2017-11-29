@@ -17,14 +17,16 @@ class DeploiementFiguresInfo extends GetAndFillInfo {
         $('#deploiementFiguresPanel').show(); // show build panel
         return true;
     }
-
+    
     getInfo() {
         if(!this.checkPluginAvailable()) return;
 
-        if(this.contextModuleData.module.jenkinsDeploiementPPRODName != undefined) {
+        if(this.contextModuleData.module.jenkinsDeploiementPPRODName != undefined 
+        		&& this.contextModuleData.module.jenkinsDeploiementPPRODName != '') {
             this.updateNumberOfDeploy(this.contextModuleData.module.jenkinsDeploiementPPRODName, "#PPRODDeploy");
         }
-        if(this.contextModuleData.module.jenkinsDeploiementPRODName != undefined) {
+        if(this.contextModuleData.module.jenkinsDeploiementPRODName != undefined
+        		&& this.contextModuleData.module.jenkinsDeploiementPRODName != '') {
             this.updateNumberOfDeploy(this.contextModuleData.module.jenkinsDeploiementPRODName, "#PRODDeploy");
         }
     }
