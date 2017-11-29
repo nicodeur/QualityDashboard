@@ -7,6 +7,8 @@ class GetAndFillInfo {
 
 		if(!this.checkPluginAvailable()) return; // if plugin is not available, do nothing!
 
+		if(!this.isParameterSpecified()) return; // if parameter required is not specified, do nothing!
+		
 		let url = this.getUrl();
 
 		let thisObject = this;
@@ -26,6 +28,14 @@ class GetAndFillInfo {
 				thisObject.fillInfo(result);
 			}
 		});
+	}
+	
+	/** 
+	 * check if required parameter to call api is specified 
+	 * @return if true, call server.js and false do nothing
+	 */
+	isParameterSpecified() {
+		return true;
 	}
 
 	fillInfo(info) {

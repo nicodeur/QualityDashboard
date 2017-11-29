@@ -14,6 +14,10 @@ class SonarInfo extends GetAndFillInfo {
 		return url;
 	}
 
+	isParameterSpecified() {
+		return this.sonarName !=undefined && this.sonarName != '';	
+	}
+	
     checkPluginAvailable() {
         if(this.projectSelector == undefined || this.sonarName == undefined) return false;
 
@@ -92,8 +96,8 @@ class SonarInfo extends GetAndFillInfo {
 
         $(this.projectSelector + " [name='sonarPanel']").show(); // show sonar panel
 
-		$(this.projectSelector + " [name='infoLabel'").append("<br /><a target=\"_blank\" href='"+sonarUrl+"/dashboard?id="+ this.sonarName + "&did=1'>Go to sonar</a>")
-
+		//$(this.projectSelector + " [name='infoLabel'").append("<br /><a target=\"_blank\" href='"+sonarUrl+"/dashboard?id="+ this.sonarName + "&did=1'>Go to sonar</a>")
+		$(this.projectSelector + " [name='linkToSonar']").attr("href", sonarUrl+"/dashboard?id="+ this.sonarName + "&did=1");	
         var projectElmt = $(this.projectSelector);
 
 		Utils.modifyElmt(projectElmt, "numberOfCodeLines", info.numberLines);

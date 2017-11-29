@@ -11,6 +11,10 @@ class CerberusInfo extends GetAndFillInfo {
 		return serverUrl + "/cerberusinfo?tag="+ this.cerberusTag;
 	}
 
+	isParameterSpecified() {
+		return this.cerberusTag !=undefined && this.cerberusTag != '';	
+	}
+	
 
 	getResult(msg) {
 		let response = msg[0];

@@ -69,7 +69,6 @@ app.get("/jenkinsinfo", function (req, res) {
 
         res.end(result.toString());
     });
-
 });
 
 
@@ -102,7 +101,7 @@ app.get("/sonarResources", function (req, res) {
     let options = {
         host: applicationConf.sonar.host,
         port: applicationConf.sonar.port,
-        path: "/api/resources?resource="+sonarName+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin + '&callback='+callback,
+        path: "api/resources?resource="+sonarName+"&metrics="+metrics+"&format=json&fromDateTime="+dateDebut+"&toDateTime=" + dateFin + '&callback='+callback,
         method: 'GET'
     };
 
@@ -120,7 +119,7 @@ app.get("/jenkinsDeployInfo", function (req, res) {
     let jobName = req.param('jobName');
     let callback = req.param('callback');
    
-	let path = '/job/' + jobName;
+	let path = 'job/' + jobName;
 
     let options = {
         host: applicationConf.jenkins.host,
