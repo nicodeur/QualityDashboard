@@ -2,4 +2,4 @@
 *.log
 /.project
 **/stop.sh
-
+/front/conf/conf.js
