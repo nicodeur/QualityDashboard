@@ -121,7 +121,7 @@ app.get("/jenkinsDeployInfo", function (req, res) {
     let jobName = req.param('jobName');
     let callback = req.param('callback');
    
-	let path = 'job/' + jobName;
+	let path = '/job/' + jobName;
 
     let options = {
         host: applicationConf.jenkins.host,
