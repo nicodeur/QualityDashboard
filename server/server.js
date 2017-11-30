@@ -261,11 +261,20 @@ function SortByName(a, b){
 // 1 semaphore par callback, donc un tableau du genre semaphore[callback] = <int>
 var semaphore = [];
 function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr, callbackName) {
-	let databaseConnectStr = "mongodb://" + applicationConf.cordonBleu.database_host + "/" + applicationConf.cordonBleu.database_name;
-	console.log(databaseConnectStr);
+	
+	let databaseConnectStr = "";
+	
+	if (applicationConf.cordonBleu.database_user != undefined && applicationConf.cordonBleu.database_user != ""
+			&& applicationConf.cordonBleu.database_password != undefined && applicationConf.cordonBleu.database_password != "") {
+		databaseConnectStr = "mongodb://" + applicationConf.cordonBleu.database_user + ":" + applicationConf.cordonBleu.database_password 
+								+ "@" + applicationConf.cordonBleu.database_host + "/" + applicationConf.cordonBleu.database_name;
+	} else {
+		databaseConnectStr = "mongodb://" + applicationConf.cordonBleu.database_host + "/" + applicationConf.cordonBleu.database_name;
+	}
+
 	MongoClient.connect(databaseConnectStr, {poolSize: 10}, function(error, db) {
 		if (error)  {
-				console.log(error);
+			console.log(error);
 		}
 		
 		let dateDebut=new Date(dateDebutStr);
