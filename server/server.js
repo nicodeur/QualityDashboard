@@ -45,8 +45,8 @@ app.get("/version", function (req, res) {
 });
 
 app.get("/jenkinsinfo", function (req, res) {
-	let projectName = req.param('project_name');
-	let callback = req.param('callback');
+	let projectName = req.query['project_name'];
+	let callback = req.query['callback'];
 
 	let credential = '';
 	if(applicationConf.jenkins.user !== undefined) {
@@ -68,11 +68,11 @@ app.get("/jenkinsinfo", function (req, res) {
 
 
 app.get("/sonarTimeMachine", function (req, res) {
-    let sonarName = req.param('resource');
-    let metrics = req.param('metrics');
-    let dateDebut = req.param('fromDateTime');
-    let dateFin = req.param('toDateTime');
-    let callback = req.param('callback');
+    let sonarName = req.query['resource'];
+    let metrics = req.query['metrics'];
+    let dateDebut = req.query['fromDateTime'];
+    let dateFin = req.query['toDateTime'];
+    let callback = req.query['callback'];
     let options = {
         host: applicationConf.sonar.host,
         port: applicationConf.sonar.port,
@@ -92,11 +92,11 @@ app.get("/sonarTimeMachine", function (req, res) {
 });
 
 app.get("/sonarResources", function (req, res) {
-    let sonarName = req.param('resource');
-    let metrics = req.param('metrics');
-    let dateDebut = req.param('fromDateTime');
-    let dateFin = req.param('toDateTime');
-    let callback = req.param('callback');
+    let sonarName = req.query['resource'];
+    let metrics = req.query['metrics'];
+    let dateDebut = req.query['fromDateTime'];
+    let dateFin = req.query['toDateTime'];
+    let callback = req.query['callback'];
     let options = {
         host: applicationConf.sonar.host,
         port: applicationConf.sonar.port,
@@ -117,9 +117,9 @@ app.get("/sonarResources", function (req, res) {
 
 
 app.get("/jenkinsDeployInfo", function (req, res) {
-    let endDate = new Date(req.param('endDate'));
-    let jobName = req.param('jobName');
-    let callback = req.param('callback');
+    let endDate = new Date(req.query['endDate']);
+    let jobName = req.query['jobName'];
+    let callback = req.query['callback'];
    
 	let path = '/job/' + jobName;
 
@@ -130,15 +130,26 @@ app.get("/jenkinsDeployInfo", function (req, res) {
         method: 'GET'
     };
 
-
     let url = "http://"+ options.host + ":" + options.port + "/" + options.path;
 
     http.request(options, function(resRequest) {
         resRequest.setEncoding('utf8');
-        resRequest.on('data', function (body) {
-            var jsonData = JSON.parse(body);
+		var data = '';
 
+		resRequest.on('data', function (chunk){
+			data += chunk;
+		});
+
+        resRequest.on('end', function (body) {
+            var jsonData = JSON.parse(data);
             var jenkinsBuilds = jsonData.builds;
+            
+//    http.request(options, function(resRequest) {
+//          resRequest.setEncoding('utf8');
+//          resRequest.on('data', function (body) {
+//       
+//          var jsonData = JSON.parse(body);
+//          var jenkinsBuilds = jsonData.builds;
             var cpt = 0;
 
             for (var i = 0, len = jenkinsBuilds.length; i < len; ++i) {
@@ -164,9 +175,9 @@ app.get("/jenkinsDeployInfo", function (req, res) {
 })
 
 app.get("/cerberusinfo", function (req, res) {
-	let projectName = req.param('project_name');
-	let tag = req.param('tag');
-	let callback = req.param('callback');
+	let projectName = req.query['project_name'];
+	let tag = req.query['tag'];
+	let callback = req.query['callback'];
 
 	let options = {
 		host: applicationConf.cerberus.host,
@@ -192,10 +203,10 @@ app.get("/cerberusinfo", function (req, res) {
 
 
 app.get("/codeReviewStats", function (req, res) {
-	let team = req.param('teamName');
-	let beginDate = req.param('beginDate');
-	let endDate = req.param('endDate');
-	let callback = req.param('callback');
+	let team = req.query['teamName'];
+	let beginDate = req.query['beginDate'];
+	let endDate = req.query['endDate'];
+	let callback = req.query['callback'];
 
 	getInfoCordonBleu(function (infoCordonBleu) {
 
@@ -210,8 +221,8 @@ app.get("/codeReviewStats", function (req, res) {
 
 
 app.get("/getLastTagCerberus", function (req, res) {
-	let prefixTag = req.param('prefixTag');
-	let callback = req.param('callback');
+	let prefixTag = req.query['prefixTag'];
+	let callback = req.query['callback'];
 
 	let options = {
 		host: applicationConf.cerberus.host,
