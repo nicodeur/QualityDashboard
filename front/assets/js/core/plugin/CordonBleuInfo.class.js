@@ -51,9 +51,10 @@ class CordonBleuInfo extends GetAndFillInfo {
 
         let templateCodeReview = $("#templateCodeReview").clone();
         templateCodeReview.find("div:first").attr("id", "codereview-" + result.team.toLowerCase());
-
+        templateCodeReview.find("div:first").css("padding-bottom","20px");
+        
         $("#codeReviewContent").append(templateCodeReview.html());
-
+        
         if(this.selecter == undefined) {
 			this.selecter = "#?";
 		}

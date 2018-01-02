@@ -26,9 +26,9 @@
 	<meta http-equiv="Access-Control-Allow-Origin" content="*" />
 
 
-    <!--     Fonts and icons     -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <!-- Fonts and icons -->
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	<!-- <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>-->
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
 
 
@@ -58,7 +58,7 @@
     <script src="assets/js/bootstrap-notify.js"></script>
 
     <!--  Google Maps Plugin    -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script> -->
 
     <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
 	<script src="assets/js/light-bootstrap-dashboard.js"></script>
@@ -90,7 +90,7 @@
             <ul class="nav" id="onglets">
                 <li id="menu-codeReview">
                     <a href="?project=codeReview">
-                        <i class="pe-7s-graph"></i>
+                        <i class="pe-7s-look"></i>
                         <p>Code Review</p>
                     </a>
                 </li>       
@@ -100,31 +100,6 @@
     </div>
 
     <div class="main-panel">
-        <nav class="navbar navbar-default navbar-fixed">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Dashboard</a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-left">
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-dashboard"></i>
-								<p class="hidden-lg hidden-md">Dashboard</p>
-                            </a>
-                        </li>
-                    </ul>
-				</div>
-            </div>
-        </nav>
-
-
         <div class="content">
             <div class="container-fluid">
 				<div class="row" id="codeReview" style="display:none">
@@ -337,26 +312,26 @@
                             <div class="content">
 								<hr />
                                 <div class="row title-dash" name="sonarPanel" style="display:none">
-									<div class="col-md-6">
+									<div class="col-md-6" style="padding-right:0px">
 										<i class="fa fa-code"></i>
 										<span data-toggle="tooltip"  title="Number of code lines">Number of code lines</span>
 									</div>
 
-									<div class="col-md-6">
-										<span name="numberOfCodeLines" ></span><span class="detail"><span class="trend" name="numberOfCodeLinesTrend"></span><span style= "margin-left: 5px;font-size:14px">this week</span></span>
+									<div class="col-md-6" style="padding-left:0px">
+										<span name="numberOfCodeLines" ></span><span class="detail" style= "margin-left: 15px;"><span class="trend" style="margin-left: 0px;" name="numberOfCodeLinesTrend"></span><span style= "margin-left: 5px;font-size:14px">this week</span></span>
 									</div>
 
-									<div class="col-md-6" style="margin-top:10px;">
+									<div class="col-md-6" style="margin-top:10px;padding-right:0px">
 										<i class="fa fa-times-circle-o" style="padding-left:5px"></i>
 										<span data-toggle="tooltip" title="Blocker issue block release. It must be corrected immediately. Critical issue is an issue who must be corrected during the week. Critical issue should not existed more than 1 week.">Blocker / critical issue</span>
 									</div>
 
-									<div class="col-md-6" name="blockerCriticalIssue" style="margin-top:10px;">
-										<div class="col-md-12"><span name="blockerIssue" >0</span> <span>/</span> <span name="criticalIssue">0</span></div>
-										<div class="col-md-12 category" style="height:20px"><span><a href="#" name="linkToSonar" target="_blank">Go to Sonar</a></span></div>
+									<div class="col-md-6" name="blockerCriticalIssue" style="margin-top:10px;padding-left:0px">
+										<span name="blockerIssue" >0</span><span style="margin-left:5px;">/</span><span name="criticalIssue" style="margin-left:5px;">0</span>
+										<span style="margin-left:15px;font-size:16px"><a href="#" name="linkToSonar" target="_blank">Go to Sonar</a></span>
 									</div>
 								</div>
-								<div class="row title-dash" name="buildPanel" style="display:none;margin-top:30px;">
+								<div class="row title-dash" name="buildPanel" style="display:none;margin-top:10px;">
 									<div class="col-md-6">
 										<i class="fa fa-cogs"></i>
 										<span data-toggle="tooltip" title="Build quality measure quality of your continuous integration tools. If it's KO, project can't build" >Build quality</span>
@@ -364,10 +339,10 @@
 
 									<div class="col-md-6 " style="height: inherit;">
 										<div class="row">
-											<div class="col-md-12"><span name="buildQuality"></span></div>
-											<div class="col-md-12 category" style="height:20px"><span name="detailBuild"></span></div>
-											<div class="col-md-12 category" style="height:20px"><span name="testQuality"></span></div>
-											<div class="col-md-12 category" style="height:20px"><span><a href="#" name="linkLastBuild" target="_blank">Go to last build</a></span></div>
+											<span name="buildQuality"></span>
+											<span style="margin-left:15px;font-size:16px"><a href="#" name="linkLastBuild" target="_blank">Go to last build</a></span>
+											<div class="col-md-12 category" style="height:20px"><span style="margin-left:15px;font-size:12px" name="detailBuild"></span></div>
+											<div class="col-md-12 category" style="height:20px"><span style="margin-left:15px;font-size:12px" name="testQuality"></span></div>
 										</div>
 									</div>
 								</div>
@@ -473,11 +448,6 @@
                         </div>
                     </div>
 				</div>
-
-
-
-
-
 
 			<div id="templateCodeReview" style="display:none">
 				<div class="col-md-4">

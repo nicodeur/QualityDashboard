@@ -63,7 +63,7 @@ class Report {
 			$('#onglets').append(
 					'<li id="menu-' + data.name + '">' +
 								'        <a href="?project=' + data.name + '">' +
-								'            <i class="pe-7s-graph"></i>' +
+								'            <i class="pe-7s-box2"></i>' +
 								'            <p>' + data.name + '</p>' +
 								'        </a>' +
 								'    </li> '

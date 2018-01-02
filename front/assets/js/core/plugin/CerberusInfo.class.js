@@ -64,15 +64,27 @@ class CerberusInfo extends GetAndFillInfo {
                 cerberusInfo.status_QU_nbOfExecution]
 			}
 		);
-		let startDate = new Date(cerberusInfo.executionStart);
-		let endDate = new Date(cerberusInfo.executionEnd);
-		let diff = endDate - startDate;
-
+		
+		var startDate = this.getValidDateFromCerberus(cerberusInfo.executionStart);
+		var endDate = this.getValidDateFromCerberus(cerberusInfo.executionEnd);
+		
+		var diff = endDate - startDate;
+		
 		$(projectSelector + " [name='campaignExecution']").text("Exectuted in " +  diff/1000 + "." + diff%1000 + " s" + " on " + cerberusInfo.executionStart);
 		$(projectSelector + " [name='urlReportCerberus']").attr("href", cerberusInfo.urlReport);
 
 	}
 
+	// return a date with the following constructor "new Date(year, month, day, hours, minutes, seconds, milliseconds)"
+	// from a string like 2017-12-29 11:32:56.0
+	getValidDateFromCerberus(cerberusdate) {
+		var cerberusdatehour = cerberusdate.split(" ");
+		var cerberusdate = cerberusdatehour[0].split("-");
+		var cerberushourmilli = cerberusdatehour[1].split(".");
+		var cerberushour = cerberushourmilli[0].split(":");
+		var validDate = new Date(cerberusdate[0], cerberusdate[1], cerberusdate[2], cerberushour[0], cerberushour[1], cerberushour[2], cerberushourmilli[1]);
+		return validDate;
+	}
 
 	majGeneralCerberusInfo() {
 

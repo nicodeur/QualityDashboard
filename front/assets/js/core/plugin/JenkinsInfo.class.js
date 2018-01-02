@@ -42,9 +42,21 @@ class JenkinsInfo extends GetAndFillInfo {
 
         if(info.healthReport.length >= 2)
             $(this.projectSelector + " [name='detailBuild']").text(info.healthReport[1].description);
-        if(info.healthReport.length >= 1)
-            $(this.projectSelector + " [name='testQuality']").text(info.healthReport[0].description);
+        if(info.healthReport.length >= 1) {
+        	let jenkinsHealthDescription = info.healthReport[0].description;
+        	if (~jenkinsHealthDescription.indexOf("out of a total of")) {
+        		let arrHealth = jenkinsHealthDescription.split("out of a total of");
+       		
+        		let arrNbFailingTests = arrHealth[0].split("tests");
+        		let arrNbTotalTests = arrHealth[1].split("tests");
 
+        		let desc = arrNbFailingTests[0] + "/" + arrNbTotalTests[0] + " tests failed";
+        		$(this.projectSelector + " [name='testQuality']").text(desc);
+
+        	} else {
+        		$(this.projectSelector + " [name='testQuality']").text(jenkinsHealthDescription);
+        	}
+        }
         $(this.projectSelector + " [name='linkLastBuild']").attr("href", info.lastBuild.url);
 	}
 	

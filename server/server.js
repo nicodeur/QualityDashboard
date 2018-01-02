@@ -174,7 +174,7 @@ app.get("/cerberusinfo", function (req, res) {
 		path: "/" + applicationConf.cerberus.path + '/ResultCIV002?tag=' + tag,
 		method: 'GET'
 	};
-
+	
 	http.request(options, function(resRequest) {
 		resRequest.setEncoding('utf8');
 		resRequest.on('data', function (data) {
@@ -219,12 +219,9 @@ app.get("/getLastTagCerberus", function (req, res) {
 		path: "/" + applicationConf.cerberus.path + '/GetTagExecutions',
 		method: 'GET'
 	};
-
 	
 	http.request(options, function(resRequest) {
-
 		resRequest.setEncoding('utf8');
-
 		var data = '';
 
 		resRequest.on('data', function (chunk){
@@ -233,17 +230,18 @@ app.get("/getLastTagCerberus", function (req, res) {
 
 		resRequest.on('end',function(){
 			tags = JSON.parse( data ).tags;
-
 			tags = tags.filter(function (item) {
 				return item.indexOf(prefixTag) >= 0;
 			});
             tags = tags.sort(SortByName);
-
-			let result = '{"lasttag" : "'+ tags[tags.length-1] + '","tags" : ' + JSON.stringify(tags) + '}';
-
+            
+			//let result = '{"lasttag" : "'+ tags[tags.length-1] + '","tags" : ' + JSON.stringify(tags) + '}';
+            let result = '{"lasttag" : "'+ tags[tags.length-1] + '"}';
+            
 			if(callback != null) {
 				result = callback + "([" + result + "])";
 			}
+
 			res.end(result);
 		});
 	}).end();
