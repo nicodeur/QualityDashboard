@@ -168,7 +168,7 @@ var mapProjectConfiguration = new Array();
 
 
 /**
- * Redifined to date string to display automaticaly a beautiful date
+ * Redefined to date string to display automatically a beautiful date
  *
  */
 Date.prototype.toString = function() {

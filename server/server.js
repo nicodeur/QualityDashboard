@@ -190,8 +190,8 @@ app.get("/cerberusinfo", function (req, res) {
 		resRequest.setEncoding('utf8');
 		resRequest.on('data', function (data) {
 			//data = JSON.parse( data );
-
 			let result = data;
+			
 			if(callback != null) {
 				result = callback + "([" + data + "])";
 			}
@@ -201,6 +201,37 @@ app.get("/cerberusinfo", function (req, res) {
 	}).end();
 })
 
+app.get("/getLastTagCerberus", function (req, res) {
+	let prefixTag = req.query['prefixTag'];
+	let callback = req.query['callback'];
+
+	let options = {
+		host: applicationConf.cerberus.host,
+		port: applicationConf.cerberus.port,
+		path: "/" + applicationConf.cerberus.path + '/ReadTag?sSortDir_0=desc&iDisplayLength=1&sSearch=' + prefixTag,
+		method: 'GET'
+	};
+	
+	http.request(options, function(resRequest) {
+		resRequest.setEncoding('utf8');
+		var data = '';
+
+		resRequest.on('data', function (chunk){
+			data += chunk;
+		});
+
+		resRequest.on('end',function(){
+			var obj = JSON.parse(data);
+            let result = '{"lasttag" : "'+ obj.contentTable[0].tag + '"}';
+
+			if(callback != null) {
+				result = callback + "([" + result + "])";
+			}
+
+			res.end(result);
+		});
+	}).end();
+})
 
 app.get("/codeReviewStats", function (req, res) {
 	let team = req.query['teamName'];
@@ -218,47 +249,6 @@ app.get("/codeReviewStats", function (req, res) {
 	},team,beginDate,endDate, callback);
 
 })
-
-
-app.get("/getLastTagCerberus", function (req, res) {
-	let prefixTag = req.query['prefixTag'];
-	let callback = req.query['callback'];
-
-	let options = {
-		host: applicationConf.cerberus.host,
-		port: applicationConf.cerberus.port,
-		path: "/" + applicationConf.cerberus.path + '/GetTagExecutions',
-		method: 'GET'
-	};
-	
-	http.request(options, function(resRequest) {
-		resRequest.setEncoding('utf8');
-		var data = '';
-
-		resRequest.on('data', function (chunk){
-			data += chunk;
-		});
-
-		resRequest.on('end',function(){
-			tags = JSON.parse( data ).tags;
-			tags = tags.filter(function (item) {
-				return item.indexOf(prefixTag) >= 0;
-			});
-            tags = tags.sort(SortByName);
-            
-			//let result = '{"lasttag" : "'+ tags[tags.length-1] + '","tags" : ' + JSON.stringify(tags) + '}';
-            let result = '{"lasttag" : "'+ tags[tags.length-1] + '"}';
-            
-			if(callback != null) {
-				result = callback + "([" + result + "])";
-			}
-
-			res.end(result);
-		});
-	}).end();
-})
-
-
 
 function SortByName(a, b){
     var aName = a.toLowerCase();
