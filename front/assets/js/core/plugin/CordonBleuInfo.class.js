@@ -30,7 +30,6 @@ class CordonBleuInfo extends GetAndFillInfo {
 	
 	}
 
-
 	getResult(msg) {
 		return msg[0];
 	}
@@ -47,10 +46,8 @@ class CordonBleuInfo extends GetAndFillInfo {
 	}
 	
 	fillInfo(info) {
-        let result = info[0];
-
         let templateCodeReview = $("#templateCodeReview").clone();
-        templateCodeReview.find("div:first").attr("id", "codereview-" + result.team.toLowerCase());
+        templateCodeReview.find("div:first").attr("id", "codereview-" + info.team.toLowerCase());
         templateCodeReview.find("div:first").css("padding-bottom","20px");
         
         $("#codeReviewContent").append(templateCodeReview.html());
@@ -61,15 +58,15 @@ class CordonBleuInfo extends GetAndFillInfo {
 		
 		$("#dateLegendCodeReview").text("Between " + Utils.formatDate(this.beginDate) + " and " + Utils.formatDate(this.endDate));
 
-		$(this.selecter.replace("?","commitNumber")).text(result.nbCommitThisWeek);
-		$(this.selecter.replace("?","approveCommitNumber")).text(result.nbCommitApprove);
-		$(this.selecter.replace("?","commentCommitNumber")).text(result.nbCommitComment);
-		$(this.selecter.replace("?","reviewCommitNumber")).text(result.nbCommitThisWeek-result.nbCommitWithoutReview);
+		$(this.selecter.replace("?","commitNumber")).text(info.nbCommitThisWeek);
+		$(this.selecter.replace("?","approveCommitNumber")).text(info.nbCommitApprove);
+		$(this.selecter.replace("?","commentCommitNumber")).text(info.nbCommitComment);
+		$(this.selecter.replace("?","reviewCommitNumber")).text(info.nbCommitThisWeek-info.nbCommitWithoutReview);
 
-        Utils.modifyChartOneValue(this.selecter.replace("?","chartCodeReview"), result.ratioCommitReview);
-		$(this.selecter.replace("?","smileyCodeReview")).addClass(Utils.getSmiley(result.ratioCommitReview, 100,50));
-        $(this.selecter.replace("?","seemore")).attr("href",codeReviewUrl+"/team/" + result.team);
-        $(this.selecter.replace("?","name")).text(result.team);
+        Utils.modifyChartOneValue(this.selecter.replace("?","chartCodeReview"), info.ratioCommitReview);
+		$(this.selecter.replace("?","smileyCodeReview")).addClass(Utils.getSmiley(info.ratioCommitReview, 100,50));
+        $(this.selecter.replace("?","seemore")).attr("href",codeReviewUrl+"/team/" + info.team);
+        $(this.selecter.replace("?","name")).text(info.team);
 	}
 
 }

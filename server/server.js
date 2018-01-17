@@ -5,10 +5,7 @@ var app = express();
 var fs = require("fs");
 var exec = require('exec');
 var async = require('async');
-var MongoClient = require("mongodb").MongoClient;
 var jenkinsapi = require('jenkins-api');
-
-
 
 // get verion
 var pjson = require('./package.json');
@@ -143,13 +140,6 @@ app.get("/jenkinsDeployInfo", function (req, res) {
         resRequest.on('end', function (body) {
             var jsonData = JSON.parse(data);
             var jenkinsBuilds = jsonData.builds;
-            
-//    http.request(options, function(resRequest) {
-//          resRequest.setEncoding('utf8');
-//          resRequest.on('data', function (body) {
-//       
-//          var jsonData = JSON.parse(body);
-//          var jenkinsBuilds = jsonData.builds;
             var cpt = 0;
 
             for (var i = 0, len = jenkinsBuilds.length; i < len; ++i) {
@@ -239,122 +229,44 @@ app.get("/codeReviewStats", function (req, res) {
 	let endDate = req.query['endDate'];
 	let callback = req.query['callback'];
 
-	getInfoCordonBleu(function (infoCordonBleu) {
-
-        let result = infoCordonBleu;
-        if(callback != null) {
-            result = callback + "([" + JSON.stringify(infoCordonBleu) + "])";
-        }
-        res.end(result);
-	},team,beginDate,endDate, callback);
-
-})
-
-function SortByName(a, b){
-    var aName = a.toLowerCase();
-    var bName = b.toLowerCase();
-    return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-}
-
-// le semaphore permet de savoir quand les toutes les requêtes mongo attendu sont terminées
-// 1 semaphore par callback, donc un tableau du genre semaphore[callback] = <int>
-var semaphore = [];
-function getInfoCordonBleu(callback, team, dateDebutStr, dateFinStr, callbackName) {
+	let options = {
+		host: applicationConf.cordonBleu.host,
+		port: applicationConf.cordonBleu.port,
+		path: "/api/activity/public?name=" + team + '&begin=' + beginDate + '&end=' + endDate,
+		method: 'GET'
+	};
 	
-	let databaseConnectStr = "";
-	
-	if (applicationConf.cordonBleu.database_user != undefined && applicationConf.cordonBleu.database_user != ""
-			&& applicationConf.cordonBleu.database_password != undefined && applicationConf.cordonBleu.database_password != "") {
-		databaseConnectStr = "mongodb://" + applicationConf.cordonBleu.database_user + ":" + applicationConf.cordonBleu.database_password 
-								+ "@" + applicationConf.cordonBleu.database_host + "/" + applicationConf.cordonBleu.database_name;
-	} else {
-		databaseConnectStr = "mongodb://" + applicationConf.cordonBleu.database_host + "/" + applicationConf.cordonBleu.database_name;
-	}
+	http.request(options, function(resRequest) {
+		resRequest.setEncoding('utf8');
+		var data = '';
 
-	MongoClient.connect(databaseConnectStr, {poolSize: 10}, function(error, db) {
-		if (error)  {
-			console.log(error);
-		}
-		
-		let dateDebut=new Date(dateDebutStr);
-		let dateFin=new Date(dateFinStr);
-		// include current date, set to last second of the day
-		dateFin = new Date(dateFin.getFullYear(), dateFin.getMonth(), dateFin.getDate(), 23, 59, 59);
-
-		let teams;
-				
-		if(team == null || team == undefined || team == "") {
-			teams = db.collection("team").find({},{_id:1, name:1});
-		} else {
-			teams = db.collection("team").find({"name.unique" : team.toLowerCase()},{_id:1, name:1});
-		}
-		
-		let cpt = 0;
-		let cordonBleuInfos = new Array();
-		
-		semaphore[callbackName]=1;
-
-		teams.count(function (errorTeaemsCount, teamsSize) {
-			teams.forEach(function (team) {
-				let cordonBleuInfo = new Object();
-				cordonBleuInfo.team=team.name.value;
-				cordonBleuInfos.push(cordonBleuInfo);
-				
-				var re = "/^/i";
-
-                semaphore[callbackName]++;
-
-                
-				db.collection("commit").find({ "_id.team" : team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }}).count(function (e, count) {
-					cordonBleuInfo.nbCommitThisWeek=count;
-                    semaphore[callbackName]--;
-				});
-
-                semaphore[callbackName]++;
-				var nbCommitApprove = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut, $lt : dateFin}, approval : {$ne: null}}).count(function (e, count) {
-					cordonBleuInfo.nbCommitApprove=count;
-                    semaphore[callbackName]--;
-				});
-
-                semaphore[callbackName]++;
-				var nbCommitComment = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, comments : {$gt: []}}).count(function (e, count) {
-					cordonBleuInfo.nbCommitComment=count;
-                    semaphore[callbackName]--;
-				});
-
-                semaphore[callbackName]++;
-				var nbCommitWithoutReview = db.collection("commit").find({ "_id.team": team._id,  "created": {  $gt : dateDebut,  $lt : dateFin }, approval : null, comments : []}).count(function (e, count) {
-					cordonBleuInfo.nbCommitWithoutReview=count;
-                    semaphore[callbackName]--;
-				});
-
-				// final condition
-				if(cpt === teamsSize-1) {
-                    semaphore[callbackName]--;
-
-					wait_until_semaphore( function(){
-
-                        cordonBleuInfos.forEach(function(cbi) {
-                        	if(cbi.nbCommitThisWeek==0) cbi.ratioCommitReview=100;
-                            else cbi.ratioCommitReview = Math.round((((cbi.nbCommitThisWeek - cbi.nbCommitWithoutReview) / cbi.nbCommitThisWeek)*1000))/10.0;
-						}, callback);
-
-						callback(cordonBleuInfos);
-					}, callbackName);
-				}
-				
-				cpt=cpt+1;
-			});			
+		resRequest.on('data', function (chunk){
+			data += chunk;
 		});
-	});
-}
 
+		resRequest.on('end',function(){
+			var obj = JSON.parse(data);
+			
+			let infoCordonBleu = new Object();
+			infoCordonBleu.team=team;
+			infoCordonBleu.nbCommitThisWeek=obj.nbCommit;
+			infoCordonBleu.nbCommitApprove=obj.nbCommitApproved;
+			infoCordonBleu.nbCommitComment=obj.nbCommitWithComments;
+			infoCordonBleu.nbCommitWithoutReview=obj.nbCommitWithoutReview;
+			
+			if(obj.nbCommit==0) {
+				infoCordonBleu.ratioCommitReview=100;
+			} else {	
+				infoCordonBleu.ratioCommitReview = Math.round(((infoCordonBleu.nbCommitThisWeek - infoCordonBleu.nbCommitWithoutReview) / infoCordonBleu.nbCommitThisWeek)*100);
+			}
 
-function wait_until_semaphore(callback, callbackName) {
-    console.log("wait semaphore : " + semaphore[callbackName]);
-    if (semaphore[callbackName]==0) {
-        callback();
-    } else {
-        setTimeout(function(){wait_until_semaphore(callback, callbackName)},1000);
-    }
-}
+			let result = "([" + JSON.stringify(infoCordonBleu) + "])";
+	        if(callback != null) {
+	            result = callback + "([" + JSON.stringify(infoCordonBleu) + "])";
+	        }
+	        
+	        res.end(result);
+		});
+		
+	}).end();
+})
