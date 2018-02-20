@@ -23,14 +23,13 @@ var server = app.listen(8085, function () {
     var port = server.address().port
     console.log("App listening at http://%s:%s", host, port)
 
-})
+});
 
 //error handling to prevent server is kill by an error
 process.on('uncaughtException', function(err) {
     // handle the error safely
     console.log(err);
-})
-
+});
 
 app.get("/version", function (req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -41,15 +40,16 @@ app.get("/version", function (req, res) {
 	res.send(result);
 });
 
+
+var credential = '';
+if(applicationConf.jenkins.user !== undefined) {
+    credential = applicationConf.jenkins.user + ':' + applicationConf.jenkins.userToken + '@';
+}
+
 app.get("/jenkinsinfo", function (req, res) {
 	let projectName = req.query['project_name'];
 	let callback = req.query['callback'];
-
-	let credential = '';
-	if(applicationConf.jenkins.user !== undefined) {
-        credential = applicationConf.jenkins.user + ':' + applicationConf.jenkins.userToken + '@';
-    }
-
+	
     var jenkins = jenkinsapi.init('http://' + credential + applicationConf.jenkins.host+':'+applicationConf.jenkins.port+'');
 
     jenkins.job_info(projectName, {token: 'jenkins-token'}, function(err, data) {
@@ -63,6 +63,40 @@ app.get("/jenkinsinfo", function (req, res) {
     });
 });
 
+app.get("/jenkinsDeployInfo", function (req, res) {
+    let endDate = new Date(req.query['endDate']);
+    let jobName = req.query['jobName'];
+    let callback = req.query['callback'];
+   
+	let path = '/job/' + jobName;
+
+	var jenkins = jenkinsapi.init('http://' + credential + applicationConf.jenkins.host+':'+applicationConf.jenkins.port+'');
+
+	jenkins.job_info(jobName, {tree : 'builds[timestamp,id,result]', token: 'jenkins-token'}, function(err, data) {        
+        var jsonData = JSON.parse(data);
+        var jenkinsBuilds = jsonData.builds;
+        var cpt = 0;
+
+        for (var i = 0, len = jenkinsBuilds.length; i < len; ++i) {
+            var jenkinsBuild = jenkinsBuilds[i];
+
+            if (jenkinsBuild.timestamp > endDate.getTime()
+                && jenkinsBuild.result == "SUCCESS") {
+                cpt++;
+            }
+        }
+
+        var result = new Object();
+        result.numberOfDeploy = cpt;
+        result = JSON.stringify(result);
+
+        if(callback != null) {
+            result = callback + "([" + result.toString() + "])";
+        }
+
+        res.end(result.toString());
+	});
+});
 
 app.get("/sonarTimeMachine", function (req, res) {
     let sonarName = req.query['resource'];
@@ -111,59 +145,6 @@ app.get("/sonarResources", function (req, res) {
     }).end();
 });
 
-
-
-app.get("/jenkinsDeployInfo", function (req, res) {
-    let endDate = new Date(req.query['endDate']);
-    let jobName = req.query['jobName'];
-    let callback = req.query['callback'];
-   
-	let path = '/job/' + jobName;
-
-    let options = {
-        host: applicationConf.jenkins.host,
-        port: applicationConf.jenkins.port,
-        path: path + "/api/json?tree=builds[number,status,timestamp,id,result]",
-        method: 'GET'
-    };
-
-    let url = "http://"+ options.host + ":" + options.port + "/" + options.path;
-
-    http.request(options, function(resRequest) {
-        resRequest.setEncoding('utf8');
-		var data = '';
-
-		resRequest.on('data', function (chunk){
-			data += chunk;
-		});
-
-        resRequest.on('end', function (body) {
-            var jsonData = JSON.parse(data);
-            var jenkinsBuilds = jsonData.builds;
-            var cpt = 0;
-
-            for (var i = 0, len = jenkinsBuilds.length; i < len; ++i) {
-                var jenkinsBuild = jenkinsBuilds[i];
-
-                if (jenkinsBuild.timestamp > endDate.getTime()
-                    && jenkinsBuild.result == "SUCCESS") {
-                    cpt++;
-                }
-            }
-
-            var result = new Object();
-            result.numberOfDeploy = cpt;
-            result = JSON.stringify(result);
-
-            if (callback != null) {
-                result = callback + "([" + result + "])";
-            }
-            res.send(result);
-        });
-    }).end();
-
-})
-
 app.get("/cerberusinfo", function (req, res) {
 	let projectName = req.query['project_name'];
 	let tag = req.query['tag'];
@@ -189,7 +170,7 @@ app.get("/cerberusinfo", function (req, res) {
 			res.end(result);
 		});
 	}).end();
-})
+});
 
 app.get("/getLastTagCerberus", function (req, res) {
 	let prefixTag = req.query['prefixTag'];
@@ -221,7 +202,7 @@ app.get("/getLastTagCerberus", function (req, res) {
 			res.end(result);
 		});
 	}).end();
-})
+});
 
 app.get("/codeReviewStats", function (req, res) {
 	let team = req.query['teamName'];
@@ -269,4 +250,4 @@ app.get("/codeReviewStats", function (req, res) {
 		});
 		
 	}).end();
-})
+});

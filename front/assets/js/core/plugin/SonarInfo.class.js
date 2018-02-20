@@ -27,6 +27,7 @@ class SonarInfo extends GetAndFillInfo {
 
 	getResult(msg) {
 		let sonarResult = new Object();
+
 		if(msg[0].cells.length==0) {
 			sonarResult.numberLines = "No Data";
 			sonarResult.numberLinesTrend = "No Data";
@@ -37,18 +38,19 @@ class SonarInfo extends GetAndFillInfo {
 			sonarResult.blockerViolation = "No Data";
 			sonarResult.criticalViolation = "No Data";
 			let this_=this;
+			
 			// call last figures
-			let url = sonarUrl + "/api/resources?resource="+this.sonarName+"&metrics="+this.metrics+"&format=json&fromDateTime="+this.dateDebut+"&toDateTime=" + this.dateFin;
-			 $.ajax({
+			$.ajax({
 				type: 'GET',
 				dataType: 'jsonp',
+	            contentType: "text/plain",
 				data: {},
-				url: url+"&callback=?",
+				url: serverUrl + "/sonarResources?resource="+this.sonarName+"&metrics="+this.metrics+"&format=json&callback=?",
 				error: function (jqXHR, textStatus, errorThrown) {
-					console.log(jqXHR)
+	                console.log(textStatus + " : " + errorThrown);
+					console.log(jqXHR);
 				},
 				success: function (msg) {
-
 					msg[0].msr.forEach(function(msr) {
 						switch(msr.key) {
 							case "blocker_violations" :
@@ -72,7 +74,8 @@ class SonarInfo extends GetAndFillInfo {
 					sonarResult.lastSonarCalculation = new Date(msg[0].date);
 					this_.fillInfo(sonarResult);
 				}
-			 });
+			});
+			
 		} else {
 			let firstValue = msg[0].cells[0];
 			let lastValue = msg[0].cells[msg[0].cells.length-1];

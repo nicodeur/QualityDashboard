@@ -30,6 +30,7 @@ class JenkinsInfo extends GetAndFillInfo {
                 if(info.lastBuild != null) {
                         $(this.projectSelector + " [name='buildQuality']").text("OK");
                         $(this.projectSelector + " [name='buildQuality']").addClass("nice");
+                        $(this.projectSelector + " [name='linkLastBuild']").attr("href", info.lastBuild.url);
                 }
                 else {
                         $(this.projectSelector + " [name='buildQuality']").text("NA");
@@ -38,26 +39,34 @@ class JenkinsInfo extends GetAndFillInfo {
         else {
                 $(this.projectSelector + " [name='buildQuality']").text(info.lastBuild.number===info.lastFailedBuild.number ? "KO" : "OK");
                 $(this.projectSelector + " [name='buildQuality']").addClass(info.lastBuild.number===info.lastFailedBuild.number ? "bad" : "nice");
+                $(this.projectSelector + " [name='linkLastBuild']").attr("href", info.lastBuild.url);
         }
 
-        if(info.healthReport.length >= 2)
-            $(this.projectSelector + " [name='detailBuild']").text(info.healthReport[1].description);
-        if(info.healthReport.length >= 1) {
-        	let jenkinsHealthDescription = info.healthReport[0].description;
-        	if (~jenkinsHealthDescription.indexOf("out of a total of")) {
-        		let arrHealth = jenkinsHealthDescription.split("out of a total of");
-       		
-        		let arrNbFailingTests = arrHealth[0].split("tests");
-        		let arrNbTotalTests = arrHealth[1].split("tests");
-
-        		let desc = arrNbFailingTests[0] + "/" + arrNbTotalTests[0] + " tests failed";
-        		$(this.projectSelector + " [name='testQuality']").text(desc);
-
-        	} else {
-        		$(this.projectSelector + " [name='testQuality']").text(jenkinsHealthDescription);
+        if(info.healthReport != null) {
+        	for (var i = 0; i < info.healthReport.length; i++) { 
+        		var desc = info.healthReport[i].description;
+        		
+        		if (desc.startsWith("Test Result")) {
+        			if (~desc.indexOf("out of a total of")) {
+        				let arr = desc.split("out of a total of");
+        				let arrNbFailed = arr[0].split("tests");
+    	        		let arrNbTotal = arr[1].split("tests");
+    	
+    	        		let testQuality = arrNbFailed[0] + "/" + arrNbTotal[0] + " tests failed";
+    	        		$(this.projectSelector + " [name='testQuality']").text(testQuality);
+        			} else {
+        				$(this.projectSelector + " [name='testQuality']").text(desc);
+        			}
+        			
+        		} else if (desc.startsWith("Build stability")) {
+        			if (~desc.indexOf("out of the last")) {    	        		
+    	        		$(this.projectSelector + " [name='detailBuild']").text(desc.replace("out of the last", "/"));
+        			} else {
+        				$(this.projectSelector + " [name='detailBuild']").text(desc);
+        			}
+        		}
         	}
-        }
-        $(this.projectSelector + " [name='linkLastBuild']").attr("href", info.lastBuild.url);
+        }        
 	}
 	
 }
